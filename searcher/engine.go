@@ -325,7 +325,8 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	e.Wait()
 	// 分词搜索
 	words := e.Tokenizer.Cut(request.Query)
-
+	blockWords := e.Tokenizer.Cut(request.Block)
+	words = utils.SliceDelStr_towSlice(words, blockWords)
 	totalTime := float64(0)
 
 	fastSort := &sorts.FastSort{

@@ -9,6 +9,7 @@ type Highlight struct {
 // SearchRequest 搜索请求
 type SearchRequest struct {
 	Query     string     `json:"query,omitempty" form:"database"`     // 搜索关键词
+	Block     string     `json:"block,omitempty" form:"database"`     // 搜索关键词
 	Order     string     `json:"order,omitempty" form:"database"`     // 排序类型
 	Page      int        `json:"page,omitempty" form:"database"`      // 页码
 	Limit     int        `json:"limit,omitempty" form:"database"`     // 每页大小，最大1000，超过报错
