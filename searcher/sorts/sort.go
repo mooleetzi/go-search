@@ -1,9 +1,7 @@
 package sorts
 
 import (
-	"go-search/searcher"
 	"go-search/searcher/model"
-	"math"
 	"sort"
 	"sync"
 )
@@ -39,13 +37,9 @@ type SortResult struct {
 //func (f *SortResult) Add(ids *[]uint32) {
 //	f.Ids = append(f.Ids, *ids...)
 //}
-func (f *SortResult) Add(idsToFreqs *map[uint32]int, e *searcher.Engine) {
-	for id, freq := range *idsToFreqs {
+func (f *SortResult) Add(idsToFreqs *map[uint32]float64) {
+	for id, score := range *idsToFreqs {
 		f.Ids = append(f.Ids, id)
-		docFreq := float64(len(*idsToFreqs))
-		docCount := float64(e.GetCountById(id))
-		idf := math.Log(docCount) - math.Log(docFreq+1) + 1
-		score := float64(freq) * idf
 		f.Scores = append(f.Scores, score)
 	}
 }

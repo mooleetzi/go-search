@@ -10,6 +10,7 @@ import (
 	"go-search/searcher/utils"
 	"go-search/searcher/words"
 	"log"
+	"math"
 	"os"
 	"runtime"
 	"strings"
@@ -390,7 +391,17 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 		idsToFreqs := make(map[uint32]int)
 		// 解码
 		utils.Decoder(buf, &idsToFreqs)
-		sortResult.Add(&idsToFreqs, e)
+
+		scores := make(map[uint32]float64)
+		for id, freq := range idsToFreqs {
+			docFreq := float64(len(idsToFreqs))
+			docCount := float64(e.GetCountById(id))
+			idf := math.Log(docCount) - math.Log(docFreq+1) + 1
+			tf := math.Sqrt(float64(freq))
+			scores[id] = idf * tf
+		}
+
+		sortResult.Add(&scores)
 	}
 
 }
