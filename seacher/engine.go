@@ -1,23 +1,40 @@
 package seacher
 
 import (
+	"fmt"
 	"goSearch/seacher/arrays"
 	"goSearch/seacher/model"
 	"goSearch/seacher/storage"
 	"goSearch/seacher/utils"
 	"goSearch/seacher/words"
+	"log"
+	"os"
+	"runtime"
 	"sync"
+	"time"
 )
 
 type Engine struct {
+	IndexPath string  //索引文件存储目录
+	Option    *Option //配置各种数据库名称
+
 	invertedIndexStorages []*storage.LeveldbStorage //关键字和Id映射，倒排索引,key=id,value=[]words
 	positiveIndexStorages []*storage.LeveldbStorage //ID和key映射，用于计算相关度，一个id 对应多个key，正排索引
 	docStorages           []*storage.LeveldbStorage //文档仓
+
 	sync.WaitGroup
 	sync.Mutex
-	addDocumentWorkerChan []chan *model.IndexDoc
-	Shard                 int              //分片数
 	Tokenizer             *words.Tokenizer //分词器
+	addDocumentWorkerChan []chan *model.IndexDoc
+
+	Shard   int   //分片数
+	Timeout int64 //超时时间,单位秒
+
+}
+type Option struct {
+	InvertedIndexName string //倒排索引
+	PositiveIndexName string //正排索引
+	DocIndexName      string //文档存储
 }
 
 func (e *Engine) Init() {
@@ -29,7 +46,42 @@ func (e *Engine) Init() {
 		worker := make(chan *model.IndexDoc, 1000)
 		e.addDocumentWorkerChan[shard] = worker
 		go e.DocumentWorkerExec(worker)
+		s, err := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.DocIndexName, shard)), e.Timeout)
+		if err != nil {
+			panic(err)
+		}
+		e.docStorages = append(e.docStorages, s)
+
+		//初始化Keys存储
+		ks, kerr := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.InvertedIndexName, shard)), e.Timeout)
+		if kerr != nil {
+			panic(err)
+		}
+		e.invertedIndexStorages = append(e.invertedIndexStorages, ks)
+
+		//id和keys映射
+		iks, ikerr := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.PositiveIndexName, shard)), e.Timeout)
+		if ikerr != nil {
+			panic(ikerr)
+		}
+		e.positiveIndexStorages = append(e.positiveIndexStorages, iks)
+
 	}
+	go e.automaticGC()
+	log.Println("初始化完成")
+}
+
+// 自动保存索引，10秒钟检测一次
+func (e *Engine) automaticGC() {
+	ticker := time.NewTicker(time.Second * 10)
+	for {
+		<-ticker.C
+		//定时GC
+		runtime.GC()
+	}
+}
+func (e *Engine) getFilePath(fileName string) string {
+	return e.IndexPath + string(os.PathSeparator) + fileName
 }
 func (e *Engine) DocumentWorkerExec(worker chan *model.IndexDoc) {
 	for {
@@ -42,10 +94,10 @@ func (e *Engine) AddDocument(index *model.IndexDoc) {
 	e.Wait()
 	text := index.Text
 
-	wordsToFreqs, words := e.Tokenizer.Cut(text)
+	wordsToFreqs, splitwords := e.Tokenizer.Cut(text)
 
 	id := index.Id
-	isUpdate := e.deleteInvalidDocId(id, words)
+	isUpdate := e.deleteInvalidDocId(id, splitwords)
 	//没有更新
 	if !isUpdate {
 		return
@@ -55,7 +107,7 @@ func (e *Engine) AddDocument(index *model.IndexDoc) {
 		e.addInvertedIndex(word, freq, id)
 	}
 	//添加id索引
-	e.addPositiveIndex(index, words)
+	e.addPositiveIndex(index, splitwords)
 }
 
 //	移除没有的词
