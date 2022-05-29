@@ -15,11 +15,15 @@ type Tokenizer struct {
 func NewTokenizer() *Tokenizer {
 	tokenizer := &Tokenizer{}
 	fmt.Println("filename:", "./data/dict.txt")
-	err := tokenizer.seg.LoadDictionary("./data/dict.txt")
-	if err != nil {
-		panic(err)
+	paths := []string{"./data/dict.txt", "./searcher/words/data/dict.txt"}
+	for _, path := range paths {
+		fmt.Println(path)
+		err := tokenizer.seg.LoadDictionary(path)
+		if err == nil {
+			return tokenizer
+		}
 	}
-	return tokenizer
+	panic("no such file")
 }
 
 //安全返回liangge切片
