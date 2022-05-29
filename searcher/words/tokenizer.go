@@ -19,7 +19,7 @@ func NewTokenizer(filename string) *Tokenizer {
 	if err != nil {
 		panic(err)
 	}
-	panic("no such file")
+	return tokenizer
 }
 
 // 安全返回liangge切片
