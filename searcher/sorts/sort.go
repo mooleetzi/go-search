@@ -1,7 +1,9 @@
 package sorts
 
 import (
+	"go-search/searcher"
 	"go-search/searcher/model"
+	"math"
 	"sort"
 	"sync"
 )
@@ -25,15 +27,27 @@ type SortResult struct {
 
 	IdsAndScores []model.SliceItem
 
-	Ids []uint32
+	Ids    []uint32
+	Scores []float64
+	//Words []string
 
 	count int // 总数
 
 	Order string // 排序方式
 }
 
-func (f *SortResult) Add(ids *[]uint32) {
-	f.Ids = append(f.Ids, *ids...)
+//func (f *SortResult) Add(ids *[]uint32) {
+//	f.Ids = append(f.Ids, *ids...)
+//}
+func (f *SortResult) Add(idsToFreqs *map[uint32]int, e *searcher.Engine) {
+	for id, freq := range *idsToFreqs {
+		f.Ids = append(f.Ids, id)
+		docFreq := float64(len(*idsToFreqs))
+		docCount := float64(e.GetCountById(id))
+		idf := math.Log(docCount) - math.Log(docFreq+1) + 1
+		score := float64(freq) * idf
+		f.Scores = append(f.Scores, score)
+	}
 }
 
 func (f *SortResult) find(target *uint32) (bool, int) {
@@ -55,17 +69,18 @@ func (f *SortResult) find(target *uint32) (bool, int) {
 
 func (f *SortResult) Process() {
 	// TODO: 计算得分
-	for _, id := range f.Ids {
+	for pos, id := range f.Ids {
 		if found, index := f.find(&id); found {
-			f.IdsAndScores[index].Score += 1
+			f.IdsAndScores[index].Score += f.Scores[pos]
 		} else {
 			f.IdsAndScores = append(f.IdsAndScores, model.SliceItem{
 				Id:    id,
-				Score: 1,
+				Score: f.Scores[pos],
 			})
 			f.count++
 		}
 	}
+
 	// 对分数进行排序
 	sort.Sort(sort.Reverse(ScoreSlice(f.IdsAndScores)))
 }

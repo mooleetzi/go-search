@@ -283,22 +283,23 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	// 等待搜索初始化完成
 	e.Wait()
 	// 分词搜索
-	_, words := e.Tokenizer.Cut(request.Query)
+	_, splitWords := e.Tokenizer.Cut(request.Query)
 	_, blockWords := e.Tokenizer.Cut(request.Block)
-	words = utils.SliceDiffStr(words, blockWords)
+	splitWords = utils.SliceDiffStr(splitWords, blockWords)
 
 	totalTime := float64(0)
 
 	sortResult := &sorts.SortResult{
 		IsDebug: e.IsDebug,
 		Order:   request.Order,
+		//Words:   splitWords,
 	}
 	blockSortResult := &sorts.SortResult{
 		IsDebug: e.IsDebug,
 		Order:   request.Order,
 	}
 
-	_time := e.search(words, sortResult)
+	_time := e.search(splitWords, sortResult)
 	_time += e.search(blockWords, blockSortResult)
 	if e.IsDebug {
 		log.Println("数组查找耗时：", totalTime, "ms")
@@ -310,11 +311,11 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	// 处理分页
 	request = request.GetAndSetDefault()
 
-	// 计算交集得分和去重
+	// 计算得分
 	sortResult.Process()
 
 	wordMap := make(map[string]bool)
-	for _, word := range words {
+	for _, word := range splitWords {
 		wordMap[word] = true
 	}
 
@@ -323,7 +324,7 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 		Total: sortResult.Count(),
 		Page:  request.Page,
 		Limit: request.Limit,
-		Words: words,
+		Words: splitWords,
 	}
 
 	_time += utils.ExecTime(func() {
@@ -369,14 +370,14 @@ func (e *Engine) search(words []string, sortResult *sorts.SortResult) (_time flo
 		wg.Add(base)
 
 		for _, word := range words {
-			go e.processKeySearch(word, sortResult, wg, base)
+			go e.processKeySearch(word, sortResult, wg)
 		}
 		wg.Wait()
 	})
 	return
 }
 
-func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg *sync.WaitGroup, base int) {
+func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	shard := e.getShardByWord(word)
@@ -386,10 +387,10 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 
 	buf, find := invertedIndexStorage.Get(key)
 	if find {
-		ids := make([]uint32, 0)
+		idsToFreqs := make(map[uint32]int)
 		// 解码
-		utils.Decoder(buf, &ids)
-		sortResult.Add(&ids)
+		utils.Decoder(buf, &idsToFreqs)
+		sortResult.Add(&idsToFreqs, e)
 	}
 
 }
@@ -435,4 +436,9 @@ func (e *Engine) GetDocById(id uint32) []byte {
 	}
 
 	return nil
+}
+
+func (e *Engine) GetCountById(id uint32) int64 {
+	shard := e.getShard(id)
+	return e.docStorages[shard].GetCount()
 }
