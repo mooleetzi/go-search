@@ -4,10 +4,11 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
-	"goSearch/searcher/model"
-	"goSearch/searcher/storage"
-	"goSearch/searcher/utils"
-	"goSearch/searcher/words"
+	"go-search/core"
+	"go-search/searcher/model"
+	"go-search/searcher/storage"
+	"go-search/searcher/utils"
+	"go-search/searcher/words"
 	"io"
 	"log"
 	"os"
@@ -21,6 +22,8 @@ func main() {
 	if INIT {
 		initDB()
 	}
+	// 初始化容器和参数解析
+	core.Initialize()
 }
 
 //初始化db

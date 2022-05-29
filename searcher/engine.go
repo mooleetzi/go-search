@@ -1,12 +1,12 @@
-package seacher
+package searcher
 
 import (
 	"fmt"
-	"goSearch/searcher/arrays"
-	"goSearch/searcher/model"
-	"goSearch/searcher/storage"
-	"goSearch/searcher/utils"
-	"goSearch/searcher/words"
+	"go-search/searcher/arrays"
+	"go-search/searcher/model"
+	"go-search/searcher/storage"
+	"go-search/searcher/utils"
+	"go-search/searcher/words"
 	"log"
 	"os"
 	"runtime"

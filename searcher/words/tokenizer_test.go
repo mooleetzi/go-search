@@ -7,7 +7,7 @@ import (
 
 func TestNewTokenizer(t *testing.T) {
 
-	tokenizer := NewTokenizer()
+	tokenizer := NewTokenizer("./data/dict.txt")
 	resChan := tokenizer.seg.CutForSearch("我想要实习！！", true)
 	for {
 		word, ok := <-resChan
