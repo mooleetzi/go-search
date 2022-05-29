@@ -8,7 +8,8 @@ type Highlight struct {
 
 // SearchRequest 搜索请求
 type SearchRequest struct {
-	Query     string     `json:"query,omitempty" form:"database"`     // 搜索关键词
+	Query     string `json:"query,omitempty" form:"database"` // 搜索关键词
+	Block     string
 	Order     string     `json:"order,omitempty" form:"database"`     // 排序类型
 	Page      int        `json:"page,omitempty" form:"database"`      // 页码
 	Limit     int        `json:"limit,omitempty" form:"database"`     // 每页大小，最大1000，超过报错
@@ -34,11 +35,11 @@ func (s *SearchRequest) GetAndSetDefault() *SearchRequest {
 
 // SearchResult 搜索响应
 type SearchResult struct {
-	Time      float64 `json:"time,omitempty"`  // 查询用时
-	Total     int     `json:"total"`           // 总数
-	PageCount int     `json:"pageCount"`       // 总页数
-	Page      int     `json:"page,omitempty"`  // 页码
-	Limit     int     `json:"limit,omitempty"` // 页大小
-	// Documents []ResponseDoc `json:"documents,omitempty"` //文档
-	Words []string `json:"words,omitempty"` // 搜索关键词
+	Time      float64       `json:"time,omitempty"`      // 查询用时
+	Total     int           `json:"total"`               // 总数
+	PageCount int           `json:"pageCount"`           // 总页数
+	Page      int           `json:"page,omitempty"`      // 页码
+	Limit     int           `json:"limit,omitempty"`     // 页大小
+	Documents []ResponseDoc `json:"documents,omitempty"` // 文档
+	Words     []string      `json:"words,omitempty"`     // 搜索关键词
 }

@@ -5,6 +5,7 @@ import (
 	"go-search/searcher"
 	"go-search/searcher/model"
 	"runtime"
+	"strings"
 )
 
 // Base 基础管理
@@ -22,6 +23,11 @@ func NewBase() *Base {
 
 // Query 查询
 func (b *Base) Query(request *model.SearchRequest) *model.SearchResult {
+	ss := strings.Split(request.Query, " -")
+	request.Query = ss[0]
+	if len(ss) > 1 {
+		request.Block = ss[1]
+	}
 	return b.Container.GetDataBase(request.Database).MultiSearch(request)
 }
 
