@@ -32,7 +32,7 @@ func initDB() {
 	csvFile, _ := os.Open(path)
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	isTitle := true
-	tokenizer := words.NewTokenizer()
+	tokenizer := words.NewTokenizer("./searcher/words/data/dict.txt")
 	db, _ := storage.NewStorage("./wukong.db", 1000)
 	id := (uint32)(0)
 	for {
