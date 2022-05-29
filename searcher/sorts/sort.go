@@ -62,7 +62,6 @@ func (f *SortResult) find(target *uint32) (bool, int) {
 }
 
 func (f *SortResult) Process() {
-	// TODO: 计算得分
 	for pos, id := range f.Ids {
 		if found, index := f.find(&id); found {
 			f.IdsAndScores[index].Score += f.Scores[pos]
