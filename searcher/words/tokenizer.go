@@ -1,44 +1,34 @@
 package words
 
 import (
-	"embed"
-	"github.com/wangbin/jiebago"
-	"go-search/searcher/utils"
+	"fmt"
+	"goSearch/searcher/utils"
 	"strings"
-)
 
-var (
-	//go:embed data/*.txt
-	dictionaryFS embed.FS
+	"github.com/wangbin/jiebago"
 )
 
 type Tokenizer struct {
 	seg jiebago.Segmenter
 }
 
-func NewTokenizer(dictionaryPath string) *Tokenizer {
-	file, err := dictionaryFS.Open("data/dictionary.txt")
-	if err != nil {
-		panic(err)
-	}
-	utils.ReleaseAssets(file, dictionaryPath)
-
+func NewTokenizer() *Tokenizer {
 	tokenizer := &Tokenizer{}
-
-	err = tokenizer.seg.LoadDictionary(dictionaryPath)
+	fmt.Println("filename:", "./data/dict.txt")
+	err := tokenizer.seg.LoadDictionary("./data/dict.txt")
 	if err != nil {
 		panic(err)
 	}
-
 	return tokenizer
 }
 
-func (t *Tokenizer) Cut(text string) []string {
-	// 不区分大小写
+//安全返回liangge切片
+func (t *Tokenizer) Cut(text string) (*map[string]int, []string) {
+	//不区分大小写
 	text = strings.ToLower(text)
-	// 移除所有的标点符号
+	//移除所有的标点符号
 	text = utils.RemovePunctuation(text)
-	// 移除所有的空格
+	//移除所有的空格
 	text = utils.RemoveSpace(text)
 
 	var wordMap = make(map[string]int)
@@ -51,15 +41,18 @@ func (t *Tokenizer) Cut(text string) []string {
 		}
 		_, found := wordMap[w]
 		if !found {
-			// 去除重复的词
+			//去除重复的词
 			wordMap[w] = 1
+		} else {
+			wordMap[w] = wordMap[w] + 1
 		}
 	}
-
-	var wordsSlice []string
+	num := len(wordMap)
+	words := make([]string, num)
+	//freqs := make([]int, num)
 	for k := range wordMap {
-		wordsSlice = append(wordsSlice, k)
+		words = append(words, k)
+		//freqs = append(freqs, v)
 	}
-
-	return wordsSlice
+	return &wordMap, words
 }

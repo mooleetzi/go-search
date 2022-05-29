@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// LeveldbStorage TODO 要支持事务
 type LeveldbStorage struct {
 	db       *leveldb.DB
 	path     string
@@ -41,14 +42,14 @@ func NewStorage(path string, timeout int64) (*LeveldbStorage, error) {
 
 func (s *LeveldbStorage) task() {
 	if s.timeout == -1 {
-		// 不检查
+		//不检查
 		return
 	}
 	for {
 
 		if !s.closed && time.Now().Unix()-s.lastTime > s.timeout {
 			s.Close()
-			// log.Println("leveldb storage timeout", s.path)
+			//log.Println("leveldb storage timeout", s.path)
 		}
 
 		time.Sleep(time.Duration(5) * time.Second)
@@ -58,7 +59,7 @@ func (s *LeveldbStorage) task() {
 
 func openDB(path string) (*leveldb.DB, error) {
 
-	// //使用布隆过滤器
+	////使用布隆过滤器
 	o := &opt.Options{
 		Filter: filter.NewBloomFilter(10),
 	}
@@ -78,7 +79,7 @@ func (s *LeveldbStorage) ReOpen() {
 	s.db = db
 	s.closed = false
 
-	// 计算总条数
+	//计算总条数
 	go s.compute()
 }
 

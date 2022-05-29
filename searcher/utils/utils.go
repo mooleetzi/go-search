@@ -342,22 +342,3 @@ func GetLongWords(words *[]string) []string {
 	}
 	return newWords
 }
-
-func SliceDelStr(slice []string, val string) []string {
-	for k, v := range slice {
-		if v != val {
-			continue
-		}
-		slice = append(slice[:k], slice[k+1:]...)
-	}
-	return slice
-
-}
-
-func SliceDelStr_towSlice(slice []string, val []string) []string {
-	for _, v := range val {
-		slice = SliceDelStr(slice, v)
-	}
-	return slice
-
-}
