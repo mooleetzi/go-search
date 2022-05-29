@@ -1,0 +1,5 @@
+package goSearch
+
+func main() {
+
+}
