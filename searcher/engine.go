@@ -28,6 +28,7 @@ type Engine struct {
 	invertedIndexStorages []*storage.LeveldbStorage // 关键字和Id映射，倒排索引,key=id,value=[]words
 	positiveIndexStorages []*storage.LeveldbStorage // ID和key映射，用于计算相关度，一个id 对应多个key，正排索引
 	docStorages           []*storage.LeveldbStorage // 文档仓
+	relatedStorages       []*storage.LeveldbStorage // 后继词表
 
 	sync.WaitGroup
 	sync.Mutex
@@ -43,6 +44,7 @@ type Option struct {
 	InvertedIndexName string // 倒排索引
 	PositiveIndexName string // 正排索引
 	DocIndexName      string // 文档存储
+	RelatedIndexName  string // 后继表存储
 }
 
 func (e *Engine) Init() {
@@ -53,11 +55,18 @@ func (e *Engine) Init() {
 		worker := make(chan *model.IndexDoc, 1000)
 		e.addDocumentWorkerChan[shard] = worker
 		go e.DocumentWorkerExec(worker)
+
 		s, err := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.DocIndexName, shard)), e.Timeout)
 		if err != nil {
 			panic(err)
 		}
 		e.docStorages = append(e.docStorages, s)
+
+		rs, err := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.RelatedIndexName, shard)), e.Timeout)
+		if err != nil {
+			panic(err)
+		}
+		e.relatedStorages = append(e.relatedStorages, rs)
 
 		// 初始化Keys存储
 		ks, kerr := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.InvertedIndexName, shard)), e.Timeout)
@@ -273,6 +282,7 @@ func (e *Engine) InitOption(option *Option) {
 	e.Init()
 	log.Println("开始添加悟空数据集")
 	e.InitWuKong()
+	e.InitRelatedSearch()
 
 }
 
@@ -281,6 +291,7 @@ func (e *Engine) GetOptions() *Option {
 		DocIndexName:      "docs",
 		InvertedIndexName: "inverted_index",
 		PositiveIndexName: "positive_index",
+		RelatedIndexName:  "related_search",
 	}
 }
 
@@ -318,6 +329,15 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	// 计算得分
 	sortResult.Process()
 
+	//检索 相关搜索词
+	relatedResult := make([]string, 0)
+	// relatedResult, _timerelated := e.relatedSearch(splitWords, relatedResult)
+	searchword := append(splitWords, request.Query)
+	_timerelated := e.relatedSearch(searchword, &relatedResult) //分词or全
+	if e.IsDebug {
+		log.Println("相关搜索时间:", _timerelated, "ms")
+	}
+
 	wordMap := make(map[string]bool)
 	for _, word := range splitWords {
 		wordMap[word] = true
@@ -325,10 +345,11 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 
 	// 读取文档
 	var result = &model.SearchResult{
-		Total: sortResult.Count(),
-		Page:  request.Page,
-		Limit: request.Limit,
-		Words: splitWords,
+		Total:     sortResult.Count(),
+		Page:      request.Page,
+		Limit:     request.Limit,
+		Words:     splitWords,
+		RelatedSc: relatedResult,
 	}
 
 	_time += utils.ExecTime(func() {
@@ -404,6 +425,47 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 		}
 
 		sortResult.Add(&scores)
+	}
+
+}
+
+func (e *Engine) relatedSearch(words []string, Result *[]string) (_time float64) {
+
+	_time = utils.ExecTime(func() {
+		base := len(words)
+		wg := &sync.WaitGroup{}
+		wg.Add(base)
+
+		for _, word := range words {
+			go e.processKeyRelatedSearch(word, Result, wg)
+		}
+		wg.Wait()
+	})
+
+	return
+
+}
+
+func (e *Engine) processKeyRelatedSearch(word string, Result *[]string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	buf, found := e.relatedStorages[0].Get([]byte(word))
+
+	if found {
+		storageDoc := new(model.IndexRelated)
+		utils.Decoder(buf, &storageDoc)
+		suc := storageDoc.Success
+		keyword := storageDoc.KeyWord
+
+		if keyword == word {
+			for _, r := range suc {
+				if r != "" {
+					*Result = append(*Result, r)
+				}
+			}
+			// fmt.Println(Result, found)
+
+		}
+
 	}
 
 }
@@ -486,6 +548,40 @@ func (e *Engine) InitWuKong() {
 	})
 	fmt.Println(exectime/1e3, "s add wukong_5k into workchan")
 }
+
+func (e *Engine) InitRelatedSearch() { //初始化后继词表
+	path := "./searcher/related_searchs100.csv"
+	csvFile, _ := os.Open(path)
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+	isTitle := true
+	id := (uint32)(0)
+	//wg := new(sync.WaitGroup)
+	exectime := utils.ExecTime(func() {
+		for {
+			fmt.Printf("%v \n", id)
+			line, err := reader.Read()
+			if err == io.EOF {
+				break
+			} else if err != nil {
+				log.Fatal(err)
+			}
+			if isTitle {
+				isTitle = false
+				continue
+			}
+			res := strings.Split(line[1], ",")
+			doc := model.IndexRelated{
+				Id:      id + 1,
+				Success: res,
+				KeyWord: line[0],
+			}
+			e.relatedStorages[0].Set([]byte(line[0]), utils.Encoder(doc))
+			id += 1
+		}
+	})
+	fmt.Println(exectime/1e3, "s add related_search")
+}
+
 func (e *Engine) IndexDocument(doc *model.IndexDoc) {
 	//将一个doc放入到数据库当中
 	e.addDocumentWorkerChan[e.getShard(doc.Id)] <- doc

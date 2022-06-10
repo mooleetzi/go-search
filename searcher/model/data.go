@@ -16,6 +16,12 @@ type InvertedIndex struct {
 	segResults map[string]int
 }
 
+type IndexRelated struct {
+	Id      uint32   `json:"id,omitempty"`
+	KeyWord string   `json:"keyword,omitempty"`
+	Success []string `json:"success,omitempty"`
+}
+
 type ResponseDoc struct {
 	IndexDoc
 	OriginalText string   `json:"originalText,omitempty"`

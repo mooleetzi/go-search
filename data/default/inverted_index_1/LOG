@@ -1,0 +1,110 @@
+=============== Jun 10, 2022 (CST) ===============
+22:20:07.749109 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:20:07.771630 db@open opening
+22:20:07.772096 version@stat F·[] S·0B[] Sc·[]
+22:20:07.782486 db@janitor F·2 G·0
+22:20:07.782648 db@open done T·10.975354ms
+22:20:38.936221 memdb@flush N·18712 S·3MiB
+22:20:38.993365 memdb@flush created L0@3 N·18712 S·3MiB "$,v15002":"\ue300,v6561"
+22:20:38.993424 version@stat F·[1] S·3MiB[3MiB] Sc·[0.25]
+22:20:39.017646 memdb@flush committed F·1 T·81.083793ms
+22:20:39.018213 journal@remove removed @1
+22:21:00.160927 memdb@flush N·8525 S·3MiB
+22:21:00.236106 memdb@flush created L0@5 N·8525 S·3MiB "00,v22575":"龚..译,v26141"
+22:21:00.236161 version@stat F·[2] S·6MiB[6MiB] Sc·[0.50]
+22:21:00.259754 memdb@flush committed F·1 T·94.054081ms
+22:21:00.264834 journal@remove removed @2
+22:21:01.344379 table@compaction L0·2 -> L1·0 S·6MiB Q·27577
+22:21:01.398479 table@build created L1@6 N·6816 S·215KiB "$,v15002":"\ue300,v6561"
+22:21:01.398548 version@stat F·[0 1] S·215KiB[0B 215KiB] Sc·[0.00 0.00]
+22:21:01.420619 table@compaction committed F-1 S-6MiB Ke·0 D·20421 T·76.189834ms
+22:21:01.426197 table@remove removed @5
+22:21:01.427044 table@remove removed @3
+22:21:21.018393 memdb@flush N·6576 S·3MiB
+22:21:21.070340 memdb@flush created L0@8 N·6576 S·3MiB "$,v31679":"龚纯,v31639"
+22:21:21.070394 version@stat F·[1 1] S·3MiB[3MiB 215KiB] Sc·[0.25 0.00]
+22:21:21.103697 memdb@flush committed F·1 T·84.103822ms
+22:21:21.108173 journal@remove removed @4
+22:21:23.632570 table@compaction L0·1 -> L1·1 S·3MiB Q·34662
+22:21:23.671601 table@build created L1@9 N·7796 S·257KiB "$,v31679":"\ue300,v6561"
+22:21:23.674999 version@stat F·[0 1] S·257KiB[0B 257KiB] Sc·[0.00 0.00]
+22:21:23.694883 table@compaction committed F-1 S-3MiB Ke·0 D·5596 T·62.267914ms
+22:21:23.698612 table@remove removed @8
+22:21:23.698943 table@remove removed @6
+22:21:37.724250 memdb@flush N·5828 S·3MiB
+22:21:37.762554 memdb@flush created L0@11 N·5828 S·3MiB "00,v37592":"龙须,v35925"
+22:21:37.762673 version@stat F·[1 1] S·3MiB[3MiB 257KiB] Sc·[0.25 0.00]
+22:21:37.786410 memdb@flush committed F·1 T·62.101967ms
+22:21:37.790659 journal@remove removed @7
+22:21:39.383485 table@compaction L0·1 -> L1·1 S·3MiB Q·40496
+22:21:39.406790 table@build created L1@12 N·8605 S·294KiB "$,v31679":"\ue300,v6561"
+22:21:39.406834 version@stat F·[0 1] S·294KiB[0B 294KiB] Sc·[0.00 0.00]
+22:21:39.426517 table@compaction committed F-1 S-3MiB Ke·0 D·5019 T·42.995639ms
+22:21:39.430871 table@remove removed @11
+22:21:39.431091 table@remove removed @9
+22:21:45.734867 memdb@flush N·4842 S·3MiB
+22:21:45.764987 memdb@flush created L0@14 N·4842 S·3MiB "006,v40273":"龟肉,v43001"
+22:21:45.765028 version@stat F·[1 1] S·4MiB[3MiB 294KiB] Sc·[0.25 0.00]
+22:21:45.787731 memdb@flush committed F·1 T·52.83119ms
+22:21:45.792196 journal@remove removed @10
+22:21:46.958388 table@compaction L0·1 -> L1·1 S·4MiB Q·45232
+22:21:46.989226 table@build created L1@15 N·9234 S·324KiB "$,v31679":"\ue300,v6561"
+22:21:46.989290 version@stat F·[0 1] S·324KiB[0B 324KiB] Sc·[0.00 0.00]
+22:21:47.016800 table@compaction committed F-1 S-3MiB Ke·0 D·4213 T·58.348401ms
+22:21:47.021243 table@remove removed @14
+22:21:47.021439 table@remove removed @12
+22:21:52.640662 memdb@flush N·4063 S·3MiB
+22:21:52.671794 memdb@flush created L0@17 N·4063 S·3MiB "00,v46738":"龚宇,v46754"
+22:21:52.671840 version@stat F·[1 1] S·4MiB[3MiB 324KiB] Sc·[0.25 0.00]
+22:21:52.698377 memdb@flush committed F·1 T·57.658583ms
+22:21:52.702726 journal@remove removed @13
+22:21:54.453670 table@compaction L0·1 -> L1·1 S·4MiB Q·49230
+22:21:54.482109 table@build created L1@18 N·9698 S·348KiB "$,v31679":"\ue300,v6561"
+22:21:54.482157 version@stat F·[0 1] S·348KiB[0B 348KiB] Sc·[0.00 0.00]
+22:21:54.508646 table@compaction committed F-1 S-3MiB Ke·0 D·3599 T·54.934313ms
+22:21:54.513226 table@remove removed @17
+22:21:54.513453 table@remove removed @15
+22:21:59.921703 memdb@flush N·4106 S·3MiB
+22:21:59.967336 memdb@flush created L0@20 N·4106 S·3MiB "$,v51850":"龙..峡,v52438"
+22:21:59.967374 version@stat F·[1 1] S·4MiB[3MiB 348KiB] Sc·[0.25 0.00]
+22:21:59.989701 memdb@flush committed F·1 T·67.932618ms
+22:21:59.994170 journal@remove removed @16
+22:22:01.160759 table@compaction L0·1 -> L1·1 S·4MiB Q·53430
+22:22:01.181527 table@build created L1@21 N·10169 S·373KiB "$,v51850":"\ue300,v6561"
+22:22:01.181584 version@stat F·[0 1] S·373KiB[0B 373KiB] Sc·[0.00 0.00]
+22:22:01.204634 table@compaction committed F-1 S-3MiB Ke·0 D·3635 T·43.814985ms
+22:22:01.208300 table@remove removed @20
+22:22:01.208503 table@remove removed @18
+22:22:05.689990 memdb@flush N·3824 S·3MiB
+22:22:05.721646 memdb@flush created L0@23 N·3824 S·3MiB "00,v53120":"龙须,v53791"
+22:22:05.725031 version@stat F·[1 1] S·4MiB[3MiB 373KiB] Sc·[0.25 0.00]
+22:22:05.755134 memdb@flush committed F·1 T·65.088756ms
+22:22:05.755881 journal@remove removed @19
+=============== Jun 10, 2022 (CST) ===============
+23:09:57.793415 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:09:57.799861 version@stat F·[1 1] S·4MiB[3MiB 373KiB] Sc·[0.25 0.00]
+23:09:57.799888 db@open opening
+23:09:57.799989 journal@recovery F·1
+23:09:57.801013 journal@recovery recovering @22
+23:09:57.831119 memdb@flush created L0@24 N·427 S·562KiB "170,v56479":"龙..胎,v56776"
+23:09:57.839409 version@stat F·[2 1] S·4MiB[4MiB 373KiB] Sc·[0.50 0.00]
+23:09:57.939034 db@janitor F·5 G·0
+23:09:57.939157 db@open done T·139.245677ms
+=============== Jun 10, 2022 (CST) ===============
+23:11:31.617742 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:11:31.618515 version@stat F·[2 1] S·4MiB[4MiB 373KiB] Sc·[0.50 0.00]
+23:11:31.618543 db@open opening
+23:11:31.618657 journal@recovery F·1
+23:11:31.620254 journal@recovery recovering @25
+23:11:31.622619 version@stat F·[2 1] S·4MiB[4MiB 373KiB] Sc·[0.50 0.00]
+23:11:31.706694 db@janitor F·5 G·0
+23:11:31.706751 db@open done T·88.188143ms
+=============== Jun 10, 2022 (CST) ===============
+23:11:53.950898 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:11:53.957270 version@stat F·[2 1] S·4MiB[4MiB 373KiB] Sc·[0.50 0.00]
+23:11:53.957329 db@open opening
+23:11:53.957481 journal@recovery F·1
+23:11:53.957767 journal@recovery recovering @27
+23:11:53.958221 version@stat F·[2 1] S·4MiB[4MiB 373KiB] Sc·[0.50 0.00]
+23:11:54.028952 db@janitor F·5 G·0
+23:11:54.029001 db@open done T·71.650449ms

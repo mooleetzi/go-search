@@ -1,0 +1,22 @@
+=============== Jun 10, 2022 (CST) ===============
+22:20:07.163647 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:20:07.191619 db@open opening
+22:20:07.197931 version@stat F·[] S·0B[] Sc·[]
+22:20:07.221575 db@janitor F·2 G·0
+22:20:07.221680 db@open done T·24.180129ms
+22:21:12.444865 memdb@flush N·30070 S·3MiB
+22:21:12.597826 memdb@flush created L0@3 N·30070 S·2MiB "0034,v8569":"�,v18527"
+22:21:12.597882 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+22:21:12.619747 memdb@flush committed F·1 T·169.875995ms
+22:21:12.624793 journal@remove removed @1
+22:21:48.164351 memdb@flush N·14508 S·3MiB
+22:21:48.209677 memdb@flush created L0@5 N·14508 S·2MiB "016,v32981":"龙鼓,v43960"
+22:21:48.209716 version@stat F·[2] S·5MiB[5MiB] Sc·[0.50]
+22:21:48.232956 memdb@flush committed F·1 T·63.156258ms
+22:21:48.237449 journal@remove removed @2
+22:21:48.626116 table@compaction L0·2 -> L1·0 S·5MiB Q·44833
+22:21:48.678222 table@build created L1@6 N·9608 S·331KiB "0034,v8569":"�,v18527"
+22:21:48.678275 version@stat F·[0 1] S·331KiB[0B 331KiB] Sc·[0.00 0.00]
+22:21:48.700650 table@compaction committed F-1 S-5MiB Ke·0 D·34970 T·74.483427ms
+22:21:48.705185 table@remove removed @5
+22:21:48.705647 table@remove removed @3

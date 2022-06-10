@@ -35,11 +35,13 @@ func (s *SearchRequest) GetAndSetDefault() *SearchRequest {
 
 // SearchResult 搜索响应
 type SearchResult struct {
-	Time      float64       `json:"time,omitempty"`      // 查询用时
-	Total     int           `json:"total"`               // 总数
-	PageCount int           `json:"pageCount"`           // 总页数
-	Page      int           `json:"page,omitempty"`      // 页码
-	Limit     int           `json:"limit,omitempty"`     // 页大小
-	Documents []ResponseDoc `json:"documents,omitempty"` // 文档
-	Words     []string      `json:"words,omitempty"`     // 搜索关键词
+	Time      float64       `json:"time,omitempty"`          // 查询用时
+	Total     int           `json:"total"`                   // 总数
+	PageCount int           `json:"pageCount"`               // 总页数
+	Page      int           `json:"page,omitempty"`          // 页码
+	Limit     int           `json:"limit,omitempty"`         // 页大小
+	Documents []ResponseDoc `json:"documents,omitempty"`     // 文档
+	Words     []string      `json:"words,omitempty"`         // 搜索关键词
+	RelatedSc []string      `json:"relatedsearch,omitempty"` //相关推荐结果
+
 }

@@ -1,0 +1,38 @@
+=============== Jun 10, 2022 (CST) ===============
+22:20:07.600270 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:20:07.623238 db@open opening
+22:20:07.623677 version@stat F·[] S·0B[] Sc·[]
+22:20:07.633414 db@janitor F·2 G·0
+22:20:07.633469 db@open done T·10.19199ms
+22:20:58.019229 memdb@flush N·27665 S·3MiB
+22:20:58.085130 memdb@flush created L0@3 N·27665 S·2MiB "01,v23760":"龢,v24438"
+22:20:58.085178 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+22:20:58.110146 memdb@flush committed F·1 T·90.294409ms
+22:20:58.115054 journal@remove removed @1
+22:21:36.745627 memdb@flush N·12989 S·3MiB
+22:21:36.801890 memdb@flush created L0@5 N·12989 S·3MiB "01,v38500":"龟苗,v28813"
+22:21:36.801933 version@stat F·[2] S·5MiB[5MiB] Sc·[0.50]
+22:21:36.836354 memdb@flush committed F·1 T·90.196799ms
+22:21:36.841127 journal@remove removed @2
+22:21:37.278594 table@compaction L0·2 -> L1·0 S·5MiB Q·40927
+22:21:37.324126 table@build created L1@6 N·8597 S·299KiB "01,v38500":"龢,v24438"
+22:21:37.324172 version@stat F·[0 1] S·299KiB[0B 299KiB] Sc·[0.00 0.00]
+22:21:37.351219 table@compaction committed F-1 S-5MiB Ke·0 D·32057 T·72.585339ms
+22:21:37.354699 table@remove removed @5
+22:21:37.355424 table@remove removed @3
+22:21:52.995924 memdb@flush N·9980 S·3MiB
+22:21:53.031749 memdb@flush created L0@8 N·9980 S·3MiB "0016,v46095":"龙类,v42799"
+22:21:53.031928 version@stat F·[1 1] S·3MiB[3MiB 299KiB] Sc·[0.25 0.00]
+22:21:53.055562 memdb@flush committed F·1 T·59.580204ms
+22:21:53.060157 journal@remove removed @4
+22:21:54.938095 table@compaction L0·1 -> L1·1 S·3MiB Q·51501
+22:21:54.978393 table@build created L1@9 N·9784 S·359KiB "0016,v46095":"龢,v24438"
+22:21:54.978438 version@stat F·[0 1] S·359KiB[0B 359KiB] Sc·[0.00 0.00]
+22:21:55.001559 table@compaction committed F-1 S-3MiB Ke·0 D·8793 T·63.426822ms
+22:21:55.006218 table@remove removed @8
+22:21:55.006483 table@remove removed @6
+22:22:06.295975 memdb@flush N·8406 S·3MiB
+22:22:06.331376 memdb@flush created L0@11 N·8406 S·3MiB "01,v57522":"龚玥,v58186"
+22:22:06.331419 version@stat F·[1 1] S·3MiB[3MiB 359KiB] Sc·[0.25 0.00]
+22:22:06.352779 memdb@flush committed F·1 T·56.760398ms
+22:22:06.357098 journal@remove removed @7
