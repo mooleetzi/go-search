@@ -23,6 +23,7 @@ func NewBase() *Base {
 
 // Query 查询
 func (b *Base) Query(request *model.SearchRequest) *model.SearchResult {
+	//是否匹配到“- ”？第一段为原本的查询，第二段为阻塞
 	ss := strings.Split(request.Query, " -")
 	request.Query = ss[0]
 	if len(ss) > 1 {

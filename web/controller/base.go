@@ -14,7 +14,7 @@ func Query(c *gin.Context) {
 	var request = &model.SearchRequest{
 		Database: c.Query("database"),
 	}
-	if err := c.ShouldBind(&request); err != nil {
+	if err := c.ShouldBind(request); err != nil {
 		ResponseErrorWithMsg(c, err.Error())
 		return
 	}

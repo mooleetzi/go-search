@@ -14,6 +14,5 @@ func InitBaseRouter(Router *gin.RouterGroup) {
 		BaseRouter.GET("/", controller.Welcome)
 		BaseRouter.POST("query", controller.Query)
 		BaseRouter.GET("gc", controller.GC)
-
 	}
 }

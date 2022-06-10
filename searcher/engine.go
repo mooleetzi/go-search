@@ -1,6 +1,8 @@
 package searcher
 
 import (
+	"bufio"
+	"encoding/csv"
 	"fmt"
 	"go-search/pagination"
 	"go-search/searcher/arrays"
@@ -9,6 +11,7 @@ import (
 	"go-search/searcher/storage"
 	"go-search/searcher/utils"
 	"go-search/searcher/words"
+	"io"
 	"log"
 	"math"
 	"os"
@@ -45,7 +48,6 @@ type Option struct {
 func (e *Engine) Init() {
 	e.Add(1)
 	defer e.Done()
-
 	e.addDocumentWorkerChan = make([]chan *model.IndexDoc, e.Shard)
 	for shard := 0; shard < e.Shard; shard++ {
 		worker := make(chan *model.IndexDoc, 1000)
@@ -73,7 +75,6 @@ func (e *Engine) Init() {
 
 	}
 	go e.automaticGC()
-	log.Println("初始化完成")
 }
 
 // 自动保存索引，10秒钟检测一次
@@ -89,9 +90,11 @@ func (e *Engine) getFilePath(fileName string) string {
 	return e.IndexPath + string(os.PathSeparator) + fileName
 }
 func (e *Engine) DocumentWorkerExec(worker chan *model.IndexDoc) {
+	//启用一个无限循环的进程等待worker传递东西进来
 	for {
 		doc := <-worker
 		e.AddDocument(doc)
+
 	}
 }
 func (e *Engine) AddDocument(index *model.IndexDoc) {
@@ -268,6 +271,8 @@ func (e *Engine) InitOption(option *Option) {
 	}
 	// 初始化其他的
 	e.Init()
+	log.Println("开始添加悟空数据集")
+	e.InitWuKong()
 
 }
 
@@ -280,7 +285,6 @@ func (e *Engine) GetOptions() *Option {
 }
 
 func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
-
 	// 等待搜索初始化完成
 	e.Wait()
 	// 分词搜索
@@ -293,7 +297,6 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	sortResult := &sorts.SortResult{
 		IsDebug: e.IsDebug,
 		Order:   request.Order,
-		//Words:   splitWords,
 	}
 	blockSortResult := &sorts.SortResult{
 		IsDebug: e.IsDebug,
@@ -329,7 +332,6 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	}
 
 	_time += utils.ExecTime(func() {
-
 		pager := new(pagination.Pagination)
 
 		pager.Init(request.Limit, sortResult.Count())
@@ -452,4 +454,48 @@ func (e *Engine) GetDocById(id uint32) []byte {
 func (e *Engine) GetCountById(id uint32) int64 {
 	shard := e.getShard(id)
 	return e.docStorages[shard].GetCount()
+}
+func (e *Engine) InitWuKong() {
+	path := "./searcher/wukong50k_release.csv"
+	csvFile, _ := os.Open(path)
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+	isTitle := true
+	id := (uint32)(0)
+	//wg := new(sync.WaitGroup)
+	exectime := utils.ExecTime(func() {
+		for {
+			fmt.Printf("%v \n", id)
+			line, err := reader.Read()
+			if err == io.EOF {
+				break
+			} else if err != nil {
+				log.Fatal(err)
+			}
+			if isTitle {
+				isTitle = false
+				continue
+			}
+			doc := model.IndexDoc{
+				Id:   id + 1,
+				Text: line[1],
+				Url:  line[0],
+			}
+			e.IndexDocument(&doc)
+			id += 1
+		}
+	})
+	fmt.Println(exectime/1e3, "s add wukong_5k into workchan")
+}
+func (e *Engine) IndexDocument(doc *model.IndexDoc) {
+	//将一个doc放入到数据库当中
+	e.addDocumentWorkerChan[e.getShard(doc.Id)] <- doc
+}
+
+// GetQueue 获取队列剩余
+func (e *Engine) GetQueue() int {
+	total := 0
+	for _, v := range e.addDocumentWorkerChan {
+		total += len(v)
+	}
+	return total
 }
