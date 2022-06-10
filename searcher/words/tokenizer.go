@@ -47,12 +47,9 @@ func (t *Tokenizer) Cut(text string) (*map[string]int, []string) {
 			wordMap[w] = wordMap[w] + 1
 		}
 	}
-	num := len(wordMap)
-	words := make([]string, num)
-	// freqs := make([]int, num)
+	words := make([]string, 0)
 	for k := range wordMap {
 		words = append(words, k)
-		// freqs = append(freqs, v)
 	}
 	return &wordMap, words
 }
