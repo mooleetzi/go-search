@@ -351,6 +351,7 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	//检索 相关搜索词
 	relatedResult := make([]string, 0)
 	// relatedResult, _timerelated := e.relatedSearch(splitWords, relatedResult)
+	// searchword := splitWords
 	searchword := append(splitWords, request.Query)
 
 	_timerelated := e.relatedSearch(searchword, &relatedResult) //分词or全
@@ -450,16 +451,25 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 }
 
 func (e *Engine) relatedSearch(words []string, Result *[]string) (_time float64) {
+	temp := make(map[string]bool)
+	newwords := make([]string, 0)
+	for _, word := range words { //去重
+		_, ok := temp[word]
+		if !ok { //去重
+			temp[word] = true
+			newwords = append(newwords, word)
+		}
+	}
 
 	_time = utils.ExecTime(func() {
-		base := len(words)
+		base := len(newwords)
 		wg := &sync.WaitGroup{}
 		wg.Add(base)
 
-		for _, word := range words {
+		for _, word := range newwords {
 			go e.processKeyRelatedSearch(word, Result, wg)
-
 		}
+
 		wg.Wait()
 	})
 
@@ -661,8 +671,9 @@ func (e *Engine) addSearchLog(request *model.SearchRequest) {
 // 读取日志
 func (e *Engine) addSearchLogToRelatedStorage(isclean bool) {
 	e.Wait()
-	e.Lock()
-	defer e.Unlock()
-	searchlog.UpdatedRelatedSearch("")
+	// e.Lock()
+
+	searchlog.UpdatedRelatedSearch("", e.relatedStorages[0])
+	// defer e.Unlock()
 
 }

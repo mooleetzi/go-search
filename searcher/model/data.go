@@ -32,5 +32,5 @@ type ResponseDoc struct {
 type SearchLog struct {
 	Id    uint32 `json:"id,omitempty"`
 	Query string `json:"query,omitempty"`
-	Time  uint64 `json:"time,omitempty"`
+	Time  int64  `json:"time,omitempty"`
 }
