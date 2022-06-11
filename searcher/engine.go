@@ -21,6 +21,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/jasonlvhit/gocron"
 )
 
 type Engine struct {
@@ -99,14 +101,18 @@ func (e *Engine) automaticGC() {
 	}
 }
 
-// 自动更新后继词表，10秒钟检测一次
+// 自动更新后继词表
 func (e *Engine) automaticUpdate() {
-	ticker := time.NewTicker(time.Second * 10)
-	for {
-		<-ticker.C
-		// 定时更新
-		e.addSearchLogToRelatedStorage(false)
-	}
+	// ticker := time.NewTicker(time.Second * 10)//10秒钟检测一次
+	// for {
+	// 	<-ticker.C
+	// 	// 定时更新
+	// 	e.addSearchLogToRelatedStorage("")
+	// }
+
+	// gocron.Every(5).Second().DoSafely(e.addSearchLogToRelatedStorage, "")
+	gocron.Every(1).Day().At("0:25").DoSafely(e.addSearchLogToRelatedStorage, "")
+	<-gocron.Start()
 }
 
 func (e *Engine) getFilePath(fileName string) string {
@@ -669,11 +675,11 @@ func (e *Engine) addSearchLog(request *model.SearchRequest) {
 }
 
 // 读取日志
-func (e *Engine) addSearchLogToRelatedStorage(isclean bool) {
+func (e *Engine) addSearchLogToRelatedStorage(isclean string) {
 	e.Wait()
 	// e.Lock()
 
-	searchlog.UpdatedRelatedSearch("", e.relatedStorages[0])
+	searchlog.UpdatedRelatedSearch(isclean, e.relatedStorages[0])
 	// defer e.Unlock()
 
 }
