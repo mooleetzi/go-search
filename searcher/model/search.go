@@ -15,6 +15,9 @@ type SearchRequest struct {
 	Limit     int        `json:"limit,omitempty" form:"database"`     // 每页大小，最大1000，超过报错
 	Highlight *Highlight `json:"highlight,omitempty" form:"database"` // 关键词高亮
 	Database  string     `json:"database" form:"database"`            // 数据库名字
+	Time      int64      `json:"time" form:"time"`                    //时间戳
+	ClientIP  string     `json:"clientip" form:"clientip"`            //用户ip
+
 }
 
 func (s *SearchRequest) GetAndSetDefault() *SearchRequest {

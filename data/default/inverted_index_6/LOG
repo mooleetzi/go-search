@@ -1,0 +1,74 @@
+=============== Jun 10, 2022 (CST) ===============
+23:40:29.936824 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:40:29.958417 db@open opening
+23:40:29.958983 version@stat F·[] S·0B[] Sc·[]
+23:40:29.968689 db@janitor F·2 G·0
+23:40:29.968740 db@open done T·10.275131ms
+23:40:53.796109 memdb@flush N·27693 S·3MiB
+23:40:53.839661 memdb@flush created L0@3 N·27693 S·2MiB "01,v24641":"龢,v24718"
+23:40:53.839696 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+23:40:53.863446 memdb@flush committed F·1 T·66.872262ms
+23:40:53.867151 journal@remove removed @1
+23:41:11.552356 memdb@flush N·12965 S·3MiB
+23:41:11.630513 memdb@flush created L0@5 N·12965 S·3MiB "01,v38897":"龟苗,v28871"
+23:41:11.630571 version@stat F·[2] S·5MiB[5MiB] Sc·[0.50]
+23:41:11.656286 memdb@flush committed F·1 T·97.255557ms
+23:41:11.661022 journal@remove removed @2
+23:41:11.997136 table@compaction L0·2 -> L1·0 S·5MiB Q·40932
+23:41:12.042616 table@build created L1@6 N·8595 S·299KiB "01,v38897":"龢,v24718"
+23:41:12.042663 version@stat F·[0 1] S·299KiB[0B 299KiB] Sc·[0.00 0.00]
+23:41:12.066827 table@compaction committed F-1 S-5MiB Ke·0 D·32063 T·69.656232ms
+23:41:12.070334 table@remove removed @5
+23:41:12.070921 table@remove removed @3
+23:41:25.350841 memdb@flush N·9990 S·3MiB
+23:41:25.388913 memdb@flush created L0@8 N·9990 S·3MiB "0016,v46130":"龙类,v42845"
+23:41:25.388946 version@stat F·[1 1] S·3MiB[3MiB 299KiB] Sc·[0.25 0.00]
+23:41:25.411731 memdb@flush committed F·1 T·60.853721ms
+23:41:25.415481 journal@remove removed @4
+23:41:26.892437 table@compaction L0·1 -> L1·1 S·3MiB Q·51600
+23:41:26.913565 table@build created L1@9 N·9793 S·359KiB "0016,v46130":"龢,v24718"
+23:41:26.913608 version@stat F·[0 1] S·359KiB[0B 359KiB] Sc·[0.00 0.00]
+23:41:26.935875 table@compaction committed F-1 S-3MiB Ke·0 D·8792 T·43.405302ms
+23:41:26.940112 table@remove removed @8
+23:41:26.940415 table@remove removed @6
+=============== Jun 10, 2022 (CST) ===============
+23:41:53.188801 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:41:53.189869 version@stat F·[0 1] S·359KiB[0B 359KiB] Sc·[0.00 0.00]
+23:41:53.189917 db@open opening
+23:41:53.190076 journal@recovery F·1
+23:41:53.190260 journal@recovery recovering @7
+23:41:53.238717 memdb@flush created L0@10 N·7846 S·3MiB "01,v57378":"龚玥,v58130"
+23:41:53.239009 version@stat F·[1 1] S·3MiB[3MiB 359KiB] Sc·[0.25 0.00]
+23:41:53.291221 db@janitor F·4 G·0
+23:41:53.291267 db@open done T·101.327488ms
+=============== Jun 11, 2022 (CST) ===============
+00:08:09.010130 db@close closing
+00:08:09.015708 db@close done T·5.580666ms
+=============== Jun 11, 2022 (CST) ===============
+16:34:12.592314 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:34:12.593725 version@stat F·[1 1] S·3MiB[3MiB 359KiB] Sc·[0.25 0.00]
+16:34:12.593748 db@open opening
+16:34:12.593826 journal@recovery F·1
+16:34:12.594186 journal@recovery recovering @11
+16:34:12.609294 memdb@flush created L0@13 N·621 S·348KiB "1,v59042":"黑恶,v59084"
+16:34:12.612924 version@stat F·[2 1] S·3MiB[3MiB 359KiB] Sc·[0.50 0.00]
+16:34:12.660753 db@janitor F·5 G·0
+16:34:12.660795 db@open done T·67.036004ms
+=============== Jun 11, 2022 (CST) ===============
+16:41:52.536720 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:41:52.537717 version@stat F·[2 1] S·3MiB[3MiB 359KiB] Sc·[0.50 0.00]
+16:41:52.537760 db@open opening
+16:41:52.537935 journal@recovery F·1
+16:41:52.538074 journal@recovery recovering @14
+16:41:52.538373 version@stat F·[2 1] S·3MiB[3MiB 359KiB] Sc·[0.50 0.00]
+16:41:52.601586 db@janitor F·5 G·0
+16:41:52.601649 db@open done T·63.854336ms
+=============== Jun 11, 2022 (CST) ===============
+20:50:16.003333 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:50:16.010164 version@stat F·[2 1] S·3MiB[3MiB 359KiB] Sc·[0.50 0.00]
+20:50:16.010201 db@open opening
+20:50:16.010337 journal@recovery F·1
+20:50:16.010737 journal@recovery recovering @16
+20:50:16.011738 version@stat F·[2 1] S·3MiB[3MiB 359KiB] Sc·[0.50 0.00]
+20:50:16.056561 db@janitor F·5 G·0
+20:50:16.056612 db@open done T·46.399356ms

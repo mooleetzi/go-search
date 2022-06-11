@@ -1,0 +1,35 @@
+=============== Jun 10, 2022 (CST) ===============
+23:40:29.045743 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:40:29.078818 db@open opening
+23:40:29.079287 version@stat F·[] S·0B[] Sc·[]
+23:40:29.092118 db@janitor F·2 G·0
+23:40:29.092181 db@open done T·13.317948ms
+23:40:59.339066 memdb@flush N·30087 S·3MiB
+23:40:59.393947 memdb@flush created L0@3 N·30087 S·2MiB "0034,v8748":"�,v18464"
+23:40:59.394014 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+23:40:59.417866 memdb@flush committed F·1 T·73.459356ms
+23:40:59.422760 journal@remove removed @1
+23:41:20.794119 memdb@flush N·14466 S·3MiB
+23:41:20.834583 memdb@flush created L0@5 N·14466 S·2MiB "016,v32594":"龙鼓,v43961"
+23:41:20.834620 version@stat F·[2] S·5MiB[5MiB] Sc·[0.50]
+23:41:20.857562 memdb@flush committed F·1 T·57.434183ms
+23:41:20.861705 journal@remove removed @2
+23:41:21.182680 table@compaction L0·2 -> L1·0 S·5MiB Q·44805
+23:41:21.316364 table@build created L1@6 N·9605 S·330KiB "0034,v8748":"�,v18464"
+23:41:21.316446 version@stat F·[0 1] S·330KiB[0B 330KiB] Sc·[0.00 0.00]
+23:41:21.338719 table@compaction committed F-1 S-5MiB Ke·0 D·34948 T·155.990346ms
+23:41:21.343035 table@remove removed @5
+23:41:21.343520 table@remove removed @3
+=============== Jun 10, 2022 (CST) ===============
+23:41:53.994195 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:41:53.995084 version@stat F·[0 1] S·330KiB[0B 330KiB] Sc·[0.00 0.00]
+23:41:53.995118 db@open opening
+23:41:53.995232 journal@recovery F·1
+23:41:53.995378 journal@recovery recovering @4
+23:41:54.050461 memdb@flush created L0@7 N·10110 S·2MiB "007,v54575":"龟..竹,v51942"
+23:41:54.050810 version@stat F·[1 1] S·3MiB[2MiB 330KiB] Sc·[0.25 0.00]
+23:41:54.090549 db@janitor F·4 G·0
+23:41:54.090588 db@open done T·95.452587ms
+=============== Jun 11, 2022 (CST) ===============
+00:08:09.013992 db@close closing
+00:08:09.019904 db@close done T·5.909891ms

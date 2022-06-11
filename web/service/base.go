@@ -6,6 +6,7 @@ import (
 	"go-search/searcher/model"
 	"runtime"
 	"strings"
+	"time"
 )
 
 // Base 基础管理
@@ -29,6 +30,9 @@ func (b *Base) Query(request *model.SearchRequest) *model.SearchResult {
 	if len(ss) > 1 {
 		request.Block = ss[1]
 	}
+	//获取调用search query的时间戳
+	timeUnix := time.Now().Unix() //单位s,打印结果:1491888244
+	request.Time = timeUnix
 	return b.Container.GetDataBase(request.Database).MultiSearch(request)
 }
 
