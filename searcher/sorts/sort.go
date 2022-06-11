@@ -12,6 +12,9 @@ func (x ScoreSlice) Len() int {
 	return len(x)
 }
 func (x ScoreSlice) Less(i, j int) bool {
+	if x[i].Score == x[j].Score {
+		return x[i].Id < x[j].Id
+	}
 	return x[i].Score < x[j].Score
 }
 func (x ScoreSlice) Swap(i, j int) {
@@ -45,7 +48,6 @@ func (f *SortResult) Add(idsToFreqs *map[uint32]float64) {
 }
 
 func (f *SortResult) find(target *uint32) (bool, int) {
-
 	low := 0
 	high := f.count - 1
 	for low <= high {
