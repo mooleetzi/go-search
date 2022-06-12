@@ -103,15 +103,12 @@ func (e *Engine) automaticGC() {
 
 // 自动更新后继词表
 func (e *Engine) automaticUpdate() {
-	// ticker := time.NewTicker(time.Second * 10)//10秒钟检测一次
-	// for {
-	// 	<-ticker.C
-	// 	// 定时更新
-	// 	e.addSearchLogToRelatedStorage("")
-	// }
+	//等待初始化完成
 	e.Wait()
-	gocron.Every(10).Second().DoSafely(e.addSearchLogToRelatedStorage, "") //测试
-	// gocron.Every(1).Day().At("0:25").DoSafely(e.addSearchLogToRelatedStorage, "")
+	//debug用，每10s触发一次更新
+	// gocron.Every(10).Second().DoSafely(e.addSearchLogToRelatedStorage, "")
+	//
+	gocron.Every(1).Day().At("0:25").DoSafely(e.addSearchLogToRelatedStorage, "")
 	<-gocron.Start()
 }
 
@@ -665,13 +662,6 @@ func (e *Engine) addSearchLog(request *model.SearchRequest) {
 	//这里必须刷新，才能将数据写入文件。
 	w.Flush()
 
-	//一次写入多行
-	// var newContent [][]string
-	// newContent = append(newContent, []string{"1", "2", "3", "4", "5", "6"})
-	// newContent = append(newContent, []string{"11", "12", "13", "14", "15", "16"})
-	// newContent = append(newContent, []string{"21", "22", "23", "24", "25", "26"})
-	// w.WriteAll(newContent)
-
 }
 
 // 读取日志
@@ -685,6 +675,7 @@ func (e *Engine) addSearchLogToRelatedStorage(isclean string) {
 }
 
 func (e *Engine) GetRelatedStorage() *storage.LeveldbStorage {
+	//等待初始化完成
 	e.Wait()
 	return e.relatedStorages[0]
 }
