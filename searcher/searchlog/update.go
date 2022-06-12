@@ -12,14 +12,16 @@ import (
 	"strconv"
 )
 
-func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage) {
+func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage, logMem [][]string) {
 	// rs, err := storage.NewStorage(fmt.Sprintf("%s_%d", "related_search", 0), 1000)
 	// if err != nil {
 	// 	log.Fatalf("can not open the realtedsearch db, err is %+v", err)
 	// }
 	//准备读取文件
-	fileName := "./searcher/searchlog.csv"
 
+	// logMem := global.Container.GetLogMem()
+
+	fileName := "./searcher/searchlog.csv"
 	if isclear == "clear" {
 		log.Println("search log clear!!")
 		//这样打开，每次都会清空文件内容
@@ -57,6 +59,16 @@ func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage) {
 			Time:  time,
 		})
 		// fmt.Println(row)
+	}
+	for _, row := range logMem {
+		time, err := strconv.ParseInt(row[2], 10, 64)
+		if err != nil {
+			log.Fatalf("can not read timeunix from log, err is %+v", err)
+		}
+		users[row[0]] = append(users[row[0]], model.SearchLog{
+			Query: row[1],
+			Time:  time,
+		})
 	}
 
 	//每个用户ip按每5min分组
@@ -131,5 +143,4 @@ func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage) {
 
 	}
 	log.Println("整理搜索log并更新后继词表")
-	return
 }

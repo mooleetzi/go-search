@@ -22,7 +22,8 @@ func NewScLog() *ScLog {
 // 更新后继词表
 func (s *ScLog) UpdatedRelatedSearch(isclear string) (ss string) {
 	rs := s.Container.GetDataBase("default")
-	searchlog.UpdatedRelatedSearch(isclear, rs.GetRelatedStorage())
+	logMem := s.Container.GetLogMem()
+	searchlog.UpdatedRelatedSearch(isclear, rs.GetRelatedStorage(), logMem)
 	ss = string("update related search db")
 	// fmt.Println(ss)
 	return ss
