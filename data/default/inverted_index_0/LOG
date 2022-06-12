@@ -1,0 +1,104 @@
+=============== Jun 12, 2022 (CST) ===============
+23:49:38.384697 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:49:38.412578 db@open opening
+23:49:38.413072 version@stat F·[] S·0B[] Sc·[]
+23:49:38.432518 db@janitor F·2 G·0
+23:49:38.432568 db@open done T·19.956974ms
+23:49:54.522134 memdb@flush N·18128 S·3MiB
+23:49:54.578281 memdb@flush created L0@3 N·18128 S·3MiB "002,v9160":"\ue31a,v2089"
+23:49:54.581592 version@stat F·[1] S·3MiB[3MiB] Sc·[0.25]
+23:49:54.630130 memdb@flush committed F·1 T·106.19365ms
+23:49:54.630621 journal@remove removed @1
+23:50:04.284415 memdb@flush N·8355 S·3MiB
+23:50:04.319948 memdb@flush created L0@5 N·8355 S·3MiB "003,v21508":"龟,v18692"
+23:50:04.319995 version@stat F·[2] S·6MiB[6MiB] Sc·[0.50]
+23:50:04.354346 memdb@flush committed F·1 T·67.045533ms
+23:50:04.358877 journal@remove removed @2
+23:50:04.629875 table@compaction L0·2 -> L1·0 S·6MiB Q·26841
+23:50:04.714035 table@build created L1@6 N·6769 S·211KiB "002,v9160":"\ue31a,v2089"
+23:50:04.714077 version@stat F·[0 1] S·211KiB[0B 211KiB] Sc·[0.00 0.00]
+23:50:04.749053 table@compaction committed F-1 S-6MiB Ke·0 D·19714 T·119.146764ms
+23:50:04.756539 table@remove removed @5
+23:50:04.757222 table@remove removed @3
+23:50:11.809065 memdb@flush N·6146 S·3MiB
+23:50:11.894210 memdb@flush created L0@8 N·6146 S·3MiB "003,v30417":"龟,v27528"
+23:50:11.894259 version@stat F·[1 1] S·3MiB[3MiB 211KiB] Sc·[0.25 0.00]
+23:50:11.978109 memdb@flush committed F·1 T·167.864635ms
+23:50:11.982336 journal@remove removed @4
+23:50:13.107269 table@compaction L0·1 -> L1·1 S·3MiB Q·33461
+23:50:13.139488 table@build created L1@9 N·7721 S·251KiB "002,v9160":"\ue31a,v2089"
+23:50:13.139562 version@stat F·[0 1] S·251KiB[0B 251KiB] Sc·[0.00 0.00]
+23:50:13.218292 table@compaction committed F-1 S-3MiB Ke·0 D·5194 T·110.970049ms
+23:50:13.222348 table@remove removed @8
+23:50:13.222543 table@remove removed @6
+23:50:19.377542 memdb@flush N·5113 S·3MiB
+23:50:19.418205 memdb@flush created L0@11 N·5113 S·3MiB "012,v34542":"\ue31a,v35166"
+23:50:19.418269 version@stat F·[1 1] S·3MiB[3MiB 251KiB] Sc·[0.25 0.00]
+23:50:19.452883 memdb@flush committed F·1 T·75.30104ms
+23:50:19.457284 journal@remove removed @7
+23:50:20.413895 table@compaction L0·1 -> L1·1 S·3MiB Q·38513
+23:50:20.440642 table@build created L1@12 N·8422 S·284KiB "002,v9160":"\ue31a,v35166"
+23:50:20.440703 version@stat F·[0 1] S·284KiB[0B 284KiB] Sc·[0.00 0.00]
+23:50:20.488664 table@compaction committed F-1 S-3MiB Ke·0 D·4412 T·69.522577ms
+23:50:20.493578 table@remove removed @11
+23:50:20.493759 table@remove removed @9
+23:50:27.312586 memdb@flush N·4825 S·3MiB
+23:50:27.346601 memdb@flush created L0@14 N·4825 S·3MiB "012,v37766":"龟甲,v39920"
+23:50:27.346639 version@stat F·[1 1] S·3MiB[3MiB 284KiB] Sc·[0.25 0.00]
+23:50:27.375093 memdb@flush committed F·1 T·57.337905ms
+23:50:27.379540 journal@remove removed @10
+23:50:28.575918 table@compaction L0·1 -> L1·1 S·3MiB Q·43433
+23:50:28.603690 table@build created L1@15 N·9072 S·314KiB "002,v9160":"\ue31a,v35166"
+23:50:28.603736 version@stat F·[0 1] S·314KiB[0B 314KiB] Sc·[0.00 0.00]
+23:50:28.634368 table@compaction committed F-1 S-3MiB Ke·0 D·4175 T·58.423177ms
+23:50:28.638901 table@remove removed @14
+23:50:28.639405 table@remove removed @12
+23:50:34.497487 memdb@flush N·3847 S·3MiB
+23:50:34.531359 memdb@flush created L0@17 N·3847 S·3MiB "04,v42758":"龙纹,v45259"
+23:50:34.531401 version@stat F·[1 1] S·4MiB[3MiB 314KiB] Sc·[0.25 0.00]
+23:50:34.563290 memdb@flush committed F·1 T·64.526673ms
+23:50:34.563912 journal@remove removed @13
+23:50:37.071202 table@compaction L0·1 -> L1·1 S·4MiB Q·47227
+23:50:37.103071 table@build created L1@18 N·9568 S·337KiB "002,v9160":"\ue31a,v35166"
+23:50:37.103129 version@stat F·[0 1] S·337KiB[0B 337KiB] Sc·[0.00 0.00]
+23:50:37.126396 table@compaction committed F-1 S-3MiB Ke·0 D·3351 T·55.148077ms
+23:50:37.130802 table@remove removed @17
+23:50:37.130957 table@remove removed @15
+23:50:42.122219 memdb@flush N·4051 S·3MiB
+23:50:42.163475 memdb@flush created L0@20 N·4051 S·3MiB "010,v49916":"龙纹,v49071"
+23:50:42.167144 version@stat F·[1 1] S·4MiB[3MiB 337KiB] Sc·[0.25 0.00]
+23:50:42.222093 memdb@flush committed F·1 T·98.551437ms
+23:50:42.225838 journal@remove removed @16
+23:50:43.479505 table@compaction L0·1 -> L1·1 S·4MiB Q·51239
+23:50:43.507374 table@build created L1@21 N·10075 S·362KiB "002,v9160":"\ue31a,v35166"
+23:50:43.507418 version@stat F·[0 1] S·362KiB[0B 362KiB] Sc·[0.00 0.00]
+23:50:43.534115 table@compaction committed F-1 S-3MiB Ke·0 D·3544 T·54.575456ms
+23:50:43.538943 table@remove removed @20
+23:50:43.539202 table@remove removed @18
+=============== Jun 12, 2022 (CST) ===============
+23:51:00.509859 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:51:00.510444 version@stat F·[0 1] S·362KiB[0B 362KiB] Sc·[0.00 0.00]
+23:51:00.510468 db@open opening
+23:51:00.510565 journal@recovery F·1
+23:51:00.512015 journal@recovery recovering @19
+23:51:00.534678 memdb@flush created L0@22 N·1266 S·1MiB "054a,v51166":"龟,v50480"
+23:51:00.535496 version@stat F·[1 1] S·1MiB[1MiB 362KiB] Sc·[0.25 0.00]
+23:51:00.582056 db@janitor F·4 G·0
+23:51:00.582086 db@open done T·71.604669ms
+23:51:01.784693 table@compaction L0·1 -> L1·1 S·1MiB Q·51930
+23:51:01.802192 table@build created L1@25 N·10224 S·369KiB "002,v9160":"\ue31a,v35166"
+23:51:01.802232 version@stat F·[0 1] S·369KiB[0B 369KiB] Sc·[0.00 0.00]
+23:51:01.941065 table@compaction committed F-1 S-1MiB Ke·0 D·1117 T·156.332814ms
+23:51:01.941484 table@remove removed @22
+23:51:01.941696 table@remove removed @21
+23:51:07.645390 memdb@flush N·3552 S·3MiB
+23:51:07.673080 memdb@flush created L0@27 N·3552 S·3MiB "030411,v53879":"龙纹,v51950"
+23:51:07.673120 version@stat F·[1 1] S·4MiB[3MiB 369KiB] Sc·[0.25 0.00]
+23:51:07.703525 memdb@flush committed F·1 T·55.681699ms
+23:51:07.709110 journal@remove removed @23
+23:51:09.351490 table@compaction L0·1 -> L1·1 S·4MiB Q·56039
+23:51:09.389358 table@build created L1@28 N·10642 S·397KiB "002,v9160":"\ue31a,v35166"
+23:51:09.389408 version@stat F·[0 1] S·397KiB[0B 397KiB] Sc·[0.00 0.00]
+23:51:09.413940 table@compaction committed F-1 S-3MiB Ke·0 D·3134 T·62.408395ms
+23:51:09.418368 table@remove removed @27
+23:51:09.418591 table@remove removed @25

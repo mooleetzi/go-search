@@ -1,0 +1,538 @@
+=============== Jun 12, 2022 (CST) ===============
+23:49:38.034304 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:49:38.060313 db@open opening
+23:49:38.060732 version@stat F·[] S·0B[] Sc·[]
+23:49:38.096242 db@janitor F·2 G·0
+23:49:38.096299 db@open done T·35.952337ms
+23:49:43.296607 memdb@flush N·9523 S·3MiB
+23:49:43.352285 memdb@flush created L0@3 N·9523 S·3MiB "0063,v3951":"龤,v2607"
+23:49:43.352338 version@stat F·[1] S·3MiB[3MiB] Sc·[0.25]
+23:49:43.376478 memdb@flush committed F·1 T·79.834926ms
+23:49:43.380477 journal@remove removed @1
+23:49:46.584886 memdb@flush N·4182 S·3MiB
+23:49:46.622372 memdb@flush created L0@5 N·4182 S·3MiB "0519,v9986":"龙啸,v12193"
+23:49:46.622413 version@stat F·[2] S·7MiB[7MiB] Sc·[0.50]
+23:49:46.663560 memdb@flush committed F·1 T·76.952153ms
+23:49:46.667419 journal@remove removed @2
+23:49:47.064249 table@compaction L0·2 -> L1·0 S·7MiB Q·14160
+23:49:47.096084 table@build created L1@6 N·3863 S·113KiB "0063,v3951":"龤,v2607"
+23:49:47.098324 version@stat F·[0 1] S·113KiB[0B 113KiB] Sc·[0.00 0.00]
+23:49:47.127662 table@compaction committed F-1 S-7MiB Ke·0 D·9842 T·63.372917ms
+23:49:47.138861 table@remove removed @5
+23:49:47.139509 table@remove removed @3
+23:49:49.191259 memdb@flush N·2892 S·3MiB
+23:49:49.226454 memdb@flush created L0@8 N·2892 S·3MiB "0818,v15404":"齿条,v15031"
+23:49:49.226484 version@stat F·[1 1] S·4MiB[3MiB 113KiB] Sc·[0.25 0.00]
+23:49:49.259838 memdb@flush committed F·1 T·68.546942ms
+23:49:49.265446 journal@remove removed @4
+23:49:50.123831 table@compaction L0·1 -> L1·1 S·4MiB Q·17484
+23:49:50.150495 table@build created L1@9 N·4353 S·132KiB "0063,v3951":"龤,v2607"
+23:49:50.150539 version@stat F·[0 1] S·132KiB[0B 132KiB] Sc·[0.00 0.00]
+23:49:50.189652 table@compaction committed F-1 S-3MiB Ke·0 D·2402 T·65.789469ms
+23:49:50.195079 table@remove removed @8
+23:49:50.196920 table@remove removed @6
+23:49:51.928326 memdb@flush N·2723 S·3MiB
+23:49:51.963230 memdb@flush created L0@11 N·2723 S·3MiB "0l,v19129":"齐齐,v18268"
+23:49:51.963271 version@stat F·[1 1] S·4MiB[3MiB 132KiB] Sc·[0.25 0.00]
+23:49:51.997991 memdb@flush committed F·1 T·69.014308ms
+23:49:52.002678 journal@remove removed @7
+23:49:52.719709 table@compaction L0·1 -> L1·1 S·4MiB Q·20133
+23:49:52.753088 table@build created L1@12 N·4822 S·151KiB "0063,v3951":"龤,v2607"
+23:49:52.753726 version@stat F·[0 1] S·151KiB[0B 151KiB] Sc·[0.00 0.00]
+23:49:52.785830 table@compaction committed F-1 S-3MiB Ke·0 D·2254 T·66.084488ms
+23:49:52.789135 table@remove removed @11
+23:49:52.789323 table@remove removed @9
+23:49:53.904574 memdb@flush N·2389 S·3MiB
+23:49:53.934503 memdb@flush created L0@14 N·2389 S·3MiB "10cm,v20192":"龙果,v21055"
+23:49:53.934543 version@stat F·[1 1] S·4MiB[3MiB 151KiB] Sc·[0.25 0.00]
+23:49:53.978691 memdb@flush committed F·1 T·74.064713ms
+23:49:53.982097 journal@remove removed @10
+23:49:54.538339 table@compaction L0·1 -> L1·1 S·4MiB Q·22571
+23:49:54.555846 table@build created L1@15 N·5213 S·167KiB "0063,v3951":"龤,v2607"
+23:49:54.555881 version@stat F·[0 1] S·167KiB[0B 167KiB] Sc·[0.00 0.00]
+23:49:54.604811 table@compaction committed F-1 S-3MiB Ke·0 D·1998 T·66.437029ms
+23:49:54.608585 table@remove removed @14
+23:49:54.608752 table@remove removed @12
+23:49:55.671555 memdb@flush N·2287 S·3MiB
+23:49:55.778771 memdb@flush created L0@17 N·2287 S·3MiB "0611,v23482":"齐齐,v22887"
+23:49:55.778837 version@stat F·[1 1] S·4MiB[3MiB 167KiB] Sc·[0.25 0.00]
+23:49:55.817188 memdb@flush committed F·1 T·145.463075ms
+23:49:55.820398 journal@remove removed @13
+23:49:56.694013 table@compaction L0·1 -> L1·1 S·4MiB Q·24779
+23:49:56.742805 table@build created L1@18 N·5580 S·182KiB "0063,v3951":"龤,v2607"
+23:49:56.745860 version@stat F·[0 1] S·182KiB[0B 182KiB] Sc·[0.00 0.00]
+23:49:56.792281 table@compaction committed F-1 S-3MiB Ke·0 D·1920 T·97.801299ms
+23:49:56.793402 table@remove removed @17
+23:49:56.795328 table@remove removed @15
+23:49:57.731282 memdb@flush N·1851 S·3MiB
+23:49:57.771240 memdb@flush created L0@20 N·1851 S·3MiB "1000,v25001":"龙吟,v24747"
+23:49:57.771280 version@stat F·[1 1] S·4MiB[3MiB 182KiB] Sc·[0.25 0.00]
+23:49:57.818011 memdb@flush committed F·1 T·86.69293ms
+23:49:57.821117 journal@remove removed @16
+23:49:58.444175 table@compaction L0·1 -> L1·1 S·4MiB Q·26662
+23:49:58.471945 table@build created L1@21 N·5832 S·193KiB "0063,v3951":"龤,v2607"
+23:49:58.472799 version@stat F·[0 1] S·193KiB[0B 193KiB] Sc·[0.00 0.00]
+23:49:58.500399 table@compaction committed F-1 S-3MiB Ke·0 D·1599 T·56.203655ms
+23:49:58.505116 table@remove removed @20
+23:49:58.505322 table@remove removed @18
+23:49:59.233372 memdb@flush N·1826 S·3MiB
+23:49:59.265589 memdb@flush created L0@23 N·1826 S·3MiB "083,v27275":"鼓刹,v25993"
+23:49:59.265621 version@stat F·[1 1] S·4MiB[3MiB 193KiB] Sc·[0.25 0.00]
+23:49:59.303564 memdb@flush committed F·1 T·70.160033ms
+23:49:59.307975 journal@remove removed @19
+23:49:59.830873 table@compaction L0·1 -> L1·1 S·4MiB Q·28489
+23:49:59.858961 table@build created L1@24 N·6054 S·204KiB "0063,v3951":"龤,v2607"
+23:49:59.859033 version@stat F·[0 1] S·204KiB[0B 204KiB] Sc·[0.00 0.00]
+23:49:59.898836 table@compaction committed F-1 S-3MiB Ke·0 D·1604 T·67.921477ms
+23:49:59.903445 table@remove removed @23
+23:49:59.903641 table@remove removed @21
+23:50:00.450533 memdb@flush N·1585 S·3MiB
+23:50:00.493750 memdb@flush created L0@26 N·1585 S·3MiB "1480,v29074":"齐现,v29220"
+23:50:00.493851 version@stat F·[1 1] S·4MiB[3MiB 204KiB] Sc·[0.25 0.00]
+23:50:00.537927 memdb@flush committed F·1 T·87.344253ms
+23:50:00.542549 journal@remove removed @22
+23:50:01.318920 table@compaction L0·1 -> L1·1 S·4MiB Q·29989
+23:50:01.343851 table@build created L1@27 N·6258 S·214KiB "0063,v3951":"龤,v2607"
+23:50:01.343892 version@stat F·[0 1] S·214KiB[0B 214KiB] Sc·[0.00 0.00]
+23:50:01.381131 table@compaction committed F-1 S-3MiB Ke·0 D·1381 T·62.179163ms
+23:50:01.386950 table@remove removed @26
+23:50:01.387098 table@remove removed @24
+23:50:02.516334 memdb@flush N·1654 S·3MiB
+23:50:02.560272 memdb@flush created L0@29 N·1654 S·3MiB "047,v30822":"龙滩,v29809"
+23:50:02.567879 version@stat F·[1 1] S·4MiB[3MiB 214KiB] Sc·[0.25 0.00]
+23:50:02.602161 memdb@flush committed F·1 T·84.474365ms
+23:50:02.602970 journal@remove removed @25
+23:50:03.358330 table@compaction L0·1 -> L1·1 S·4MiB Q·31618
+23:50:03.397290 table@build created L1@30 N·6473 S·224KiB "0063,v3951":"龤,v2607"
+23:50:03.397356 version@stat F·[0 1] S·224KiB[0B 224KiB] Sc·[0.00 0.00]
+23:50:03.435275 table@compaction committed F-1 S-3MiB Ke·0 D·1439 T·76.911886ms
+23:50:03.439385 table@remove removed @29
+23:50:03.439609 table@remove removed @27
+23:50:03.990663 memdb@flush N·1556 S·3MiB
+23:50:04.022598 memdb@flush created L0@32 N·1556 S·3MiB "134,v32061":"鼻,v31507"
+23:50:04.022636 version@stat F·[1 1] S·4MiB[3MiB 224KiB] Sc·[0.25 0.00]
+23:50:04.065989 memdb@flush committed F·1 T·75.292589ms
+23:50:04.069705 journal@remove removed @28
+23:50:04.612468 table@compaction L0·1 -> L1·1 S·4MiB Q·33220
+23:50:04.635071 table@build created L1@33 N·6694 S·234KiB "0063,v3951":"龤,v2607"
+23:50:04.635111 version@stat F·[0 1] S·234KiB[0B 234KiB] Sc·[0.00 0.00]
+23:50:04.666162 table@compaction committed F-1 S-3MiB Ke·0 D·1335 T·53.666922ms
+23:50:04.672029 table@remove removed @32
+23:50:04.672236 table@remove removed @30
+23:50:05.418118 memdb@flush N·1596 S·3MiB
+23:50:05.456098 memdb@flush created L0@35 N·1596 S·3MiB "1000,v33120":"鼻,v33722"
+23:50:05.456142 version@stat F·[1 1] S·4MiB[3MiB 234KiB] Sc·[0.25 0.00]
+23:50:05.481072 memdb@flush committed F·1 T·62.920051ms
+23:50:05.487056 journal@remove removed @31
+23:50:06.054291 table@compaction L0·1 -> L1·1 S·4MiB Q·34763
+23:50:06.077037 table@build created L1@36 N·6883 S·244KiB "0063,v3951":"龤,v2607"
+23:50:06.077074 version@stat F·[0 1] S·244KiB[0B 244KiB] Sc·[0.00 0.00]
+23:50:06.107131 table@compaction committed F-1 S-3MiB Ke·0 D·1407 T·52.807422ms
+23:50:06.111955 table@remove removed @35
+23:50:06.112190 table@remove removed @33
+23:50:06.989671 memdb@flush N·1584 S·3MiB
+23:50:07.095444 memdb@flush created L0@38 N·1584 S·3MiB "1000,v35344":"龟趣,v35160"
+23:50:07.096668 version@stat F·[1 1] S·4MiB[3MiB 244KiB] Sc·[0.25 0.00]
+23:50:07.131759 memdb@flush committed F·1 T·142.050653ms
+23:50:07.139374 journal@remove removed @34
+23:50:07.815428 table@compaction L0·1 -> L1·1 S·4MiB Q·36360
+23:50:07.842802 table@build created L1@39 N·7094 S·253KiB "0063,v3951":"龤,v2607"
+23:50:07.842843 version@stat F·[0 1] S·253KiB[0B 253KiB] Sc·[0.00 0.00]
+23:50:07.867872 table@compaction committed F-1 S-3MiB Ke·0 D·1373 T·52.420333ms
+23:50:07.872452 table@remove removed @38
+23:50:07.872582 table@remove removed @36
+23:50:08.423719 memdb@flush N·1358 S·3MiB
+23:50:08.458093 memdb@flush created L0@41 N·1358 S·3MiB "032,v36235":"龙洞,v36086"
+23:50:08.458131 version@stat F·[1 1] S·4MiB[3MiB 253KiB] Sc·[0.25 0.00]
+23:50:08.493296 memdb@flush committed F·1 T·69.542139ms
+23:50:08.497182 journal@remove removed @37
+23:50:09.099836 table@compaction L0·1 -> L1·1 S·4MiB Q·37767
+23:50:09.117570 table@build created L1@42 N·7251 S·261KiB "0063,v3951":"龤,v2607"
+23:50:09.117604 version@stat F·[0 1] S·261KiB[0B 261KiB] Sc·[0.00 0.00]
+23:50:09.150140 table@compaction committed F-1 S-3MiB Ke·0 D·1201 T·50.273095ms
+23:50:09.154522 table@remove removed @41
+23:50:09.154696 table@remove removed @39
+23:50:09.520199 memdb@flush N·1265 S·3MiB
+23:50:09.548487 memdb@flush created L0@44 N·1265 S·3MiB "1000,v38124":"鼓掌,v37724"
+23:50:09.548549 version@stat F·[1 1] S·4MiB[3MiB 261KiB] Sc·[0.25 0.00]
+23:50:09.572718 memdb@flush committed F·1 T·52.443912ms
+23:50:09.577360 journal@remove removed @40
+23:50:10.048736 table@compaction L0·1 -> L1·1 S·4MiB Q·38869
+23:50:10.068447 table@build created L1@45 N·7399 S·269KiB "0063,v3951":"龤,v2607"
+23:50:10.068486 version@stat F·[0 1] S·269KiB[0B 269KiB] Sc·[0.00 0.00]
+23:50:10.098037 table@compaction committed F-1 S-3MiB Ke·0 D·1117 T·49.259926ms
+23:50:10.103031 table@remove removed @44
+23:50:10.103336 table@remove removed @42
+23:50:10.861255 memdb@flush N·1440 S·3MiB
+23:50:10.891601 memdb@flush created L0@47 N·1440 S·3MiB "1000,v38742":"龟..年,v39206"
+23:50:10.891646 version@stat F·[1 1] S·4MiB[3MiB 269KiB] Sc·[0.25 0.00]
+23:50:10.927149 memdb@flush committed F·1 T·65.859209ms
+23:50:10.927952 journal@remove removed @43
+23:50:11.967654 table@compaction L0·1 -> L1·1 S·4MiB Q·40409
+23:50:12.018894 table@build created L1@48 N·7593 S·278KiB "0063,v3951":"龤,v2607"
+23:50:12.018945 version@stat F·[0 1] S·278KiB[0B 278KiB] Sc·[0.00 0.00]
+23:50:12.073368 table@compaction committed F-1 S-3MiB Ke·0 D·1246 T·105.67689ms
+23:50:12.078373 table@remove removed @47
+23:50:12.078651 table@remove removed @45
+23:50:12.741150 memdb@flush N·1283 S·3MiB
+23:50:12.767652 memdb@flush created L0@50 N·1283 S·3MiB "002mm,v40477":"龤,v39834"
+23:50:12.767681 version@stat F·[1 1] S·4MiB[3MiB 278KiB] Sc·[0.25 0.00]
+23:50:12.802678 memdb@flush committed F·1 T·61.491246ms
+23:50:12.806468 journal@remove removed @46
+23:50:13.512296 table@compaction L0·1 -> L1·1 S·4MiB Q·41684
+23:50:13.530599 table@build created L1@51 N·7774 S·286KiB "002mm,v40477":"龤,v39834"
+23:50:13.530643 version@stat F·[0 1] S·286KiB[0B 286KiB] Sc·[0.00 0.00]
+23:50:13.569397 table@compaction committed F-1 S-3MiB Ke·0 D·1102 T·57.071739ms
+23:50:13.569874 table@remove removed @50
+23:50:13.570003 table@remove removed @48
+23:50:13.813940 memdb@flush N·1021 S·3MiB
+23:50:13.845831 memdb@flush created L0@53 N·1021 S·3MiB "1000,v41203":"黑红,v41466"
+23:50:13.845882 version@stat F·[1 1] S·4MiB[3MiB 286KiB] Sc·[0.25 0.00]
+23:50:13.883262 memdb@flush committed F·1 T·69.279002ms
+23:50:13.886068 journal@remove removed @49
+23:50:14.485718 table@compaction L0·1 -> L1·1 S·4MiB Q·42677
+23:50:14.526865 table@build created L1@54 N·7872 S·292KiB "002mm,v40477":"龤,v39834"
+23:50:14.526914 version@stat F·[0 1] S·292KiB[0B 292KiB] Sc·[0.00 0.00]
+23:50:14.570960 table@compaction committed F-1 S-3MiB Ke·0 D·923 T·85.213054ms
+23:50:14.578645 table@remove removed @53
+23:50:14.578887 table@remove removed @51
+23:50:14.824718 memdb@flush N·942 S·3MiB
+23:50:14.851446 memdb@flush created L0@56 N·942 S·3MiB "1000,v42775":"龙根,v42545"
+23:50:14.851476 version@stat F·[1 1] S·4MiB[3MiB 292KiB] Sc·[0.25 0.00]
+23:50:14.887169 memdb@flush committed F·1 T·62.416775ms
+23:50:14.890267 journal@remove removed @52
+23:50:15.501320 table@compaction L0·1 -> L1·1 S·4MiB Q·43595
+23:50:15.525594 table@build created L1@57 N·7980 S·297KiB "002mm,v40477":"龤,v39834"
+23:50:15.525629 version@stat F·[0 1] S·297KiB[0B 297KiB] Sc·[0.00 0.00]
+23:50:15.553157 table@compaction committed F-1 S-3MiB Ke·0 D·834 T·51.811663ms
+23:50:15.557746 table@remove removed @56
+23:50:15.557899 table@remove removed @54
+23:50:16.054653 memdb@flush N·1118 S·3MiB
+23:50:16.077666 memdb@flush created L0@59 N·1118 S·3MiB "0063,v43611":"龙..香,v43824"
+23:50:16.077705 version@stat F·[1 1] S·4MiB[3MiB 297KiB] Sc·[0.25 0.00]
+23:50:16.104239 memdb@flush committed F·1 T·49.288368ms
+23:50:16.108629 journal@remove removed @55
+23:50:16.648540 table@compaction L0·1 -> L1·1 S·4MiB Q·44730
+23:50:16.673130 table@build created L1@60 N·8115 S·304KiB "002mm,v40477":"龤,v39834"
+23:50:16.673182 version@stat F·[0 1] S·304KiB[0B 304KiB] Sc·[0.00 0.00]
+23:50:16.701056 table@compaction committed F-1 S-3MiB Ke·0 D·983 T·52.48673ms
+23:50:16.706151 table@remove removed @59
+23:50:16.706429 table@remove removed @57
+23:50:16.993941 memdb@flush N·1051 S·3MiB
+23:50:17.017933 memdb@flush created L0@62 N·1051 S·3MiB "029g72,v44537":"鼻..壶,v44957"
+23:50:17.017977 version@stat F·[1 1] S·4MiB[3MiB 304KiB] Sc·[0.25 0.00]
+23:50:17.051526 memdb@flush committed F·1 T·57.532135ms
+23:50:17.055767 journal@remove removed @58
+23:50:17.993702 table@compaction L0·1 -> L1·1 S·4MiB Q·45750
+23:50:18.016261 table@build created L1@63 N·8241 S·310KiB "002mm,v40477":"龤,v39834"
+23:50:18.016309 version@stat F·[0 1] S·310KiB[0B 310KiB] Sc·[0.00 0.00]
+23:50:18.041411 table@compaction committed F-1 S-3MiB Ke·0 D·925 T·47.672632ms
+23:50:18.045295 table@remove removed @62
+23:50:18.045606 table@remove removed @60
+23:50:18.819672 memdb@flush N·1222 S·3MiB
+23:50:18.844008 memdb@flush created L0@65 N·1222 S·3MiB "15541,v46302":"黔,v46266"
+23:50:18.844052 version@stat F·[1 1] S·4MiB[3MiB 310KiB] Sc·[0.25 0.00]
+23:50:18.867711 memdb@flush committed F·1 T·47.981092ms
+23:50:18.872572 journal@remove removed @61
+23:50:19.510951 table@compaction L0·1 -> L1·1 S·4MiB Q·47028
+23:50:19.529780 table@build created L1@66 N·8384 S·318KiB "002mm,v40477":"龤,v39834"
+23:50:19.529825 version@stat F·[0 1] S·318KiB[0B 318KiB] Sc·[0.00 0.00]
+23:50:19.567179 table@compaction committed F-1 S-3MiB Ke·0 D·1079 T·56.197734ms
+23:50:19.573424 table@remove removed @65
+23:50:19.573911 table@remove removed @63
+23:50:19.911923 memdb@flush N·1121 S·3MiB
+23:50:19.939258 memdb@flush created L0@68 N·1121 S·3MiB "0063,v46395":"龟山,v47024"
+23:50:19.939297 version@stat F·[1 1] S·4MiB[3MiB 318KiB] Sc·[0.25 0.00]
+23:50:19.979238 memdb@flush committed F·1 T·67.289087ms
+23:50:19.980566 journal@remove removed @64
+23:50:20.774251 table@compaction L0·1 -> L1·1 S·4MiB Q·48103
+23:50:20.806096 table@build created L1@69 N·8512 S·324KiB "002mm,v40477":"龤,v39834"
+23:50:20.806142 version@stat F·[0 1] S·324KiB[0B 324KiB] Sc·[0.00 0.00]
+23:50:20.848272 table@compaction committed F-1 S-3MiB Ke·0 D·993 T·72.140586ms
+23:50:20.852101 table@remove removed @68
+23:50:20.852238 table@remove removed @66
+23:50:21.192385 memdb@flush N·1046 S·3MiB
+23:50:21.229924 memdb@flush created L0@71 N·1046 S·3MiB "1000,v48415":"黑松,v47612"
+23:50:21.230003 version@stat F·[1 1] S·4MiB[3MiB 324KiB] Sc·[0.25 0.00]
+23:50:21.255268 memdb@flush committed F·1 T·62.830288ms
+23:50:21.260732 journal@remove removed @67
+23:50:21.923096 table@compaction L0·1 -> L1·1 S·4MiB Q·49256
+23:50:21.948642 table@build created L1@72 N·8636 S·331KiB "002mm,v40477":"龤,v39834"
+23:50:21.948703 version@stat F·[0 1] S·331KiB[0B 331KiB] Sc·[0.00 0.00]
+23:50:21.980665 table@compaction committed F-1 S-3MiB Ke·0 D·922 T·57.54025ms
+23:50:21.985064 table@remove removed @71
+23:50:21.985585 table@remove removed @69
+23:50:22.544414 memdb@flush N·1023 S·3MiB
+23:50:22.579407 memdb@flush created L0@74 N·1023 S·3MiB "134,v48821":"龙泰,v48558"
+23:50:22.579445 version@stat F·[1 1] S·4MiB[3MiB 331KiB] Sc·[0.25 0.00]
+23:50:22.608264 memdb@flush committed F·1 T·63.802709ms
+23:50:22.612881 journal@remove removed @70
+23:50:23.546329 table@compaction L0·1 -> L1·1 S·4MiB Q·50218
+23:50:23.571277 table@build created L1@75 N·8729 S·336KiB "002mm,v40477":"龤,v39834"
+23:50:23.571314 version@stat F·[0 1] S·336KiB[0B 336KiB] Sc·[0.00 0.00]
+23:50:23.594355 table@compaction committed F-1 S-3MiB Ke·0 D·930 T·47.999434ms
+23:50:23.599338 table@remove removed @74
+23:50:23.599505 table@remove removed @72
+23:50:24.137941 memdb@flush N·1110 S·3MiB
+23:50:24.157467 memdb@flush created L0@77 N·1110 S·3MiB "1298,v49648":"龤,v49596"
+23:50:24.157503 version@stat F·[1 1] S·4MiB[3MiB 336KiB] Sc·[0.25 0.00]
+23:50:24.184955 memdb@flush committed F·1 T·46.940416ms
+23:50:24.189037 journal@remove removed @73
+23:50:24.988417 table@compaction L0·1 -> L1·1 S·4MiB Q·51329
+23:50:25.018512 table@build created L1@78 N·8865 S·343KiB "002mm,v40477":"龤,v49596"
+23:50:25.018617 version@stat F·[0 1] S·343KiB[0B 343KiB] Sc·[0.00 0.00]
+23:50:25.044235 table@compaction committed F-1 S-3MiB Ke·0 D·974 T·55.789788ms
+23:50:25.048486 table@remove removed @77
+23:50:25.048820 table@remove removed @75
+23:50:25.284273 memdb@flush N·939 S·3MiB
+23:50:25.322057 memdb@flush created L0@80 N·939 S·3MiB "139..776,v50862":"龙泰,v51038"
+23:50:25.322088 version@stat F·[1 1] S·4MiB[3MiB 343KiB] Sc·[0.25 0.00]
+23:50:25.405883 memdb@flush committed F·1 T·121.58126ms
+23:50:25.406684 journal@remove removed @76
+23:50:26.481084 table@compaction L0·1 -> L1·1 S·4MiB Q·52252
+23:50:26.508722 table@build created L1@81 N·8965 S·348KiB "002mm,v40477":"龤,v49596"
+23:50:26.508763 version@stat F·[0 1] S·348KiB[0B 348KiB] Sc·[0.00 0.00]
+23:50:26.551109 table@compaction committed F-1 S-3MiB Ke·0 D·839 T·66.825824ms
+23:50:26.555032 table@remove removed @80
+23:50:26.555221 table@remove removed @78
+23:50:26.869529 memdb@flush N·986 S·3MiB
+23:50:26.900709 memdb@flush created L0@83 N·986 S·3MiB "13300,v52323":"鱼..头,v52191"
+23:50:26.901912 version@stat F·[1 1] S·4MiB[3MiB 348KiB] Sc·[0.25 0.00]
+23:50:26.930929 memdb@flush committed F·1 T·60.20152ms
+23:50:26.935267 journal@remove removed @79
+23:50:27.571756 table@compaction L0·1 -> L1·1 S·4MiB Q·53219
+23:50:27.593764 table@build created L1@84 N·9060 S·354KiB "002mm,v40477":"龤,v49596"
+23:50:27.593815 version@stat F·[0 1] S·354KiB[0B 354KiB] Sc·[0.00 0.00]
+23:50:27.624523 table@compaction committed F-1 S-3MiB Ke·0 D·891 T·52.734145ms
+23:50:27.629058 table@remove removed @83
+23:50:27.629309 table@remove removed @81
+23:50:27.915321 memdb@flush N·996 S·3MiB
+23:50:27.943200 memdb@flush created L0@86 N·996 S·3MiB "1000,v53512":"齐齐,v53099"
+23:50:27.943236 version@stat F·[1 1] S·4MiB[3MiB 354KiB] Sc·[0.25 0.00]
+23:50:27.962917 memdb@flush committed F·1 T·47.570782ms
+23:50:27.966958 journal@remove removed @82
+23:50:28.721602 table@compaction L0·1 -> L1·1 S·4MiB Q·54158
+23:50:28.756145 table@build created L1@87 N·9178 S·359KiB "002mm,v40477":"龤,v49596"
+23:50:28.756191 version@stat F·[0 1] S·359KiB[0B 359KiB] Sc·[0.00 0.00]
+23:50:28.784842 table@compaction committed F-1 S-3MiB Ke·0 D·878 T·62.856245ms
+23:50:28.789182 table@remove removed @86
+23:50:28.789346 table@remove removed @84
+23:50:29.172075 memdb@flush N·910 S·3MiB
+23:50:29.199935 memdb@flush created L0@89 N·910 S·3MiB "0055,v54229":"齐..义,v54381"
+23:50:29.199973 version@stat F·[1 1] S·4MiB[3MiB 359KiB] Sc·[0.25 0.00]
+23:50:29.247881 memdb@flush committed F·1 T·75.761524ms
+23:50:29.252318 journal@remove removed @85
+23:50:30.111706 table@compaction L0·1 -> L1·1 S·4MiB Q·55157
+23:50:30.133952 table@build created L1@90 N·9293 S·365KiB "002mm,v40477":"龤,v49596"
+23:50:30.135849 version@stat F·[0 1] S·365KiB[0B 365KiB] Sc·[0.00 0.00]
+23:50:30.157483 table@compaction committed F-1 S-3MiB Ke·0 D·795 T·45.756297ms
+23:50:30.162022 table@remove removed @89
+23:50:30.162160 table@remove removed @87
+23:50:30.242008 memdb@flush N·795 S·3MiB
+23:50:30.264957 memdb@flush created L0@92 N·795 S·3MiB "20170702,v54514":"鼻涕,v55265"
+23:50:30.264985 version@stat F·[1 1] S·4MiB[3MiB 365KiB] Sc·[0.25 0.00]
+23:50:30.290802 memdb@flush committed F·1 T·48.766748ms
+23:50:30.295123 journal@remove removed @88
+23:50:31.752982 table@compaction L0·1 -> L1·1 S·4MiB Q·55935
+23:50:31.775491 table@build created L1@93 N·9367 S·370KiB "002mm,v40477":"龤,v49596"
+23:50:31.775522 version@stat F·[0 1] S·370KiB[0B 370KiB] Sc·[0.00 0.00]
+23:50:31.806166 table@compaction committed F-1 S-3MiB Ke·0 D·721 T·53.156753ms
+23:50:31.810878 table@remove removed @92
+23:50:31.811077 table@remove removed @90
+23:50:31.876401 memdb@flush N·761 S·3MiB
+23:50:31.904668 memdb@flush created L0@95 N·761 S·3MiB "1028,v55952":"鼻涕,v55436"
+23:50:31.904700 version@stat F·[1 1] S·4MiB[3MiB 370KiB] Sc·[0.25 0.00]
+23:50:31.955356 memdb@flush committed F·1 T·78.935428ms
+23:50:31.959612 journal@remove removed @91
+23:50:32.716160 table@compaction L0·1 -> L1·1 S·4MiB Q·56693
+23:50:32.735945 table@build created L1@96 N·9428 S·374KiB "002mm,v40477":"龤,v49596"
+23:50:32.735991 version@stat F·[0 1] S·374KiB[0B 374KiB] Sc·[0.00 0.00]
+23:50:32.764355 table@compaction committed F-1 S-3MiB Ke·0 D·700 T·48.162362ms
+23:50:32.769866 table@remove removed @95
+23:50:32.770169 table@remove removed @93
+23:50:32.989018 memdb@flush N·809 S·3MiB
+23:50:33.012348 memdb@flush created L0@98 N·809 S·3MiB "1000,v56265":"龙..塔,v56149"
+23:50:33.012387 version@stat F·[1 1] S·4MiB[3MiB 374KiB] Sc·[0.25 0.00]
+23:50:33.040063 memdb@flush committed F·1 T·51.021132ms
+23:50:33.044165 journal@remove removed @94
+23:50:33.900680 table@compaction L0·1 -> L1·1 S·4MiB Q·57420
+23:50:33.929171 table@build created L1@99 N·9515 S·378KiB "002mm,v40477":"龤,v49596"
+23:50:33.934352 version@stat F·[0 1] S·378KiB[0B 378KiB] Sc·[0.00 0.00]
+23:50:33.959455 table@compaction committed F-1 S-3MiB Ke·0 D·722 T·56.966671ms
+23:50:33.962784 table@remove removed @98
+23:50:33.962940 table@remove removed @96
+23:50:34.330465 memdb@flush N·851 S·3MiB
+23:50:34.357519 memdb@flush created L0@101 N·851 S·3MiB "11500,v57500":"鼻,v56921"
+23:50:34.357559 version@stat F·[1 1] S·4MiB[3MiB 378KiB] Sc·[0.25 0.00]
+23:50:34.388664 memdb@flush committed F·1 T·58.175327ms
+23:50:34.393280 journal@remove removed @97
+23:50:36.228913 table@compaction L0·1 -> L1·1 S·4MiB Q·58305
+23:50:36.259833 table@build created L1@102 N·9612 S·383KiB "002mm,v40477":"龤,v49596"
+23:50:36.259874 version@stat F·[0 1] S·383KiB[0B 383KiB] Sc·[0.00 0.00]
+23:50:36.301795 table@compaction committed F-1 S-3MiB Ke·0 D·754 T·72.84722ms
+23:50:36.305670 table@remove removed @101
+23:50:36.305899 table@remove removed @99
+23:50:36.721347 memdb@flush N·912 S·3MiB
+23:50:36.747324 memdb@flush created L0@104 N·912 S·3MiB "10k,v58227":"鼻涕,v58279"
+23:50:36.747364 version@stat F·[1 1] S·4MiB[3MiB 383KiB] Sc·[0.25 0.00]
+23:50:36.779728 memdb@flush committed F·1 T·58.357734ms
+23:50:36.783780 journal@remove removed @100
+23:50:37.545494 table@compaction L0·1 -> L1·1 S·4MiB Q·59209
+23:50:37.584139 table@build created L1@105 N·9698 S·388KiB "002mm,v40477":"龤,v49596"
+23:50:37.584205 version@stat F·[0 1] S·388KiB[0B 388KiB] Sc·[0.00 0.00]
+23:50:37.611621 table@compaction committed F-1 S-3MiB Ke·0 D·826 T·66.08264ms
+23:50:37.616637 table@remove removed @104
+23:50:37.616939 table@remove removed @102
+23:50:37.916813 memdb@flush N·854 S·3MiB
+23:50:37.944392 memdb@flush created L0@107 N·854 S·3MiB "00860087,v59239":"黑豆,v59170"
+23:50:37.944429 version@stat F·[1 1] S·4MiB[3MiB 388KiB] Sc·[0.25 0.00]
+23:50:37.975817 memdb@flush committed F·1 T·58.963993ms
+23:50:37.980102 journal@remove removed @103
+23:50:38.611408 table@compaction L0·1 -> L1·1 S·4MiB Q·60005
+23:50:38.644715 table@build created L1@108 N·9798 S·393KiB "002mm,v40477":"龤,v49596"
+23:50:38.644756 version@stat F·[0 1] S·393KiB[0B 393KiB] Sc·[0.00 0.00]
+23:50:38.672701 table@compaction committed F-1 S-3MiB Ke·0 D·754 T·61.266137ms
+23:50:38.677778 table@remove removed @107
+23:50:38.678146 table@remove removed @105
+23:50:39.092612 memdb@flush N·933 S·3MiB
+23:50:39.134975 memdb@flush created L0@110 N·933 S·3MiB "1000,v60335":"黄河,v59485"
+23:50:39.135087 version@stat F·[1 1] S·4MiB[3MiB 393KiB] Sc·[0.25 0.00]
+23:50:39.165333 memdb@flush committed F·1 T·72.670624ms
+23:50:39.169951 journal@remove removed @106
+23:50:39.858615 table@compaction L0·1 -> L1·1 S·4MiB Q·61031
+23:50:39.883227 table@build created L1@111 N·9893 S·399KiB "002mm,v40477":"龤,v49596"
+23:50:39.883275 version@stat F·[0 1] S·399KiB[0B 399KiB] Sc·[0.00 0.00]
+23:50:39.905928 table@compaction committed F-1 S-3MiB Ke·0 D·838 T·47.275604ms
+23:50:39.911151 table@remove removed @110
+23:50:39.911428 table@remove removed @108
+23:50:40.140332 memdb@flush N·909 S·3MiB
+23:50:40.163155 memdb@flush created L0@113 N·909 S·3MiB "1965,v60588":"黑豆,v60603"
+23:50:40.163199 version@stat F·[1 1] S·4MiB[3MiB 399KiB] Sc·[0.25 0.00]
+23:50:40.190944 memdb@flush committed F·1 T·50.539983ms
+23:50:40.195470 journal@remove removed @109
+23:50:40.813562 table@compaction L0·1 -> L1·1 S·4MiB Q·61925
+23:50:40.835379 table@build created L1@114 N·9965 S·403KiB "002mm,v40477":"龤,v49596"
+23:50:40.835478 version@stat F·[0 1] S·403KiB[0B 403KiB] Sc·[0.00 0.00]
+23:50:40.862245 table@compaction committed F-1 S-3MiB Ke·0 D·837 T·48.623919ms
+23:50:40.867032 table@remove removed @113
+23:50:40.867252 table@remove removed @111
+23:50:41.055090 memdb@flush N·810 S·3MiB
+23:50:41.078381 memdb@flush created L0@116 N·810 S·3MiB "10wled,v61875":"默..录,v61629"
+23:50:41.078441 version@stat F·[1 1] S·4MiB[3MiB 403KiB] Sc·[0.25 0.00]
+23:50:41.107999 memdb@flush committed F·1 T·52.860415ms
+23:50:41.112634 journal@remove removed @112
+23:50:41.681929 table@compaction L0·1 -> L1·1 S·4MiB Q·62690
+23:50:41.724121 table@build created L1@117 N·10033 S·408KiB "002mm,v40477":"龤,v49596"
+23:50:41.724171 version@stat F·[0 1] S·408KiB[0B 408KiB] Sc·[0.00 0.00]
+23:50:41.761082 table@compaction committed F-1 S-3MiB Ke·0 D·742 T·79.097833ms
+23:50:41.761781 table@remove removed @116
+23:50:41.762027 table@remove removed @114
+23:50:42.136656 memdb@flush N·928 S·3MiB
+23:50:42.183850 memdb@flush created L0@119 N·928 S·3MiB "1556,v62194":"鼻,v62755"
+23:50:42.189570 version@stat F·[1 1] S·4MiB[3MiB 408KiB] Sc·[0.25 0.00]
+23:50:42.233718 memdb@flush committed F·1 T·96.978775ms
+23:50:42.236682 journal@remove removed @115
+23:50:42.899065 table@compaction L0·1 -> L1·1 S·4MiB Q·63647
+23:50:42.933365 table@build created L1@120 N·10122 S·413KiB "002mm,v40477":"龤,v49596"
+23:50:42.933412 version@stat F·[0 1] S·413KiB[0B 413KiB] Sc·[0.00 0.00]
+23:50:42.984490 table@compaction committed F-1 S-3MiB Ke·0 D·839 T·85.385727ms
+23:50:42.988169 table@remove removed @119
+23:50:42.988460 table@remove removed @117
+23:50:43.207186 memdb@flush N·806 S·3MiB
+23:50:43.248664 memdb@flush created L0@122 N·806 S·3MiB "205,v63841":"黑..羊,v63487"
+23:50:43.252391 version@stat F·[1 1] S·4MiB[3MiB 413KiB] Sc·[0.25 0.00]
+23:50:43.298757 memdb@flush committed F·1 T·91.515449ms
+23:50:43.300213 journal@remove removed @118
+23:50:43.958155 table@compaction L0·1 -> L1·1 S·4MiB Q·64413
+23:50:43.979496 table@build created L1@123 N·10210 S·417KiB "002mm,v40477":"龤,v49596"
+23:50:43.979534 version@stat F·[0 1] S·417KiB[0B 417KiB] Sc·[0.00 0.00]
+23:50:44.006228 table@compaction committed F-1 S-3MiB Ke·0 D·718 T·48.036418ms
+23:50:44.009930 table@remove removed @122
+23:50:44.010206 table@remove removed @120
+=============== Jun 12, 2022 (CST) ===============
+23:51:00.167471 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:51:00.168100 version@stat F·[0 1] S·417KiB[0B 417KiB] Sc·[0.00 0.00]
+23:51:00.168127 db@open opening
+23:51:00.168222 journal@recovery F·1
+23:51:00.168344 journal@recovery recovering @121
+23:51:00.211817 memdb@flush created L0@124 N·774 S·3MiB "265ml3,v64236":"龙袍,v64328"
+23:51:00.213346 version@stat F·[1 1] S·4MiB[3MiB 417KiB] Sc·[0.25 0.00]
+23:51:00.270294 db@janitor F·4 G·0
+23:51:00.270361 db@open done T·102.206508ms
+23:51:02.661457 table@compaction L0·1 -> L1·1 S·4MiB Q·65161
+23:51:02.689148 table@build created L1@127 N·10283 S·422KiB "002mm,v40477":"龤,v49596"
+23:51:02.689200 version@stat F·[0 1] S·422KiB[0B 422KiB] Sc·[0.00 0.00]
+23:51:02.726878 table@compaction committed F-1 S-3MiB Ke·0 D·701 T·65.384886ms
+23:51:02.730882 table@remove removed @124
+23:51:02.731106 table@remove removed @123
+23:51:02.938576 memdb@flush N·715 S·3MiB
+23:51:02.960798 memdb@flush created L0@129 N·715 S·3MiB "1511,v64787":"龙鱼,v64841"
+23:51:02.960829 version@stat F·[1 1] S·4MiB[3MiB 422KiB] Sc·[0.25 0.00]
+23:51:02.989645 memdb@flush committed F·1 T·50.977087ms
+23:51:02.993678 journal@remove removed @125
+23:51:03.753169 table@compaction L0·1 -> L1·1 S·4MiB Q·65915
+23:51:03.794591 table@build created L1@130 N·10363 S·429KiB "002mm,v40477":"龤,v49596"
+23:51:03.794645 version@stat F·[0 1] S·429KiB[0B 429KiB] Sc·[0.00 0.00]
+23:51:03.821049 table@compaction committed F-1 S-3MiB Ke·0 D·635 T·67.850138ms
+23:51:03.825560 table@remove removed @129
+23:51:03.825718 table@remove removed @127
+23:51:03.955849 memdb@flush N·723 S·3MiB
+23:51:03.979376 memdb@flush created L0@132 N·723 S·3MiB "0200103,v65476":"龙洞,v65744"
+23:51:03.979404 version@stat F·[1 1] S·4MiB[3MiB 429KiB] Sc·[0.25 0.00]
+23:51:04.000814 memdb@flush committed F·1 T·44.942822ms
+23:51:04.004758 journal@remove removed @128
+23:51:04.509484 table@compaction L0·1 -> L1·1 S·4MiB Q·66621
+23:51:04.536362 table@build created L1@133 N·10438 S·434KiB "002mm,v40477":"龤,v49596"
+23:51:04.536398 version@stat F·[0 1] S·434KiB[0B 434KiB] Sc·[0.00 0.00]
+23:51:04.560178 table@compaction committed F-1 S-3MiB Ke·0 D·648 T·50.661594ms
+23:51:04.565360 table@remove removed @132
+23:51:04.565681 table@remove removed @130
+23:51:04.871331 memdb@flush N·798 S·3MiB
+23:51:04.895267 memdb@flush created L0@135 N·798 S·3MiB "0278,v66409":"龙鱼,v66580"
+23:51:04.895307 version@stat F·[1 1] S·4MiB[3MiB 434KiB] Sc·[0.25 0.00]
+23:51:04.921136 memdb@flush committed F·1 T·49.162416ms
+23:51:04.926351 journal@remove removed @131
+23:51:05.577014 table@compaction L0·1 -> L1·1 S·4MiB Q·67441
+23:51:05.602845 table@build created L1@136 N·10526 S·439KiB "002mm,v40477":"龤,v49596"
+23:51:05.602888 version@stat F·[0 1] S·439KiB[0B 439KiB] Sc·[0.00 0.00]
+23:51:05.628782 table@compaction committed F-1 S-3MiB Ke·0 D·710 T·51.731498ms
+23:51:05.634438 table@remove removed @135
+23:51:05.634800 table@remove removed @133
+23:51:06.014942 memdb@flush N·873 S·3MiB
+23:51:06.036394 memdb@flush created L0@138 N·873 S·3MiB "105cm,v66886":"黏胶,v67100"
+23:51:06.036431 version@stat F·[1 1] S·4MiB[3MiB 439KiB] Sc·[0.25 0.00]
+23:51:06.064836 memdb@flush committed F·1 T·49.841349ms
+23:51:06.069332 journal@remove removed @134
+23:51:06.682891 table@compaction L0·1 -> L1·1 S·4MiB Q·68302
+23:51:06.703479 table@build created L1@139 N·10596 S·444KiB "002mm,v40477":"龤,v49596"
+23:51:06.703559 version@stat F·[0 1] S·444KiB[0B 444KiB] Sc·[0.00 0.00]
+23:51:06.727322 table@compaction committed F-1 S-3MiB Ke·0 D·803 T·44.384479ms
+23:51:06.727892 table@remove removed @138
+23:51:06.728077 table@remove removed @136
+23:51:07.011481 memdb@flush N·818 S·3MiB
+23:51:07.035202 memdb@flush created L0@141 N·818 S·3MiB "167,v67902":"龅牙,v68149"
+23:51:07.035241 version@stat F·[1 1] S·4MiB[3MiB 444KiB] Sc·[0.25 0.00]
+23:51:07.064213 memdb@flush committed F·1 T·52.690458ms
+23:51:07.068860 journal@remove removed @137
+23:51:07.788064 table@compaction L0·1 -> L1·1 S·4MiB Q·69154
+23:51:07.811879 memdb@flush N·625 S·3MiB
+23:51:07.819358 table@build created L1@142 N·10683 S·449KiB "002mm,v40477":"龤,v49596"
+23:51:07.819401 version@stat F·[0 1] S·449KiB[0B 449KiB] Sc·[0.00 0.00]
+23:51:07.847305 table@compaction committed F-1 S-3MiB Ke·0 D·731 T·59.032337ms
+23:51:07.852389 table@remove removed @141
+23:51:07.852618 table@remove removed @139
+23:51:07.879996 memdb@flush created L0@144 N·625 S·4MiB "1000,v68581":"默..录,v68795"
+23:51:07.880030 version@stat F·[1 1] S·4MiB[4MiB 449KiB] Sc·[0.25 0.00]
+23:51:07.909027 memdb@flush committed F·1 T·56.36706ms
+23:51:07.913585 journal@remove removed @140
+23:51:08.799142 table@compaction L0·1 -> L1·1 S·4MiB Q·69786
+23:51:08.826674 table@build created L1@145 N·10744 S·452KiB "002mm,v40477":"龤,v49596"
+23:51:08.826716 version@stat F·[0 1] S·452KiB[0B 452KiB] Sc·[0.00 0.00]
+23:51:08.847670 memdb@flush N·635 S·3MiB
+23:51:08.850771 table@compaction committed F-1 S-3MiB Ke·0 D·564 T·51.596582ms
+23:51:08.851546 table@remove removed @144
+23:51:08.851774 table@remove removed @142
+23:51:08.889210 memdb@flush created L0@147 N·635 S·3MiB "1976,v69201":"黑木,v69702"
+23:51:08.889251 version@stat F·[1 1] S·4MiB[3MiB 452KiB] Sc·[0.25 0.00]
+23:51:08.913737 memdb@flush committed F·1 T·61.93253ms
+23:51:08.918161 journal@remove removed @143

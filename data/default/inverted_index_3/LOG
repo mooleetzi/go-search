@@ -1,0 +1,38 @@
+=============== Jun 12, 2022 (CST) ===============
+23:49:38.265557 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:49:38.284845 db@open opening
+23:49:38.286915 version@stat F·[] S·0B[] Sc·[]
+23:49:38.303160 db@janitor F·2 G·0
+23:49:38.303207 db@open done T·16.676726ms
+23:50:11.841939 memdb@flush N·29718 S·3MiB
+23:50:11.919035 memdb@flush created L0@3 N·29718 S·2MiB "002605,v553":"\ue25e,v16073"
+23:50:11.922718 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+23:50:11.998560 memdb@flush committed F·1 T·156.273526ms
+23:50:12.002980 journal@remove removed @1
+23:50:38.652188 memdb@flush N·14322 S·3MiB
+23:50:38.714948 memdb@flush created L0@5 N·14322 S·3MiB "008..ngm,v38544":"龙..士,v34747"
+23:50:38.714989 version@stat F·[2] S·5MiB[5MiB] Sc·[0.50]
+23:50:38.744183 memdb@flush committed F·1 T·90.940467ms
+23:50:38.749736 journal@remove removed @2
+23:50:39.143039 table@compaction L0·2 -> L1·0 S·5MiB Q·44335
+23:50:39.213550 table@build created L1@6 N·9903 S·333KiB "002605,v553":"\ue25e,v16073"
+23:50:39.213590 version@stat F·[0 1] S·333KiB[0B 333KiB] Sc·[0.00 0.00]
+23:50:39.238023 table@compaction committed F-1 S-5MiB Ke·0 D·34137 T·94.934567ms
+23:50:39.245550 table@remove removed @5
+23:50:39.246376 table@remove removed @3
+=============== Jun 12, 2022 (CST) ===============
+23:51:00.281437 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:51:00.285855 version@stat F·[0 1] S·333KiB[0B 333KiB] Sc·[0.00 0.00]
+23:51:00.285969 db@open opening
+23:51:00.286270 journal@recovery F·1
+23:51:00.286624 journal@recovery recovering @4
+23:51:00.322409 memdb@flush created L0@7 N·3350 S·1MiB "100k300,v44158":"龙跃,v47309"
+23:51:00.322702 version@stat F·[1 1] S·1MiB[1MiB 333KiB] Sc·[0.25 0.00]
+23:51:00.366915 db@janitor F·4 G·0
+23:51:00.366944 db@open done T·80.932897ms
+23:51:02.400960 table@compaction L0·1 -> L1·1 S·1MiB Q·47691
+23:51:02.427226 table@build created L1@10 N·10370 S·355KiB "002605,v553":"\ue25e,v16073"
+23:51:02.427272 version@stat F·[0 1] S·355KiB[0B 355KiB] Sc·[0.00 0.00]
+23:51:02.460999 table@compaction committed F-1 S-1015KiB Ke·0 D·2883 T·59.997977ms
+23:51:02.463967 table@remove removed @7
+23:51:02.464770 table@remove removed @6

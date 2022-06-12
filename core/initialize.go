@@ -74,6 +74,7 @@ func Initialize() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
+	global.Container.MustWriteLog()
 	log.Println("Shutdown Server ...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

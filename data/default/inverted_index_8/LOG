@@ -1,0 +1,38 @@
+=============== Jun 12, 2022 (CST) ===============
+23:49:38.306532 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:49:38.334973 db@open opening
+23:49:38.335386 version@stat F·[] S·0B[] Sc·[]
+23:49:38.343700 db@janitor F·2 G·0
+23:49:38.343782 db@open done T·8.766356ms
+23:50:10.185728 memdb@flush N·31488 S·3MiB
+23:50:10.237075 memdb@flush created L0@3 N·31488 S·2MiB "001,v7456":"\ue3d8,v2217"
+23:50:10.237115 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+23:50:10.263902 memdb@flush committed F·1 T·76.327154ms
+23:50:10.269590 journal@remove removed @1
+23:50:34.552903 memdb@flush N·15338 S·3MiB
+23:50:34.655917 memdb@flush created L0@5 N·15338 S·2MiB "001,v41994":"\ue3d8,v35183"
+23:50:34.656007 version@stat F·[2] S·5MiB[5MiB] Sc·[0.50]
+23:50:34.700348 memdb@flush committed F·1 T·137.051636ms
+23:50:34.722109 journal@remove removed @2
+23:50:35.950966 table@compaction L0·2 -> L1·0 S·5MiB Q·47088
+23:50:36.010376 table@build created L1@6 N·9700 S·341KiB "001,v41994":"\ue3d8,v35183"
+23:50:36.010458 version@stat F·[0 1] S·341KiB[0B 341KiB] Sc·[0.00 0.00]
+23:50:36.032393 table@compaction committed F-1 S-4MiB Ke·0 D·37126 T·81.390769ms
+23:50:36.035857 table@remove removed @5
+23:50:36.036619 table@remove removed @3
+=============== Jun 12, 2022 (CST) ===============
+23:50:59.996559 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:50:59.997137 version@stat F·[0 1] S·341KiB[0B 341KiB] Sc·[0.00 0.00]
+23:50:59.997162 db@open opening
+23:50:59.997242 journal@recovery F·1
+23:50:59.997351 journal@recovery recovering @4
+23:51:00.033394 memdb@flush created L0@7 N·5432 S·1MiB "05,v51228":"龟背,v52165"
+23:51:00.033654 version@stat F·[1 1] S·1MiB[1MiB 341KiB] Sc·[0.25 0.00]
+23:51:00.074217 db@janitor F·4 G·0
+23:51:00.074249 db@open done T·77.072996ms
+23:51:02.194935 table@compaction L0·1 -> L1·1 S·1MiB Q·52562
+23:51:02.220037 table@build created L1@10 N·10383 S·375KiB "001,v41994":"\ue3d8,v35183"
+23:51:02.220085 version@stat F·[0 1] S·375KiB[0B 375KiB] Sc·[0.00 0.00]
+23:51:02.248772 table@compaction committed F-1 S-1MiB Ke·0 D·4749 T·53.777518ms
+23:51:02.251861 table@remove removed @7
+23:51:02.252144 table@remove removed @6

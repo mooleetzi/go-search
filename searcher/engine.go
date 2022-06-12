@@ -4,6 +4,9 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+
+	// "go-search/global"
+	// "go-search/global"
 	"go-search/pagination"
 	"go-search/searcher/arrays"
 	"go-search/searcher/model"
@@ -40,9 +43,10 @@ type Engine struct {
 	addDocumentWorkerChan []chan *model.IndexDoc
 	DatabaseName          string // 数据库名
 
-	Shard   int   // 分片数
-	Timeout int64 // 超时时间,单位秒
-	IsDebug bool  // 是否调试模式
+	Shard     int   // 分片数
+	Timeout   int64 // 超时时间,单位秒
+	IsDebug   bool  // 是否调试模式
+	container *Container
 }
 type Option struct {
 	InvertedIndexName string // 倒排索引
@@ -632,45 +636,47 @@ func (e *Engine) GetQueue() int {
 func (e *Engine) addSearchLog(request *model.SearchRequest) {
 	e.Wait()
 
-	e.Lock()
-	defer e.Unlock()
+	// e.Lock()
 	// fmt.Println("添加日志")
 
-	//创建一个新文件
-	newFileName := "./searcher/searchlog.csv"
-	//这样打开，每次都会清空文件内容
-	//nfs, err := os.Create(newFileName)
+	// //创建一个新文件
+	// newFileName := "./searcher/searchlog.csv"
+	// //这样打开，每次都会清空文件内容
+	// //nfs, err := os.Create(newFileName)
 
-	//这样可以追加写
-	nfs, err := os.OpenFile(newFileName, os.O_RDWR|os.O_CREATE, 0666)
-	if err != nil {
-		log.Fatalf("can not create file, err is %+v", err)
-	}
-	defer nfs.Close()
-	nfs.Seek(0, io.SeekEnd)
+	// //这样可以追加写
+	// nfs, err := os.OpenFile(newFileName, os.O_RDWR|os.O_CREATE, 0666)
+	// if err != nil {
+	// 	log.Fatalf("can not create file, err is %+v", err)
+	// }
+	// defer nfs.Close()
+	// nfs.Seek(0, io.SeekEnd)
 
-	w := csv.NewWriter(nfs)
-	//设置属性
-	w.Comma = ','
-	w.UseCRLF = true
+	// w := csv.NewWriter(nfs)
+	// //设置属性
+	// w.Comma = ','
+	// w.UseCRLF = true
 
 	row := []string{request.ClientIP, request.Query, strconv.FormatInt(request.Time, 10)}
-	err = w.Write(row)
-	if err != nil {
-		log.Fatalf("can not write, err is %+v", err)
-	}
-	//这里必须刷新，才能将数据写入文件。
-	w.Flush()
+	e.container.AddLogMem(row)
+	// err = w.Write(row)
+	// if err != nil {
+	// 	log.Fatalf("can not write, err is %+v", err)
+	// }
+	// //这里必须刷新，才能将数据写入文件。
+	// w.Flush()
 
 }
 
 // 读取日志
 func (e *Engine) addSearchLogToRelatedStorage(isclean string) {
 	e.Wait()
-	// e.Lock()
 
-	searchlog.UpdatedRelatedSearch(isclean, e.relatedStorages[0])
-	// defer e.Unlock()
+	logMem := e.container.GetLogMem()
+
+	e.Lock()
+	searchlog.UpdatedRelatedSearch(isclean, e.relatedStorages[0], logMem)
+	e.Unlock()
 
 }
 

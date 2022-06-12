@@ -1,0 +1,49 @@
+=============== Jun 12, 2022 (CST) ===============
+23:49:38.437509 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:49:38.461578 db@open opening
+23:49:38.461995 version@stat F·[] S·0B[] Sc·[]
+23:49:38.482336 db@janitor F·2 G·0
+23:49:38.482618 db@open done T·20.967986ms
+23:50:04.076419 memdb@flush N·27677 S·3MiB
+23:50:04.126878 memdb@flush created L0@3 N·27677 S·2MiB "01,v24269":"龢,v24314"
+23:50:04.126925 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+23:50:04.164710 memdb@flush committed F·1 T·87.800848ms
+23:50:04.168292 journal@remove removed @1
+23:50:20.466898 memdb@flush N·12940 S·3MiB
+23:50:20.617510 memdb@flush created L0@5 N·12940 S·3MiB "01,v38367":"龟苗,v28963"
+23:50:20.617548 version@stat F·[2] S·5MiB[5MiB] Sc·[0.50]
+23:50:20.665146 memdb@flush committed F·1 T·189.874057ms
+23:50:20.672592 journal@remove removed @2
+23:50:20.972588 table@compaction L0·2 -> L1·0 S·5MiB Q·40914
+23:50:21.020873 table@build created L1@6 N·8580 S·299KiB "01,v38367":"龢,v24314"
+23:50:21.020917 version@stat F·[0 1] S·299KiB[0B 299KiB] Sc·[0.00 0.00]
+23:50:21.068289 table@compaction committed F-1 S-5MiB Ke·0 D·32037 T·95.670727ms
+23:50:21.072878 table@remove removed @5
+23:50:21.073573 table@remove removed @3
+23:50:38.488318 memdb@flush N·10047 S·3MiB
+23:50:38.539750 memdb@flush created L0@8 N·10047 S·3MiB "0016,v46144":"龙类,v44157"
+23:50:38.540425 version@stat F·[1 1] S·3MiB[3MiB 299KiB] Sc·[0.25 0.00]
+23:50:38.565430 memdb@flush committed F·1 T·71.851558ms
+23:50:38.570158 journal@remove removed @4
+23:50:39.753661 table@compaction L0·1 -> L1·1 S·3MiB Q·51537
+23:50:39.783780 table@build created L1@9 N·9792 S·359KiB "0016,v46144":"龢,v24314"
+23:50:39.783824 version@stat F·[0 1] S·359KiB[0B 359KiB] Sc·[0.00 0.00]
+23:50:39.809367 table@compaction committed F-1 S-3MiB Ke·0 D·8835 T·55.667367ms
+23:50:39.814718 table@remove removed @8
+23:50:39.815031 table@remove removed @6
+=============== Jun 12, 2022 (CST) ===============
+23:51:00.437978 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:51:00.438638 version@stat F·[0 1] S·359KiB[0B 359KiB] Sc·[0.00 0.00]
+23:51:00.438660 db@open opening
+23:51:00.438750 journal@recovery F·1
+23:51:00.439072 journal@recovery recovering @7
+23:51:00.468108 memdb@flush created L0@10 N·3957 S·1MiB "01,v50675":"龙眼,v53500"
+23:51:00.468667 version@stat F·[1 1] S·1MiB[1MiB 359KiB] Sc·[0.25 0.00]
+23:51:00.508608 db@janitor F·4 G·0
+23:51:00.508637 db@open done T·69.966957ms
+23:51:02.423803 table@compaction L0·1 -> L1·1 S·1MiB Q·54970
+23:51:02.460998 table@build created L1@13 N·10206 S·382KiB "0016,v46144":"龢,v24314"
+23:51:02.461045 version@stat F·[0 1] S·382KiB[0B 382KiB] Sc·[0.00 0.00]
+23:51:02.490990 table@compaction committed F-1 S-1MiB Ke·0 D·3543 T·67.157542ms
+23:51:02.494552 table@remove removed @10
+23:51:02.495072 table@remove removed @9

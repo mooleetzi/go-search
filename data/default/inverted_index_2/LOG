@@ -1,0 +1,38 @@
+=============== Jun 12, 2022 (CST) ===============
+23:49:37.547849 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:49:37.590113 db@open opening
+23:49:37.592779 version@stat F·[] S·0B[] Sc·[]
+23:49:37.601798 db@janitor F·2 G·0
+23:49:37.601862 db@open done T·11.714056ms
+23:50:09.278173 memdb@flush N·30090 S·3MiB
+23:50:09.333280 memdb@flush created L0@3 N·30090 S·2MiB "0034,v8213":"�,v19219"
+23:50:09.333317 version@stat F·[1] S·2MiB[2MiB] Sc·[0.25]
+23:50:09.378859 memdb@flush committed F·1 T·99.22892ms
+23:50:09.384310 journal@remove removed @1
+23:50:32.171002 memdb@flush N·14464 S·3MiB
+23:50:32.212643 memdb@flush created L0@5 N·14464 S·2MiB "016,v33573":"龙..超,v39103"
+23:50:32.212684 version@stat F·[2] S·5MiB[5MiB] Sc·[0.50]
+23:50:32.245386 memdb@flush committed F·1 T·74.135659ms
+23:50:32.250559 journal@remove removed @2
+23:50:32.584942 table@compaction L0·2 -> L1·0 S·5MiB Q·44800
+23:50:32.658003 table@build created L1@6 N·9605 S·331KiB "0034,v8213":"�,v19219"
+23:50:32.658053 version@stat F·[0 1] S·331KiB[0B 331KiB] Sc·[0.00 0.00]
+23:50:32.681333 table@compaction committed F-1 S-5MiB Ke·0 D·34949 T·96.357756ms
+23:50:32.685797 table@remove removed @5
+23:50:32.686349 table@remove removed @3
+=============== Jun 12, 2022 (CST) ===============
+23:51:00.586470 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:51:00.587007 version@stat F·[0 1] S·331KiB[0B 331KiB] Sc·[0.00 0.00]
+23:51:00.587024 db@open opening
+23:51:00.587080 journal@recovery F·1
+23:51:00.587422 journal@recovery recovering @4
+23:51:00.617232 memdb@flush created L0@7 N·6502 S·1MiB "016,v45621":"龟..竹,v50938"
+23:51:00.618646 version@stat F·[1 1] S·2MiB[1MiB 331KiB] Sc·[0.25 0.00]
+23:51:00.671844 db@janitor F·4 G·0
+23:51:00.671870 db@open done T·84.836554ms
+23:51:02.586820 table@compaction L0·1 -> L1·1 S·2MiB Q·51451
+23:51:02.612763 table@build created L1@10 N·10386 S·370KiB "0034,v8213":"�,v19219"
+23:51:02.612816 version@stat F·[0 1] S·370KiB[0B 370KiB] Sc·[0.00 0.00]
+23:51:02.639853 table@compaction committed F-1 S-1MiB Ke·0 D·5721 T·52.987258ms
+23:51:02.643479 table@remove removed @7
+23:51:02.643755 table@remove removed @6
