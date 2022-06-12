@@ -346,7 +346,6 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 		log.Println("数组查找耗时：", totalTime, "ms")
 		log.Println("搜索时间:", _time, "ms")
 	}
-
 	sortResult.Ids = utils.SliceDiffI32(sortResult.Ids, blockSortResult.Ids)
 
 	// 处理分页
@@ -451,7 +450,6 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 			tf := math.Sqrt(float64(freq))
 			scores[id] = idf * tf
 		}
-
 		sortResult.Add(&scores)
 	}
 

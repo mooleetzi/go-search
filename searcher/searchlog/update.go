@@ -2,7 +2,6 @@ package searchlog
 
 import (
 	"encoding/csv"
-	"fmt"
 	"go-search/searcher/model"
 	"go-search/searcher/storage"
 	"go-search/searcher/utils"
@@ -123,7 +122,7 @@ func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage, logMem [][
 			for newsuc := range temp {
 				g.Success = append(g.Success, newsuc)
 			}
-			fmt.Println(g.KeyWord, g.Success)
+			// fmt.Println(g.KeyWord, g.Success)
 			err := rs.Delete([]byte(g.KeyWord))
 			if err != nil {
 				log.Fatalf("can not delete relatedsearch, err is %+v", err)
