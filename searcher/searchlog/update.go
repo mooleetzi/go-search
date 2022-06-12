@@ -131,5 +131,11 @@ func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage) {
 
 	}
 	log.Println("整理搜索log并更新后继词表")
+
+	if isclear == "clear" {
+		log.Println("search log clear!!")
+		//清空文件内容
+		os.Create(fileName)
+	}
 	return
 }
