@@ -7,7 +7,6 @@ import (
 	"go-search/searcher/utils"
 	"io"
 	"os"
-	"sync"
 	"testing"
 )
 
@@ -41,11 +40,11 @@ func TestRelated(t *testing.T) {
 		fmt.Println(err)
 	}
 	reader := csv.NewReader(bufio.NewReader(csvFile))
-	wg := sync.WaitGroup{}
+	//wg := sync.WaitGroup{}
 	id := uint32(0)
 	time := utils.ExecTime(func() {
 		for {
-			wg.Add(1)
+			//wg.Add(1)
 			line, err := reader.Read()
 			if err == io.EOF {
 				break
@@ -55,7 +54,7 @@ func TestRelated(t *testing.T) {
 			fmt.Printf("%v %v", line[0], line[1])
 			id += 1
 		}
-		wg.Wait()
+		//wg.Wait()
 	})
 	fmt.Println(time)
 }
