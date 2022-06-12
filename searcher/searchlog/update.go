@@ -130,5 +130,6 @@ func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage) {
 		}
 
 	}
+	log.Println("整理搜索log并更新后继词表")
 	return
 }

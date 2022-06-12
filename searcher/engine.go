@@ -109,9 +109,9 @@ func (e *Engine) automaticUpdate() {
 	// 	// 定时更新
 	// 	e.addSearchLogToRelatedStorage("")
 	// }
-
-	// gocron.Every(5).Second().DoSafely(e.addSearchLogToRelatedStorage, "")
-	gocron.Every(1).Day().At("0:25").DoSafely(e.addSearchLogToRelatedStorage, "")
+	e.Wait()
+	gocron.Every(10).Second().DoSafely(e.addSearchLogToRelatedStorage, "") //测试
+	// gocron.Every(1).Day().At("0:25").DoSafely(e.addSearchLogToRelatedStorage, "")
 	<-gocron.Start()
 }
 
@@ -682,4 +682,9 @@ func (e *Engine) addSearchLogToRelatedStorage(isclean string) {
 	searchlog.UpdatedRelatedSearch(isclean, e.relatedStorages[0])
 	// defer e.Unlock()
 
+}
+
+func (e *Engine) GetRelatedStorage() *storage.LeveldbStorage {
+	e.Wait()
+	return e.relatedStorages[0]
 }
