@@ -8,8 +8,17 @@ import (
 	"io"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 )
+
+type SearchLog []model.SearchLog
+
+func (s SearchLog) Len() int { return len(s) }
+
+func (s SearchLog) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+
+func (s SearchLog) Less(i, j int) bool { return s[i].Time < s[j].Time }
 
 func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage, logMem [][]string) {
 	// rs, err := storage.NewStorage(fmt.Sprintf("%s_%d", "related_search", 0), 1000)
@@ -68,6 +77,17 @@ func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage, logMem [][
 	//每个用户ip按每5min分组
 	addlog := new(model.IndexRelated)
 	group := make([]model.IndexRelated, 0)
+
+	//时间戳从小到大排序
+	for _, user := range users {
+		sort.Sort(SearchLog(user))
+	}
+	//
+	// for _, user := range users {
+	// 	for _, log := range user {
+	// 		fmt.Println(log)
+	// 	}
+	// }
 
 	for _, user := range users {
 		length := len(user)
