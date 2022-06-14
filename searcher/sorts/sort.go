@@ -47,36 +47,45 @@ func (f *SortResult) Add(idsToFreqs *map[uint32]float64) {
 	}
 }
 
-func (f *SortResult) find(target *uint32) (bool, int) {
-	low := 0
-	high := f.count - 1
-	for low <= high {
-		mid := (low + high) / 2
-		if f.IdsAndScores[mid].Id == *target {
-			return true, mid
-		} else if f.IdsAndScores[mid].Id < *target {
-			high = mid - 1
-		} else {
-			low = mid + 1
-		}
-	}
-	return false, -1
-}
+//func (f *SortResult) find(target *uint32) (bool, int) {
+//	low := 0
+//	high := f.count - 1
+//	for low <= high {
+//		mid := (low + high) / 2
+//		if f.IdsAndScores[mid].Id == *target {
+//			return true, mid
+//		} else if f.IdsAndScores[mid].Id < *target {
+//			high = mid - 1
+//		} else {
+//			low = mid + 1
+//		}
+//	}
+//	return false, -1
+//}
 
-func (f *SortResult) Process() {
+func (f *SortResult) Process(block []uint32) {
+	tmp := make(map[uint32]float64, len(f.Ids))
 	for pos, id := range f.Ids {
-		if found, index := f.find(&id); found {
-			f.IdsAndScores[index].Score += f.Scores[pos]
+		if _, err := tmp[id]; err {
+			tmp[id] = f.Scores[pos]
 		} else {
-			f.IdsAndScores = append(f.IdsAndScores, model.SliceItem{
-				Id:    id,
-				Score: f.Scores[pos],
-			})
-			f.count++
+			tmp[id] += f.Scores[pos]
+		}
+	}
+	if len(block) != 0 {
+		for _, blockId := range block {
+			delete(tmp, blockId)
 		}
 	}
 
-	// 对分数进行排序
+	for key, val := range tmp {
+		f.IdsAndScores = append(f.IdsAndScores, model.SliceItem{
+			Id:    key,
+			Score: val,
+		})
+		f.count++
+	}
+
 	sort.Sort(sort.Reverse(ScoreSlice(f.IdsAndScores)))
 }
 

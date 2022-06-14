@@ -130,6 +130,17 @@ func (s *LeveldbStorage) isClosed() bool {
 	return s.closed
 }
 
+//func (s *LeveldbStorage) compute1(wg *sync.WaitGroup) {
+//	defer wg.Wait()
+//	var count int64
+//	iter := s.db.NewIterator(nil, nil)
+//	for iter.Next() {
+//		count++
+//	}
+//	iter.Release()
+//	s.count = count
+//	log.Println("compute finish", s.count)
+//}
 func (s *LeveldbStorage) compute() {
 	var count int64
 	iter := s.db.NewIterator(nil, nil)
@@ -138,12 +149,11 @@ func (s *LeveldbStorage) compute() {
 	}
 	iter.Release()
 	s.count = count
+	//log.Println("compute finish", s.count)
 }
-
 func (s *LeveldbStorage) GetCount() int64 {
 	if s.count == 0 && s.closed {
-		s.ReOpen()
-		s.compute()
+		s.autoOpenDB()
 	}
 	return s.count
 }

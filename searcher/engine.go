@@ -280,7 +280,7 @@ func (e *Engine) InitOption(option *Option) {
 	}
 	// 初始化其他的
 	e.Init()
-	//log.Println("开始添加悟空数据集")
+	log.Println("开始添加悟空数据集")
 	//e.InitWuKong()
 	e.InitRelatedSearch()
 
@@ -320,13 +320,12 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 		log.Println("数组查找耗时：", totalTime, "ms")
 		log.Println("搜索时间:", _time, "ms")
 	}
-	sortResult.Ids = utils.SliceDiffI32(sortResult.Ids, blockSortResult.Ids)
 
 	// 处理分页
 	request = request.GetAndSetDefault()
 
 	// 计算得分
-	sortResult.Process()
+	sortResult.Process(blockSortResult.Ids)
 
 	//检索 相关搜索词
 	relatedResult := make([]string, 0)
@@ -415,9 +414,10 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 		utils.Decoder(buf, &idsToFreqs)
 
 		scores := make(map[uint32]float64)
+		docCount := float64(e.GetDocumentCount())
+		log.Println("docCount", docCount)
 		for id, freq := range idsToFreqs {
 			docFreq := float64(len(idsToFreqs))
-			docCount := float64(e.GetCountById(id))
 			idf := math.Log(docCount) - math.Log(docFreq+1) + 1
 			tf := math.Sqrt(float64(freq))
 			scores[id] = idf * tf
@@ -511,10 +511,6 @@ func (e *Engine) GetDocById(id uint32) []byte {
 	return nil
 }
 
-func (e *Engine) GetCountById(id uint32) int64 {
-	shard := e.getShard(id)
-	return e.docStorages[shard].GetCount()
-}
 func (e *Engine) InitWuKong() {
 	path := "./searcher/wukong50k_release.csv"
 	csvFile, _ := os.Open(path)
