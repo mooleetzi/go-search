@@ -1,8 +1,9 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"go-search/searcher/model"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Welcome(c *gin.Context) {
@@ -13,7 +14,9 @@ func Welcome(c *gin.Context) {
 func Query(c *gin.Context) {
 	var request = &model.SearchRequest{
 		Database: c.Query("database"),
+		ClientIP: c.ClientIP(),
 	}
+
 	if err := c.ShouldBind(request); err != nil {
 		ResponseErrorWithMsg(c, err.Error())
 		return

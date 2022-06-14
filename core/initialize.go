@@ -14,6 +14,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/jasonlvhit/gocron"
 )
 
 func NewContainer(tokenizer *words.Tokenizer) *searcher.Container {
@@ -51,6 +53,9 @@ func Initialize() {
 	// 初始化业务逻辑
 	controller.NewServices()
 
+	// // 初始化定时器
+	// clock()
+
 	// 注册路由
 	r := router.SetupRouter()
 	// 启动服务
@@ -69,6 +74,7 @@ func Initialize() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
+	global.Container.MustWriteLog()
 	log.Println("Shutdown Server ...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -79,4 +85,16 @@ func Initialize() {
 	}
 
 	log.Println("Server exiting")
+}
+
+//定时器任务，执行读取log更新后继词表
+func clock() {
+	gocron.Every(10).Second().DoSafely(taskWithParams, 1, "hello")
+	// gocron.Every(1).Day().At("10:30").Do(task)
+	<-gocron.Start()
+}
+
+func taskWithParams(a int, b string) {
+
+	fmt.Println(a, b)
 }

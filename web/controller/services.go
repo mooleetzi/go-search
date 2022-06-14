@@ -1,19 +1,21 @@
 package controller
 
 import (
-	service2 "go-search/web/service"
+	service3 "go-search/web/service"
 )
 
 var srv *Services
 
 type Services struct {
-	Base *service2.Base
-	Word *service2.Word
+	Base  *service3.Base
+	Word  *service3.Word
+	ScLog *service3.ScLog
 }
 
 func NewServices() {
 	srv = &Services{
-		Base: service2.NewBase(),
-		Word: service2.NewWord(),
+		Base:  service3.NewBase(),
+		Word:  service3.NewWord(),
+		ScLog: service3.NewScLog(),
 	}
 }

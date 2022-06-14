@@ -28,3 +28,9 @@ type ResponseDoc struct {
 	Score        float64  `json:"score,omitempty"` // 得分
 	Keys         []string `json:"keys,omitempty"`
 }
+
+type SearchLog struct {
+	Id    uint32 `json:"id,omitempty"`
+	Query string `json:"query,omitempty"`
+	Time  int64  `json:"time,omitempty"`
+}

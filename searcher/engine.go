@@ -4,9 +4,13 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+
+	// "go-search/global"
+	// "go-search/global"
 	"go-search/pagination"
 	"go-search/searcher/arrays"
 	"go-search/searcher/model"
+	"go-search/searcher/searchlog"
 	"go-search/searcher/sorts"
 	"go-search/searcher/storage"
 	"go-search/searcher/utils"
@@ -16,9 +20,12 @@ import (
 	"math"
 	"os"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/jasonlvhit/gocron"
 )
 
 type Engine struct {
@@ -36,9 +43,10 @@ type Engine struct {
 	addDocumentWorkerChan []chan *model.IndexDoc
 	DatabaseName          string // 数据库名
 
-	Shard   int   // 分片数
-	Timeout int64 // 超时时间,单位秒
-	IsDebug bool  // 是否调试模式
+	Shard     int   // 分片数
+	Timeout   int64 // 超时时间,单位秒
+	IsDebug   bool  // 是否调试模式
+	container *Container
 }
 type Option struct {
 	InvertedIndexName string // 倒排索引
@@ -84,6 +92,7 @@ func (e *Engine) Init() {
 
 	}
 	go e.automaticGC()
+	go e.automaticUpdate()
 }
 
 // 自动保存索引，10秒钟检测一次
@@ -95,6 +104,18 @@ func (e *Engine) automaticGC() {
 		runtime.GC()
 	}
 }
+
+// 自动更新后继词表
+func (e *Engine) automaticUpdate() {
+	//等待初始化完成
+	e.Wait()
+	//debug用，每10s触发一次更新
+	// gocron.Every(10).Second().DoSafely(e.addSearchLogToRelatedStorage, "")
+	//
+	gocron.Every(1).Day().At("0:25").DoSafely(e.addSearchLogToRelatedStorage, "")
+	<-gocron.Start()
+}
+
 func (e *Engine) getFilePath(fileName string) string {
 	return e.IndexPath + string(os.PathSeparator) + fileName
 }
@@ -281,7 +302,8 @@ func (e *Engine) InitOption(option *Option) {
 	// 初始化其他的
 	e.Init()
 	log.Println("开始添加悟空数据集")
-	//e.InitWuKong()
+	e.InitWuKong()
+	log.Println("开始添加初始后继词数据集")
 	e.InitRelatedSearch()
 
 }
@@ -298,6 +320,10 @@ func (e *Engine) GetOptions() *Option {
 func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	// 等待搜索初始化完成
 	e.Wait()
+
+	//记录搜索log
+	e.addSearchLog(request)
+
 	// 分词搜索
 	_, splitWords := e.Tokenizer.Cut(request.Query)
 	_, blockWords := e.Tokenizer.Cut(request.Block)
@@ -330,7 +356,9 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	//检索 相关搜索词
 	relatedResult := make([]string, 0)
 	// relatedResult, _timerelated := e.relatedSearch(splitWords, relatedResult)
+	// searchword := splitWords
 	searchword := append(splitWords, request.Query)
+
 	_timerelated := e.relatedSearch(searchword, &relatedResult) //分词or全
 	if e.IsDebug {
 		log.Println("相关搜索时间:", _timerelated, "ms")
@@ -428,15 +456,25 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 }
 
 func (e *Engine) relatedSearch(words []string, Result *[]string) (_time float64) {
+	temp := make(map[string]bool)
+	newwords := make([]string, 0)
+	for _, word := range words { //去重
+		_, ok := temp[word]
+		if !ok { //去重
+			temp[word] = true
+			newwords = append(newwords, word)
+		}
+	}
 
 	_time = utils.ExecTime(func() {
-		base := len(words)
+		base := len(newwords)
 		wg := &sync.WaitGroup{}
 		wg.Add(base)
 
-		for _, word := range words {
+		for _, word := range newwords {
 			go e.processKeyRelatedSearch(word, Result, wg)
 		}
+
 		wg.Wait()
 	})
 
@@ -452,17 +490,15 @@ func (e *Engine) processKeyRelatedSearch(word string, Result *[]string, wg *sync
 		storageDoc := new(model.IndexRelated)
 		utils.Decoder(buf, &storageDoc)
 		suc := storageDoc.Success
-		keyword := storageDoc.KeyWord
+		// keyword := storageDoc.KeyWord
+		// fmt.Println(word)
 
-		if keyword == word {
-			for _, r := range suc {
-				if r != "" {
-					*Result = append(*Result, r)
-				}
+		for _, r := range suc {
+			if r != "" {
+				*Result = append(*Result, r)
 			}
-			// fmt.Println(Result, found)
-
 		}
+		// fmt.Println(Result, found)
 
 	}
 
@@ -588,4 +624,58 @@ func (e *Engine) GetQueue() int {
 		total += len(v)
 	}
 	return total
+}
+
+// 添加日志
+func (e *Engine) addSearchLog(request *model.SearchRequest) {
+	e.Wait()
+
+	// e.Lock()
+	// fmt.Println("添加日志")
+
+	// //创建一个新文件
+	// newFileName := "./searcher/searchlog.csv"
+	// //这样打开，每次都会清空文件内容
+	// //nfs, err := os.Create(newFileName)
+
+	// //这样可以追加写
+	// nfs, err := os.OpenFile(newFileName, os.O_RDWR|os.O_CREATE, 0666)
+	// if err != nil {
+	// 	log.Fatalf("can not create file, err is %+v", err)
+	// }
+	// defer nfs.Close()
+	// nfs.Seek(0, io.SeekEnd)
+
+	// w := csv.NewWriter(nfs)
+	// //设置属性
+	// w.Comma = ','
+	// w.UseCRLF = true
+
+	row := []string{request.ClientIP, request.Query, strconv.FormatInt(request.Time, 10)}
+	e.container.AddLogMem(row)
+	// err = w.Write(row)
+	// if err != nil {
+	// 	log.Fatalf("can not write, err is %+v", err)
+	// }
+	// //这里必须刷新，才能将数据写入文件。
+	// w.Flush()
+
+}
+
+// 读取日志
+func (e *Engine) addSearchLogToRelatedStorage(isclean string) {
+	e.Wait()
+
+	logMem := e.container.GetLogMem()
+
+	e.Lock()
+	searchlog.UpdatedRelatedSearch(isclean, e.relatedStorages[0], logMem)
+	e.Unlock()
+
+}
+
+func (e *Engine) GetRelatedStorage() *storage.LeveldbStorage {
+	//等待初始化完成
+	e.Wait()
+	return e.relatedStorages[0]
 }

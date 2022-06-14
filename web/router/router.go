@@ -18,6 +18,7 @@ func SetupRouter() *gin.Engine {
 	}
 
 	router := gin.Default()
+
 	// 启用GZIP压缩
 	if global.CONFIG.EnableGzip {
 		router.Use(gzip.Gzip(gzip.DefaultCompression))
@@ -31,6 +32,7 @@ func SetupRouter() *gin.Engine {
 	{
 		InitBaseRouter(group) // 基础管理
 		InitWordRouter(group) // 分词管理
+		InitSearchLogRouter(group)
 	}
 	log.Printf("API Url: \t http://%v/api", global.CONFIG.Addr)
 	return router

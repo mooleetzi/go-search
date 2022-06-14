@@ -4,10 +4,11 @@ import (
 	"flag"
 	"fmt"
 	"go-search/global"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"runtime"
+
+	"gopkg.in/yaml.v2"
 )
 
 // Parser 解析器

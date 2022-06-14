@@ -1,11 +1,14 @@
 package searcher
 
 import (
+	"encoding/csv"
 	"fmt"
 	"go-search/searcher/words"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
+	"sync"
 	"unsafe"
 )
 
@@ -16,10 +19,13 @@ type Container struct {
 	Tokenizer *words.Tokenizer   // 分词器
 	Shard     int                // 分片
 	Timeout   int64              // 超时关闭数据库
+	logMem    [][]string
+	sync.Mutex
 }
 
 func (c *Container) Init() error {
 
+	c.logMem = make([][]string, 0, 1024)
 	c.engines = make(map[string]*Engine)
 
 	// 读取当前路径下的所有目录，就是数据库名称
@@ -54,6 +60,7 @@ func (c *Container) NewEngine(name string) *Engine {
 		Tokenizer:    c.Tokenizer,
 		Shard:        c.Shard,
 		Timeout:      c.Timeout,
+		container:    c,
 	}
 	option := engine.GetOptions()
 
@@ -109,4 +116,53 @@ func (c *Container) GetDocumentCount() int64 {
 		count += engine.GetDocumentCount()
 	}
 	return count
+}
+func (c *Container) GetLogMem() [][]string {
+	c.Lock()
+	defer c.Unlock()
+	return c.logMem
+}
+func (c *Container) AddLogMem(row []string) {
+	c.Lock()
+
+	c.logMem = append(c.logMem, row)
+	if len(c.logMem) > 1024 {
+		c.Unlock()
+		c.MustWriteLog()
+		return
+	}
+	c.Unlock()
+}
+func (c *Container) MustWriteLog() {
+	c.Lock()
+	defer c.Unlock()
+	//创建一个新文件
+	newFileName := "./searcher/searchlog.csv"
+	//这样打开，每次都会清空文件内容
+	//nfs, err := os.Create(newFileName)
+
+	//这样可以追加写
+	nfs, err := os.OpenFile(newFileName, os.O_RDWR|os.O_CREATE, 0666)
+	if err != nil {
+		log.Fatalf("can not create file, err is %+v", err)
+	}
+	defer nfs.Close()
+	nfs.Seek(0, io.SeekEnd)
+
+	w := csv.NewWriter(nfs)
+	//设置属性
+	w.Comma = ','
+	w.UseCRLF = true
+
+	err = w.WriteAll(c.logMem)
+	if err != nil {
+		log.Fatalf("can not write, err is %+v", err)
+	}
+	c.clearLog()
+	//这里必须刷新，才能将数据写入文件。
+	w.Flush()
+}
+
+func (c *Container) clearLog() { //必须在持有锁的情况调用
+	c.logMem = make([][]string, 0, 1024)
 }
