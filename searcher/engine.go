@@ -301,8 +301,8 @@ func (e *Engine) InitOption(option *Option) {
 	}
 	// 初始化其他的
 	e.Init()
-	log.Println("开始添加悟空数据集")
-	e.InitWuKong()
+	//log.Println("开始添加悟空数据集")
+	//e.InitWuKong()
 	log.Println("开始添加初始后继词数据集")
 	e.InitRelatedSearch()
 

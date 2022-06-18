@@ -1,8 +1,6 @@
 package main
 
-import (
-	"go-search/core"
-)
+import "go-search/core"
 
 func main() {
 

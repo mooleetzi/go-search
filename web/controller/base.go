@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin/binding"
 	"go-search/searcher/model"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,7 @@ func Query(c *gin.Context) {
 		ClientIP: c.ClientIP(),
 	}
 
-	if err := c.ShouldBind(request); err != nil {
+	if err := c.ShouldBindBodyWith(request, binding.JSON); err != nil {
 		ResponseErrorWithMsg(c, err.Error())
 		return
 	}
