@@ -43,9 +43,8 @@ func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage, logMem [][
 	r := csv.NewReader(fs)
 	//针对大文件，一行一行的读取文件
 	for {
-
 		row, err := r.Read()
-		// _, err := r.Read()
+		//row0 row1 row2
 		if err != nil && err != io.EOF {
 			log.Fatalf("can not read, err is %+v", err)
 		}
@@ -97,7 +96,7 @@ func UpdatedRelatedSearch(isclear string, rs *storage.LeveldbStorage, logMem [][
 		temp[user[0].Query] = true
 
 		for i := 1; i < length; i++ {
-			if user[i].Time-begintime > 300 {
+			if user[i].Time-begintime > 20 {
 				// fmt.Println(user[i].Query)
 				// fmt.Println(addlog.KeyWord, addlog.Success)
 

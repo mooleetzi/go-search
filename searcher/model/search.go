@@ -17,7 +17,6 @@ type SearchRequest struct {
 	Database  string     `json:"database" form:"database"`            // 数据库名字
 	Time      int64      `json:"time" form:"time"`                    //时间戳
 	ClientIP  string     `json:"clientip" form:"clientip"`            //用户ip
-
 }
 
 func (s *SearchRequest) GetAndSetDefault() *SearchRequest {
