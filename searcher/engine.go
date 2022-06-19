@@ -112,7 +112,7 @@ func (e *Engine) automaticUpdate() {
 	//debug用，每10s触发一次更新
 	// gocron.Every(10).Second().DoSafely(e.addSearchLogToRelatedStorage, "")
 	//
-	gocron.Every(1).Day().At("0:25").DoSafely(e.addSearchLogToRelatedStorage, "")
+	gocron.Every(1).Day().At("0:25").Do(e.addSearchLogToRelatedStorage, "")
 	<-gocron.Start()
 }
 
@@ -301,8 +301,8 @@ func (e *Engine) InitOption(option *Option) {
 	}
 	// 初始化其他的
 	e.Init()
-	log.Println("开始添加悟空数据集")
-	e.InitWuKong()
+	//log.Println("开始添加悟空数据集")
+	//e.InitWuKong()
 	log.Println("开始添加初始后继词数据集")
 	e.InitRelatedSearch()
 
@@ -356,7 +356,6 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	//检索 相关搜索词
 	relatedResult := make([]string, 0)
 	// relatedResult, _timerelated := e.relatedSearch(splitWords, relatedResult)
-	// searchword := splitWords
 	searchword := append(splitWords, request.Query)
 
 	_timerelated := e.relatedSearch(searchword, &relatedResult) //分词or全
