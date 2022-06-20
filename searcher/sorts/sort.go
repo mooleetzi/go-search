@@ -41,12 +41,13 @@ type SortResult struct {
 //	f.Ids = append(f.Ids, *ids...)
 //}
 func (f *SortResult) Add(idsToFreqs *map[uint32]float64) {
+	f.Lock()
+	defer f.Unlock()
 	for id, score := range *idsToFreqs {
 		f.Ids = append(f.Ids, id)
 		f.Scores = append(f.Scores, score)
 	}
 }
-
 
 //func (f *SortResult) find(target *uint32) (bool, int) {
 //	low := 0
@@ -66,6 +67,9 @@ func (f *SortResult) Add(idsToFreqs *map[uint32]float64) {
 
 func (f *SortResult) Process(block []uint32) {
 	tmp := make(map[uint32]float64, len(f.Ids))
+	//if len(f.Ids) != len(f.Scores) {
+	//	println("!!!")
+	//}
 	for pos, id := range f.Ids {
 		if _, err := tmp[id]; err {
 			tmp[id] = f.Scores[pos]
