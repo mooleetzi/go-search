@@ -89,7 +89,6 @@ func (e *Engine) Init() {
 			panic(ikerr)
 		}
 		e.positiveIndexStorages = append(e.positiveIndexStorages, iks)
-
 	}
 	go e.automaticGC()
 	go e.automaticUpdate()
@@ -112,7 +111,8 @@ func (e *Engine) automaticUpdate() {
 	//debug用，每10s触发一次更新
 	// gocron.Every(10).Second().DoSafely(e.addSearchLogToRelatedStorage, "")
 	//
-	gocron.Every(1).Day().At("0:25").Do(e.addSearchLogToRelatedStorage, "")
+	err := gocron.Every(1).Day().At("0:25").Do(e.addSearchLogToRelatedStorage, "")
+	log.Printf("err %v", err)
 	<-gocron.Start()
 }
 
@@ -417,7 +417,6 @@ func (e *Engine) search(words []string, sortResult *sorts.SortResult) (_time flo
 		base := len(words)
 		wg := &sync.WaitGroup{}
 		wg.Add(base)
-
 		for _, word := range words {
 			go e.processKeySearch(word, sortResult, wg)
 		}
@@ -442,7 +441,7 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 
 		scores := make(map[uint32]float64)
 		docCount := float64(e.GetDocumentCount())
-		log.Println("docCount", docCount)
+		//log.Println("docCount", docCount)
 		for id, freq := range idsToFreqs {
 			docFreq := float64(len(idsToFreqs))
 			idf := math.Log(docCount) - math.Log(docFreq+1) + 1

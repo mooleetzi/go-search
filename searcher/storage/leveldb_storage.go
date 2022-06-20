@@ -5,6 +5,7 @@ import (
 	"github.com/syndtr/goleveldb/leveldb/filter"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"log"
+	"sync"
 	"time"
 )
 
@@ -16,11 +17,14 @@ type LeveldbStorage struct {
 	timeout  int64
 	lastTime int64
 	count    int64
+	sync.Mutex
 }
 
-func (s *LeveldbStorage) autoOpenDB() {
+func (s *LeveldbStorage) AutoOpenDB() {
+	s.Lock()
+	defer s.Unlock()
 	if s.closed {
-		s.ReOpen()
+		s.open()
 	}
 	s.lastTime = time.Now().Unix()
 }
@@ -48,7 +52,8 @@ func (s *LeveldbStorage) task() {
 	for {
 
 		if !s.closed && time.Now().Unix()-s.lastTime > s.timeout {
-			s.Close()
+			err := s.Close()
+			log.Printf("err %v", err)
 			log.Println("leveldb storage timeout", s.path)
 		}
 
@@ -67,13 +72,14 @@ func openDB(path string) (*leveldb.DB, error) {
 	db, err := leveldb.OpenFile(path, o)
 	return db, err
 }
-func (s *LeveldbStorage) ReOpen() {
+func (s *LeveldbStorage) open() {
 	if !s.closed {
 		log.Println("db is not closed")
 		return
 	}
 	db, err := openDB(s.path)
 	if err != nil {
+		log.Println(err)
 		return
 	}
 	s.db = db
@@ -83,7 +89,7 @@ func (s *LeveldbStorage) ReOpen() {
 }
 
 func (s *LeveldbStorage) Get(key []byte) ([]byte, bool) {
-	s.autoOpenDB()
+	s.AutoOpenDB()
 	buffer, err := s.db.Get(key, nil)
 	if err != nil {
 		return nil, false
@@ -92,7 +98,7 @@ func (s *LeveldbStorage) Get(key []byte) ([]byte, bool) {
 }
 
 func (s *LeveldbStorage) Has(key []byte) bool {
-	s.autoOpenDB()
+	s.AutoOpenDB()
 	has, err := s.db.Has(key, nil)
 	if err != nil {
 		panic(err)
@@ -101,7 +107,7 @@ func (s *LeveldbStorage) Has(key []byte) bool {
 }
 
 func (s *LeveldbStorage) Set(key []byte, value []byte) {
-	s.autoOpenDB()
+	s.AutoOpenDB()
 	err := s.db.Put(key, value, nil)
 	if err != nil {
 		panic(err)
@@ -110,7 +116,7 @@ func (s *LeveldbStorage) Set(key []byte, value []byte) {
 
 // Delete 删除
 func (s *LeveldbStorage) Delete(key []byte) error {
-	s.autoOpenDB()
+	s.AutoOpenDB()
 	return s.db.Delete(key, nil)
 }
 
@@ -153,7 +159,7 @@ func (s *LeveldbStorage) compute() {
 }
 func (s *LeveldbStorage) GetCount() int64 {
 	if s.count == 0 && s.closed {
-		s.autoOpenDB()
+		s.AutoOpenDB()
 	}
 	return s.count
 }
