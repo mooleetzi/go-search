@@ -52,7 +52,7 @@ func (c *Container) Init() error {
 	return nil
 }
 
-// NewEngine 创建一个引擎
+//创建一个引擎
 func (c *Container) NewEngine(name string) *Engine {
 	var engine = &Engine{
 		IndexPath:    fmt.Sprintf("%s%c%s", c.Dir, os.PathSeparator, name),
