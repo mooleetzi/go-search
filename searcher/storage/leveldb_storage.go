@@ -85,7 +85,11 @@ func (s *LeveldbStorage) open() {
 	s.db = db
 	s.closed = false
 	//计算总条数
-	go s.compute()
+	if s.count == 0 {
+		s.compute()
+	} else {
+		go s.compute()
+	}
 }
 
 func (s *LeveldbStorage) Get(key []byte) ([]byte, bool) {
@@ -136,17 +140,6 @@ func (s *LeveldbStorage) isClosed() bool {
 	return s.closed
 }
 
-//func (s *LeveldbStorage) compute1(wg *sync.WaitGroup) {
-//	defer wg.Wait()
-//	var count int64
-//	iter := s.db.NewIterator(nil, nil)
-//	for iter.Next() {
-//		count++
-//	}
-//	iter.Release()
-//	s.count = count
-//	log.Println("compute finish", s.count)
-//}
 func (s *LeveldbStorage) compute() {
 	var count int64
 	iter := s.db.NewIterator(nil, nil)

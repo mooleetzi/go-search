@@ -436,22 +436,21 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 	shard := e.getShardByWord(word)
 	// 读取id
 	invertedIndexStorage := e.invertedIndexStorages[shard]
-	key := []byte(word)
 
-	buf, find := invertedIndexStorage.Get(key)
-	if find {
-		idsToFreqs := make(map[uint32]int)
-		// 解码
-		utils.Decoder(buf, &idsToFreqs)
-
-		scores := make(map[uint32]float64)
-		err := e.invertedIndexCache.Get(word, &scores)
-		if err != nil {
+	scores := make(map[uint32]float64)
+	err := e.invertedIndexCache.Get(word, &scores)
+	if err != nil {
+		//	缓存没有，再去数据库
+		if e.IsDebug {
+			log.Println("cache get err is ", err)
+			log.Println("cache miss!")
+		}
+		key := []byte(word)
+		buf, find := invertedIndexStorage.Get(key)
+		if find {
+			idsToFreqs := make(map[uint32]int)
+			utils.Decoder(buf, &idsToFreqs)
 			docCount := float64(e.GetDocumentCount())
-			if e.IsDebug {
-				log.Println("cache miss!")
-			}
-
 			for id, freq := range idsToFreqs {
 				docFreq := float64(len(idsToFreqs))
 				idf := math.Log(docCount) - math.Log(docFreq+1) + 1
@@ -459,12 +458,11 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 				scores[id] = idf * tf
 			}
 			e.invertedIndexCache.Set(word, scores)
-		} else if e.IsDebug {
-			log.Println("cache hit")
 		}
-		sortResult.Add(&scores)
+	} else if e.IsDebug {
+		log.Println("cache hit!")
 	}
-
+	sortResult.Add(&scores)
 }
 
 func (e *Engine) relatedSearch(words []string, Result *[]string) (_time float64) {
