@@ -27,7 +27,7 @@ func (iic *InvertedIndexCache) autoInit() {
 			})
 			iic.myCache = cache.New(&cache.Options{
 				Redis:      ring,
-				LocalCache: cache.NewTinyLFU(5000, time.Second*5),
+				LocalCache: cache.NewTinyLFU(10000, time.Minute),
 			})
 		}
 	})
