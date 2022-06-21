@@ -2,6 +2,7 @@ package searcher
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/csv"
 	"fmt"
 
@@ -301,6 +302,10 @@ func (e *Engine) InitOption(option *Option) {
 	}
 	// 初始化其他的
 	e.Init()
+	//if e.DatabaseName == "wukongFull" {
+	//	//e.Shard = 50
+	//	e.InitWuKongFull()
+	//}
 	//log.Println("开始添加悟空数据集")
 	//e.InitWuKong()
 	log.Println("开始添加初始后继词数据集")
@@ -354,7 +359,7 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	sortResult.Process(blockSortResult.Ids)
 
 	//检索 相关搜索词
-	relatedResult := make([]string, 0)
+	relatedResult := make([]string, 1)
 	// relatedResult, _timerelated := e.relatedSearch(splitWords, relatedResult)
 	searchword := append(splitWords, request.Query)
 
@@ -443,7 +448,10 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 		err := e.invertedIndexCache.Get(word, &scores)
 		if err != nil {
 			docCount := float64(e.GetDocumentCount())
-			//log.Println("docCount", docCount)
+			if e.IsDebug {
+				log.Println("cache miss!")
+			}
+
 			for id, freq := range idsToFreqs {
 				docFreq := float64(len(idsToFreqs))
 				idf := math.Log(docCount) - math.Log(docFreq+1) + 1
@@ -451,6 +459,8 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 				scores[id] = idf * tf
 			}
 			e.invertedIndexCache.Set(word, scores)
+		} else if e.IsDebug {
+			log.Println("cache hit")
 		}
 		sortResult.Add(&scores)
 	}
@@ -579,6 +589,46 @@ func (e *Engine) InitWuKong() {
 		}
 	})
 	fmt.Println(exectime/1e3, "s add wukong_5k into workchan")
+}
+
+func (e *Engine) InitWuKongFull() {
+	isTitle := true
+	id := (uint32)(0)
+	exectime := 0.0
+	for i := 0; i < 10; i++ {
+		var stringBuilder bytes.Buffer
+		// 把字符串写入缓冲
+		stringBuilder.WriteString("wukong_100m_")
+		stringBuilder.WriteString(strconv.Itoa(i))
+		stringBuilder.WriteString(".csv")
+		path := stringBuilder.String()
+		csvFile, _ := os.Open(path)
+		reader := csv.NewReader(bufio.NewReader(csvFile))
+		exectime += utils.ExecTime(func() {
+			for {
+				fmt.Printf("%v \n", id)
+				line, err := reader.Read()
+				if err == io.EOF {
+					break
+				} else if err != nil {
+					log.Fatal(err)
+				}
+				if isTitle {
+					isTitle = false
+					continue
+				}
+				doc := model.IndexDoc{
+					Id:   id + 1,
+					Text: line[1],
+					Url:  line[0],
+				}
+				e.IndexDocument(&doc)
+				id += 1
+			}
+		})
+	}
+
+	fmt.Println(exectime/1e3, "s add ", id)
 }
 
 func (e *Engine) InitRelatedSearch() { //初始化后继词表
