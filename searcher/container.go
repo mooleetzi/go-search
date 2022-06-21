@@ -65,7 +65,7 @@ func (c *Container) NewEngine(name string) *Engine {
 	option := engine.GetOptions()
 
 	engine.InitOption(option)
-
+	engine.IsDebug = c.Debug
 	return engine
 }
 
@@ -147,8 +147,10 @@ func (c *Container) MustWriteLog() {
 		log.Fatalf("can not create file, err is %+v", err)
 	}
 	defer nfs.Close()
-	nfs.Seek(0, io.SeekEnd)
-
+	_, err = nfs.Seek(0, io.SeekEnd)
+	if err != nil {
+		log.Fatalf("can not create file, err is %+v", err)
+	}
 	w := csv.NewWriter(nfs)
 	//设置属性
 	w.Comma = ','
