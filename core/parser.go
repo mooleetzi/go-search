@@ -14,11 +14,11 @@ import (
 // Parser 解析器
 func Parser() *global.Config {
 
-	var addr = flag.String("addr", "127.0.0.1:5678", "设置监听地址和端口")
+	var addr = flag.String("addr", "127.0.0.1:56780", "设置监听地址和端口")
 	// 兼容windows
 	dir := fmt.Sprintf(".%sdata", string(os.PathSeparator))
 
-	var debug = flag.Bool("debug", true, "设置是否开启调试模式")
+	var debug = flag.Bool("debug", false, "设置是否开启调试模式")
 
 	var dataDir = flag.String("data", dir, "设置数据存储目录")
 

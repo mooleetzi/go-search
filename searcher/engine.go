@@ -5,8 +5,8 @@ import (
 	"encoding/csv"
 	"fmt"
 
-	// "go-search/global"
-	// "go-search/global"
+	"github.com/jasonlvhit/gocron"
+	"go-search/cache"
 	"go-search/pagination"
 	"go-search/searcher/arrays"
 	"go-search/searcher/model"
@@ -24,8 +24,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/jasonlvhit/gocron"
 )
 
 type Engine struct {
@@ -43,10 +41,11 @@ type Engine struct {
 	addDocumentWorkerChan []chan *model.IndexDoc
 	DatabaseName          string // 数据库名
 
-	Shard     int   // 分片数
-	Timeout   int64 // 超时时间,单位秒
-	IsDebug   bool  // 是否调试模式
-	container *Container
+	Shard              int   // 分片数
+	Timeout            int64 // 超时时间,单位秒
+	IsDebug            bool  // 是否调试模式
+	container          *Container
+	invertedIndexCache *cache.InvertedIndexCache
 }
 type Option struct {
 	InvertedIndexName string // 倒排索引
@@ -58,6 +57,7 @@ type Option struct {
 func (e *Engine) Init() {
 	e.Add(1)
 	defer e.Done()
+	e.invertedIndexCache = &cache.InvertedIndexCache{}
 	e.addDocumentWorkerChan = make([]chan *model.IndexDoc, e.Shard)
 	for shard := 0; shard < e.Shard; shard++ {
 		worker := make(chan *model.IndexDoc, 1000)
@@ -440,13 +440,17 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 		utils.Decoder(buf, &idsToFreqs)
 
 		scores := make(map[uint32]float64)
-		docCount := float64(e.GetDocumentCount())
-		//log.Println("docCount", docCount)
-		for id, freq := range idsToFreqs {
-			docFreq := float64(len(idsToFreqs))
-			idf := math.Log(docCount) - math.Log(docFreq+1) + 1
-			tf := math.Sqrt(float64(freq))
-			scores[id] = idf * tf
+		err := e.invertedIndexCache.Get(word, &scores)
+		if err != nil {
+			docCount := float64(e.GetDocumentCount())
+			//log.Println("docCount", docCount)
+			for id, freq := range idsToFreqs {
+				docFreq := float64(len(idsToFreqs))
+				idf := math.Log(docCount) - math.Log(docFreq+1) + 1
+				tf := math.Sqrt(float64(freq))
+				scores[id] = idf * tf
+			}
+			e.invertedIndexCache.Set(word, scores)
 		}
 		sortResult.Add(&scores)
 	}

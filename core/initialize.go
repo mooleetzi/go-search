@@ -21,6 +21,7 @@ import (
 func NewContainer(tokenizer *words.Tokenizer) *searcher.Container {
 	container := &searcher.Container{
 		Dir:       global.CONFIG.Data,
+		Debug:     global.CONFIG.Debug,
 		Tokenizer: tokenizer,
 		Shard:     global.CONFIG.Shard,
 		Timeout:   global.CONFIG.Timeout,
@@ -89,7 +90,7 @@ func Initialize() {
 
 //定时器任务，执行读取log更新后继词表
 func clock() {
-	gocron.Every(10).Second().DoSafely(taskWithParams, 1, "hello")
+	gocron.Every(10).Second().Do(taskWithParams, 1, "hello")
 	// gocron.Every(1).Day().At("10:30").Do(task)
 	<-gocron.Start()
 }
