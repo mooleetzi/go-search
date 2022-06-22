@@ -47,7 +47,6 @@ type Engine struct {
 	IsDebug            bool  // 是否调试模式
 	container          *Container
 	invertedIndexCache *cache.InvertedIndexCache
-	idFreqCache        *cache.IdFreqCache
 }
 type Option struct {
 	InvertedIndexName string // 倒排索引
@@ -60,7 +59,7 @@ func (e *Engine) Init() {
 	e.Add(1)
 	defer e.Done()
 	e.invertedIndexCache = &cache.InvertedIndexCache{}
-	e.idFreqCache = &cache.IdFreqCache{}
+
 	e.addDocumentWorkerChan = make([]chan *model.IndexDoc, e.Shard)
 	for shard := 0; shard < e.Shard; shard++ {
 		worker := make(chan *model.IndexDoc, 1000)
@@ -439,36 +438,12 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 	// 读取id
 	invertedIndexStorage := e.invertedIndexStorages[shard]
 
-	//scores := make(map[uint32]float64)
-	//err := e.invertedIndexCache.Get(word, &scores)
-	//if err != nil {
-	//	//	缓存没有，再去数据库
-	//	if e.IsDebug {
-	//		log.Println("cache get err is ", err)
-	//		log.Println("cache miss!")
-	//	}
-	//	key := []byte(word)
-	//	buf, find := invertedIndexStorage.Get(key)
-	//	if find {
-	//		idsToFreqs := make(map[uint32]int)
-	//		utils.Decoder(buf, &idsToFreqs)
-	//		docCount := float64(e.GetDocumentCount())
-	//		for id, freq := range idsToFreqs {
-	//			docFreq := float64(len(idsToFreqs))
-	//			idf := math.Log(docCount) - math.Log(docFreq+1) + 1
-	//			tf := math.Sqrt(float64(freq))
-	//			scores[id] = idf * tf
-	//		}
-	//		e.invertedIndexCache.Set(word, scores)
-	//	}
-	//} else if e.IsDebug {
-	//	log.Println("cache hit!")
-	//}
-	scores := make(map[uint32]float64, 100)
-	findCache := e.idFreqCache.Get(word, &scores)
-	if !findCache {
+	scores := make(map[uint32]float64)
+	err := e.invertedIndexCache.Get(word, &scores)
+	if err != nil {
 		//	缓存没有，再去数据库
 		if e.IsDebug {
+			log.Println("cache get err is ", err)
 			log.Println("cache miss!")
 		}
 		key := []byte(word)
@@ -483,7 +458,7 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 				tf := math.Sqrt(float64(freq))
 				scores[id] = idf * tf
 			}
-			e.idFreqCache.Set(word, &scores)
+			e.invertedIndexCache.Set(word, scores)
 		}
 	} else if e.IsDebug {
 		log.Println("cache hit!")
