@@ -3,6 +3,7 @@ package searcher
 import (
 	"encoding/csv"
 	"fmt"
+	"go-search/cache"
 	"go-search/searcher/words"
 	"io"
 	"io/ioutil"
@@ -21,13 +22,14 @@ type Container struct {
 	Timeout   int64              // 超时关闭数据库
 	logMem    [][]string
 	sync.Mutex
+	//Redis *redis.Client
 }
 
 func (c *Container) Init() error {
 
 	c.logMem = make([][]string, 0, 1024)
 	c.engines = make(map[string]*Engine)
-
+	cache.Redis()
 	// 读取当前路径下的所有目录，就是数据库名称
 	dirs, err := ioutil.ReadDir(c.Dir)
 	if err != nil {
@@ -146,7 +148,12 @@ func (c *Container) MustWriteLog() {
 	if err != nil {
 		log.Fatalf("can not create file, err is %+v", err)
 	}
-	defer nfs.Close()
+	defer func() {
+		err := nfs.Close()
+		if err != nil {
+			log.Println("nfs close err", err)
+		}
+	}()
 	_, err = nfs.Seek(0, io.SeekEnd)
 	if err != nil {
 		log.Fatalf("can not create file, err is %+v", err)

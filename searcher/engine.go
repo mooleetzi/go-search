@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
-
 	"github.com/jasonlvhit/gocron"
 	"go-search/cache"
 	"go-search/pagination"
@@ -42,11 +41,11 @@ type Engine struct {
 	addDocumentWorkerChan []chan *model.IndexDoc
 	DatabaseName          string // 数据库名
 
-	Shard              int   // 分片数
-	Timeout            int64 // 超时时间,单位秒
-	IsDebug            bool  // 是否调试模式
-	container          *Container
-	invertedIndexCache *cache.InvertedIndexCache
+	Shard     int   // 分片数
+	Timeout   int64 // 超时时间,单位秒
+	IsDebug   bool  // 是否调试模式
+	container *Container
+	//invertedIndexCache *cache.InvertedIndexCache
 }
 type Option struct {
 	InvertedIndexName string // 倒排索引
@@ -58,8 +57,6 @@ type Option struct {
 func (e *Engine) Init() {
 	e.Add(1)
 	defer e.Done()
-	e.invertedIndexCache = &cache.InvertedIndexCache{}
-
 	e.addDocumentWorkerChan = make([]chan *model.IndexDoc, e.Shard)
 	for shard := 0; shard < e.Shard; shard++ {
 		worker := make(chan *model.IndexDoc, 1000)
@@ -174,6 +171,7 @@ func (e *Engine) getDifference(id uint32, newWords []string) ([]string, bool) {
 	shard := e.getShard(id)
 	wordStorage := e.positiveIndexStorages[shard]
 	key := utils.Uint32ToBytes(id)
+
 	buf, found := wordStorage.Get(key)
 	if found {
 		oldWords := make([]string, 0)
@@ -218,7 +216,6 @@ func (e *Engine) addInvertedIndex(word string, frequency int, id uint32) {
 }
 
 func (e *Engine) getShardByWord(word string) int {
-
 	return int(utils.StringToInt(word) % uint32(e.Shard))
 }
 
@@ -439,11 +436,11 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 	invertedIndexStorage := e.invertedIndexStorages[shard]
 
 	scores := make(map[uint32]float64)
-	err := e.invertedIndexCache.Get(word, &scores)
-	if err != nil {
+	find, _ := cache.Get(word, &scores)
+	if !find {
 		//	缓存没有，再去数据库
 		if e.IsDebug {
-			log.Println("cache get err is ", err)
+			//log.Println("cache get err is ", err)
 			log.Println("cache miss!")
 		}
 		key := []byte(word)
@@ -458,7 +455,7 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 				tf := math.Sqrt(float64(freq))
 				scores[id] = idf * tf
 			}
-			e.invertedIndexCache.Set(word, scores)
+			go cache.Set(word, scores)
 		}
 	} else if e.IsDebug {
 		log.Println("cache hit!")
