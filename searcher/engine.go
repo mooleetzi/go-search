@@ -442,6 +442,7 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 
 	scores := make(map[uint32]float64)
 	find, _ := cache.Get(word, &scores)
+
 	if e.IsDebug {
 		log.Println("hit rate,", float64(cache.Hit)/float64(cache.Total))
 	}
@@ -452,7 +453,6 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 			log.Println("cache miss!")
 		}
 		key := []byte(word)
-
 		buf, find := invertedIndexStorage.Get(key)
 		if find {
 			idsToFreqs := make(map[uint32]int)

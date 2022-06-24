@@ -18,7 +18,7 @@ func Parser() *global.Config {
 	// 兼容windows
 	dir := fmt.Sprintf(".%sdata", string(os.PathSeparator))
 
-	var debug = flag.Bool("debug", true, "设置是否开启调试模式")
+	var debug = flag.Bool("debug", false, "设置是否开启调试模式")
 
 	var dataDir = flag.String("data", dir, "设置数据存储目录")
 

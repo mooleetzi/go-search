@@ -48,7 +48,7 @@ func Set(word string, scores map[uint32]float64) {
 }
 func Get(word string, wanted *map[uint32]float64) (find bool, err error) {
 	ctx := context.TODO()
-	time := utils.ExecTime(func() {
+  time := utils.ExecTime(func() {
 		inverted, err := RedisClient.HGetAll(ctx, word).Result()
 		if err != nil {
 			log.Println("hgetall err", err)
@@ -81,6 +81,5 @@ func Get(word string, wanted *map[uint32]float64) (find bool, err error) {
 	if IsDebug {
 		log.Println(word, "get time is", time, "ms")
 	}
-
 	return
 }
