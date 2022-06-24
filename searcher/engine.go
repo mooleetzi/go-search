@@ -45,6 +45,7 @@ type Engine struct {
 	Timeout   int64 // 超时时间,单位秒
 	IsDebug   bool  // 是否调试模式
 	container *Container
+	//idf [] *map[string]float64
 	//invertedIndexCache *cache.InvertedIndexCache
 }
 type Option struct {
@@ -442,7 +443,7 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 	scores := make(map[uint32]float64)
 	find, _ := cache.Get(word, &scores)
 	if e.IsDebug {
-		log.Println(float64(cache.Hit) / float64(cache.Total))
+		log.Println("hit rate,", float64(cache.Hit)/float64(cache.Total))
 	}
 	if !find {
 		//	缓存没有，再去数据库
@@ -457,13 +458,18 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 			idsToFreqs := make(map[uint32]int)
 			utils.Decoder(buf, &idsToFreqs)
 			docCount := float64(e.GetDocumentCount())
+			docFreq := float64(len(idsToFreqs))
+			idf := math.Log(docCount) - math.Log(docFreq+1) + 1
+			//log.Println(word, idf)
+			//if idf > 4 {
+			//过低无返回值
 			for id, freq := range idsToFreqs {
-				docFreq := float64(len(idsToFreqs))
-				idf := math.Log(docCount) - math.Log(docFreq+1) + 1
 				tf := math.Sqrt(float64(freq))
 				scores[id] = idf * tf
 			}
-			go cache.Set(word, scores)
+			//}
+			//log.Println(word, len(scores))
+			cache.Set(word, scores)
 		}
 	} else if e.IsDebug {
 		log.Println("cache hit!")
