@@ -5,12 +5,17 @@ import (
 	"github.com/go-redis/redis/v8"
 	"log"
 	"strconv"
-	"time"
+	"sync/atomic"
 )
 
-var RedisClient *redis.Client
+var (
+	RedisClient *redis.Client
+	Hit         uint32 = 0
+	Total       uint32 = 0
+	IsDebug     bool
+)
 
-func Redis() {
+func Redis(_isDebug bool) {
 	client := redis.NewClient(&redis.Options{
 		Addr: "localhost:6379",
 		DB:   0,
@@ -21,15 +26,16 @@ func Redis() {
 		panic(err)
 	}
 	RedisClient = client
+	IsDebug = _isDebug
 }
 func Set(word string, invertedIndexEntry map[uint32]float64) {
 	ctx := context.TODO()
 
 	for docId, score := range invertedIndexEntry {
 		_, err := RedisClient.HSet(ctx, word, docId, score).Result()
-		RedisClient.Expire(ctx, word, time.Minute)
+		//RedisClient.Expire(ctx, word, 2*time.Minute)
 		if err != nil {
-			log.Println("Hset err", err)
+			log.Println("HSet err", err)
 		}
 	}
 }
@@ -41,8 +47,11 @@ func Get(word string, wanted *map[uint32]float64) (find bool, err error) {
 		return
 	}
 	if len(inverted) != 0 {
-		//	notfound
+		//	found
 		find = true
+		if IsDebug {
+			atomic.AddUint32(&Hit, 1)
+		}
 		for idString, scoreString := range inverted {
 			id, err := strconv.ParseUint(idString, 10, 64)
 			if err != nil {
@@ -54,6 +63,9 @@ func Get(word string, wanted *map[uint32]float64) (find bool, err error) {
 			}
 			(*wanted)[uint32(id)] = score
 		}
+	}
+	if IsDebug {
+		atomic.AddUint32(&Total, 1)
 	}
 	return
 }
