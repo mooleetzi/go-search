@@ -45,6 +45,7 @@ type Engine struct {
 	Timeout   int64 // 超时时间,单位秒
 	IsDebug   bool  // 是否调试模式
 	container *Container
+	//idf [] *map[string]float64
 	//invertedIndexCache *cache.InvertedIndexCache
 }
 type Option struct {
@@ -343,12 +344,14 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 		Order:   request.Order,
 	}
 
-	_time := e.search(splitWords, sortResult)
-	_time += e.search(blockWords, blockSortResult)
+	_time1 := e.search(splitWords, sortResult)
+	_time2 := e.search(blockWords, blockSortResult)
 	if e.IsDebug {
-		log.Println("数组查找耗时：", totalTime, "ms")
-		log.Println("搜索时间:", _time, "ms")
+		log.Println("查询搜索时间：", _time1, "ms")
+		log.Println("过滤搜索时间:", _time2, "ms")
 	}
+	totalTime += _time1
+	totalTime += _time2
 
 	// 处理分页
 	request = request.GetAndSetDefault()
@@ -365,13 +368,14 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	if e.IsDebug {
 		log.Println("相关搜索时间:", _timerelated, "ms")
 	}
+	totalTime += _timerelated
 
 	wordMap := make(map[string]bool)
 	for _, word := range splitWords {
 		wordMap[word] = true
 	}
 
-	// 读取文档
+	// 设置返回结果结构体
 	var result = &model.SearchResult{
 		Total:     sortResult.Count(),
 		Page:      request.Page,
@@ -380,7 +384,7 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 		RelatedSc: relatedResult,
 	}
 
-	_time += utils.ExecTime(func() {
+	_time3 := utils.ExecTime(func() {
 		pager := new(pagination.Pagination)
 
 		pager.Init(request.Limit, sortResult.Count())
@@ -407,10 +411,11 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 			wg.Wait()
 		}
 	})
+	totalTime += _time3
 	if e.IsDebug {
-		log.Println("处理数据耗时：", _time, "ms")
+		log.Println("获取文档耗时：", _time3, "ms")
 	}
-	result.Time = _time
+	result.Time = totalTime
 
 	return result
 }
@@ -437,6 +442,10 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 
 	scores := make(map[uint32]float64)
 	find, _ := cache.Get(word, &scores)
+
+	if e.IsDebug {
+		log.Println("hit rate,", float64(cache.Hit)/float64(cache.Total))
+	}
 	if !find {
 		//	缓存没有，再去数据库
 		if e.IsDebug {
@@ -449,13 +458,18 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 			idsToFreqs := make(map[uint32]int)
 			utils.Decoder(buf, &idsToFreqs)
 			docCount := float64(e.GetDocumentCount())
+			docFreq := float64(len(idsToFreqs))
+			idf := math.Log(docCount) - math.Log(docFreq+1) + 1
+			//log.Println(word, idf)
+			//if idf > 4 {
+			//过低无返回值
 			for id, freq := range idsToFreqs {
-				docFreq := float64(len(idsToFreqs))
-				idf := math.Log(docCount) - math.Log(docFreq+1) + 1
 				tf := math.Sqrt(float64(freq))
 				scores[id] = idf * tf
 			}
-			go cache.Set(word, scores)
+			//}
+			//log.Println(word, len(scores))
+			cache.Set(word, scores)
 		}
 	} else if e.IsDebug {
 		log.Println("cache hit!")

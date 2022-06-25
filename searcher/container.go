@@ -29,7 +29,8 @@ func (c *Container) Init() error {
 
 	c.logMem = make([][]string, 0, 1024)
 	c.engines = make(map[string]*Engine)
-	cache.Redis()
+
+	cache.Redis(c.Debug)
 	// 读取当前路径下的所有目录，就是数据库名称
 	dirs, err := ioutil.ReadDir(c.Dir)
 	if err != nil {

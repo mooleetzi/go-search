@@ -67,9 +67,9 @@ func (f *SortResult) Add(idsToFreqs *map[uint32]float64) {
 
 func (f *SortResult) Process(block []uint32) {
 	tmp := make(map[uint32]float64, len(f.Ids))
-	//if len(f.Ids) != len(f.Scores) {
-	//	println("!!!")
-	//}
+// 	if len(f.Ids) != len(f.Scores) {
+// 		panic("!!!!!!!")
+// 	}
 	for pos, id := range f.Ids {
 		if _, err := tmp[id]; err {
 			tmp[id] = f.Scores[pos]
