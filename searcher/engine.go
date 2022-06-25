@@ -9,6 +9,7 @@ import (
 	"go-search/cache"
 	"go-search/pagination"
 	"go-search/searcher/arrays"
+	"go-search/searcher/consistenthash"
 	"go-search/searcher/model"
 	"go-search/searcher/searchlog"
 	"go-search/searcher/sorts"
@@ -47,6 +48,9 @@ type Engine struct {
 	container *Container
 	//idf [] *map[string]float64
 	//invertedIndexCache *cache.InvertedIndexCache
+	invertedStorageMap *consistenthash.Map
+	positiveStorageMap *consistenthash.Map
+	docStorageMap      *consistenthash.Map
 }
 type Option struct {
 	InvertedIndexName string // 倒排索引
@@ -59,6 +63,9 @@ func (e *Engine) Init() {
 	e.Add(1)
 	defer e.Done()
 	e.addDocumentWorkerChan = make([]chan *model.IndexDoc, e.Shard)
+	e.invertedStorageMap = consistenthash.New(4, nil)
+	e.positiveStorageMap = consistenthash.New(4, nil)
+	e.docStorageMap = consistenthash.New(4, nil)
 	for shard := 0; shard < e.Shard; shard++ {
 		worker := make(chan *model.IndexDoc, 1000)
 		e.addDocumentWorkerChan[shard] = worker
@@ -69,12 +76,7 @@ func (e *Engine) Init() {
 			panic(err)
 		}
 		e.docStorages = append(e.docStorages, s)
-
-		rs, err := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.RelatedIndexName, shard)), e.Timeout)
-		if err != nil {
-			panic(err)
-		}
-		e.relatedStorages = append(e.relatedStorages, rs)
+		e.docStorageMap.AddNode(strconv.Itoa(shard))
 
 		// 初始化Keys存储
 		ks, kerr := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.InvertedIndexName, shard)), e.Timeout)
@@ -82,6 +84,7 @@ func (e *Engine) Init() {
 			panic(err)
 		}
 		e.invertedIndexStorages = append(e.invertedIndexStorages, ks)
+		e.invertedStorageMap.AddNode(strconv.Itoa(shard))
 
 		// id和keys映射
 		iks, ikerr := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.PositiveIndexName, shard)), e.Timeout)
@@ -89,6 +92,13 @@ func (e *Engine) Init() {
 			panic(ikerr)
 		}
 		e.positiveIndexStorages = append(e.positiveIndexStorages, iks)
+		e.positiveStorageMap.AddNode(strconv.Itoa(shard))
+
+		rs, err := storage.NewStorage(e.getFilePath(fmt.Sprintf("%s_%d", e.Option.RelatedIndexName, shard)), e.Timeout)
+		if err != nil {
+			panic(err)
+		}
+		e.relatedStorages = append(e.relatedStorages, rs)
 	}
 	go e.automaticGC()
 	go e.automaticUpdate()
@@ -169,7 +179,7 @@ func (e *Engine) deleteInvalidDocId(id uint32, newWords []string) bool {
 
 func (e *Engine) getDifference(id uint32, newWords []string) ([]string, bool) {
 
-	shard := e.getShard(id)
+	shard := e.getShardById(id)
 	wordStorage := e.positiveIndexStorages[shard]
 	key := utils.Uint32ToBytes(id)
 
@@ -193,10 +203,34 @@ func (e *Engine) getDifference(id uint32, newWords []string) ([]string, bool) {
 }
 
 // getShard 计算索引分布在哪个文件块
-func (e *Engine) getShard(id uint32) int {
-	return int(id % uint32(e.Shard))
+//func (e *Engine) getShard(id uint32) int {
+//	return int(id % uint32(e.Shard))
+//}
+func (e *Engine) getShardByWord(word string) (ans int) {
+	shardStr := e.docStorageMap.PickNode(word)
+	ans, err := strconv.Atoi(shardStr)
+	if err != nil {
+		log.Println("getShardByWord err", err)
+	}
+	return
+}
+func (e *Engine) getShardById(id uint32) int {
+	shardStr := e.positiveStorageMap.PickNode(strconv.Itoa(int(id)))
+	ans, err := strconv.Atoi(shardStr)
+	if err != nil {
+		log.Println("getShardById err", err)
+	}
+	return int(ans)
 }
 
+//func (e *Engine) getDocShard(id uint32) int {
+//	shardStr := e.docStorageMap.PickNode(strconv.Itoa(int(id)))
+//	ans,err:= strconv.Atoi(shardStr)
+//	if err!= nil{
+//		log.Println("getShardById err",err)
+//	}
+//	return int(ans)
+//}
 // 添加倒排索引
 func (e *Engine) addInvertedIndex(word string, frequency int, id uint32) {
 	e.Lock()
@@ -214,10 +248,6 @@ func (e *Engine) addInvertedIndex(word string, frequency int, id uint32) {
 	// map增加和访问
 	docIdsToFreqs[id] = frequency
 	s.Set(key, utils.Encoder(docIdsToFreqs))
-}
-
-func (e *Engine) getShardByWord(word string) int {
-	return int(utils.StringToInt(word) % uint32(e.Shard))
 }
 
 func (e *Engine) delInInvertedStorage(id uint32, word string) {
@@ -253,7 +283,7 @@ func (e *Engine) addPositiveIndex(index *model.IndexDoc, keys []string) {
 	defer e.Unlock()
 
 	key := utils.Uint32ToBytes(index.Id)
-	shard := e.getShard(index.Id)
+	shard := e.getShardById(index.Id)
 	docStorage := e.docStorages[shard]
 
 	// id和key的映射
@@ -297,16 +327,25 @@ func (e *Engine) InitOption(option *Option) {
 	e.Option = option
 	// shard默认值
 	if e.Shard <= 0 {
-		e.Shard = 10
+		if e.DatabaseName == "wukongFull" {
+			e.Shard = 50
+		} else if e.DatabaseName == "default" {
+			e.Shard = 10
+		}
 	}
+
 	// 初始化其他的
 	e.Init()
-	//if e.DatabaseName == "wukongFull" {
-	//	//e.Shard = 50
-	//	e.InitWuKongFull()
-	//}
-	//log.Println("开始添加悟空数据集")
-	//e.InitWuKong()
+	if e.DatabaseName == "wukongFull" {
+		time := utils.ExecTime(
+			func() {
+				e.InitWuKongFull()
+			})
+		log.Println("Init wukongFull", time/1e3, "s")
+	} else if e.DatabaseName == "default" {
+		e.InitWuKong()
+	}
+
 	log.Println("开始添加初始后继词数据集")
 	e.InitRelatedSearch()
 
@@ -467,8 +506,6 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 				tf := math.Sqrt(float64(freq))
 				scores[id] = idf * tf
 			}
-			//}
-			//log.Println(word, len(scores))
 			cache.Set(word, scores)
 		}
 	} else if e.IsDebug {
@@ -559,7 +596,7 @@ func (e *Engine) getDocument(item model.SliceItem, doc *model.ResponseDoc, reque
 
 // GetDocById 通过id获取文档
 func (e *Engine) GetDocById(id uint32) []byte {
-	shard := e.getShard(id)
+	shard := e.getShardById(id)
 	key := utils.Uint32ToBytes(id)
 	buf, found := e.docStorages[shard].Get(key)
 	if found {
@@ -604,8 +641,7 @@ func (e *Engine) InitWuKong() {
 func (e *Engine) InitWuKongFull() {
 	isTitle := true
 	id := (uint32)(0)
-	exectime := 0.0
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 2; i++ {
 		var stringBuilder bytes.Buffer
 		// 把字符串写入缓冲
 		stringBuilder.WriteString("wukong_100m_")
@@ -614,31 +650,27 @@ func (e *Engine) InitWuKongFull() {
 		path := stringBuilder.String()
 		csvFile, _ := os.Open(path)
 		reader := csv.NewReader(bufio.NewReader(csvFile))
-		exectime += utils.ExecTime(func() {
-			for {
-				fmt.Printf("%v \n", id)
-				line, err := reader.Read()
-				if err == io.EOF {
-					break
-				} else if err != nil {
-					log.Fatal(err)
-				}
-				if isTitle {
-					isTitle = false
-					continue
-				}
-				doc := model.IndexDoc{
-					Id:   id + 1,
-					Text: line[1],
-					Url:  line[0],
-				}
-				e.IndexDocument(&doc)
-				id += 1
+		for {
+			fmt.Printf("%v \n", id)
+			line, err := reader.Read()
+			if err == io.EOF {
+				break
+			} else if err != nil {
+				log.Fatal(err)
 			}
-		})
+			if isTitle {
+				isTitle = false
+				continue
+			}
+			doc := model.IndexDoc{
+				Id:   id + 1,
+				Text: line[1],
+				Url:  line[0],
+			}
+			e.IndexDocument(&doc)
+			id += 1
+		}
 	}
-
-	fmt.Println(exectime/1e3, "s add ", id)
 }
 
 func (e *Engine) InitRelatedSearch() { //初始化后继词表
@@ -676,7 +708,7 @@ func (e *Engine) InitRelatedSearch() { //初始化后继词表
 
 func (e *Engine) IndexDocument(doc *model.IndexDoc) {
 	//将一个doc放入到数据库当中
-	e.addDocumentWorkerChan[e.getShard(doc.Id)] <- doc
+	e.addDocumentWorkerChan[e.getShardById(doc.Id)] <- doc
 }
 
 // GetQueue 获取队列剩余
