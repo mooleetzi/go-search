@@ -494,7 +494,7 @@ func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg 
 				tf := math.Sqrt(float64(freq))
 				scores[id] = idf * tf
 			}
-			go cache.Set(word, scores)
+			cache.Set(word, scores)
 		}
 	} else if e.IsDebug {
 		log.Println("cache hit!")
