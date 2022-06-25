@@ -9,7 +9,9 @@ import (
 	"time"
 )
 
-// LeveldbStorage TODO 要支持事务
+//var ttt atomic.Value
+
+// LeveldbStorage
 type LeveldbStorage struct {
 	db       *leveldb.DB
 	path     string
@@ -21,17 +23,21 @@ type LeveldbStorage struct {
 }
 
 func (s *LeveldbStorage) AutoOpenDB() {
+	if !s.closed {
+		s.lastTime = time.Now().Unix()
+		return
+	}
+
 	s.Lock()
 	defer s.Unlock()
 	if s.closed {
 		s.open()
 	}
-	s.lastTime = time.Now().Unix()
+
 }
 
 // NewStorage 打开数据库
 func NewStorage(path string, timeout int64) (*LeveldbStorage, error) {
-
 	db := &LeveldbStorage{
 		path:     path,
 		closed:   true,
@@ -52,6 +58,7 @@ func (s *LeveldbStorage) task() {
 	for {
 
 		if !s.closed && time.Now().Unix()-s.lastTime > s.timeout {
+
 			err := s.Close()
 			log.Printf("err %v", err)
 			log.Println("leveldb storage timeout", s.path)
@@ -62,22 +69,25 @@ func (s *LeveldbStorage) task() {
 	}
 }
 
-func openDB(path string) (*leveldb.DB, error) {
-	//加速读取
-	////使用布隆过滤器
-	o := &opt.Options{
-		Filter: filter.NewBloomFilter(10),
-	}
-
-	db, err := leveldb.OpenFile(path, o)
-	return db, err
-}
+//func openDB(path string) (*leveldb.DB, error) {
+//	//加速读取
+//	////使用布隆过滤器
+//	o := &opt.Options{
+//		Filter: filter.NewBloomFilter(10),
+//	}
+//
+//	db, err := leveldb.OpenFile(path, o)
+//	return db, err
+//}
 func (s *LeveldbStorage) open() {
 	if !s.closed {
 		log.Println("db is not closed")
 		return
 	}
-	db, err := openDB(s.path)
+	o := &opt.Options{
+		Filter: filter.NewBloomFilter(10),
+	}
+	db, err := leveldb.OpenFile(s.path, o)
 	if err != nil {
 		log.Println(err)
 		return
@@ -85,11 +95,7 @@ func (s *LeveldbStorage) open() {
 	s.db = db
 	s.closed = false
 	//计算总条数
-	if s.count == 0 {
-		s.compute()
-	} else {
-		go s.compute()
-	}
+	s.compute()
 }
 
 func (s *LeveldbStorage) Get(key []byte) ([]byte, bool) {
@@ -126,6 +132,8 @@ func (s *LeveldbStorage) Delete(key []byte) error {
 
 // Close 关闭
 func (s *LeveldbStorage) Close() error {
+	s.Lock()
+	defer s.Unlock()
 	if s.closed {
 		return nil
 	}
