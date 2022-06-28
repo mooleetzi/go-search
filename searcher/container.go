@@ -64,6 +64,7 @@ func (c *Container) NewEngine(name string) *Engine {
 		Shard:        c.Shard,
 		Timeout:      c.Timeout,
 		container:    c,
+		topK:         60,
 	}
 	option := engine.GetOptions()
 

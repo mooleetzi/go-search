@@ -21,6 +21,7 @@ import (
 	"math"
 	"os"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -51,6 +52,7 @@ type Engine struct {
 	invertedStorageMap *consistenthash.Map
 	positiveStorageMap *consistenthash.Map
 	docStorageMap      *consistenthash.Map
+	topK               int
 }
 type Option struct {
 	InvertedIndexName string // 倒排索引
@@ -336,15 +338,15 @@ func (e *Engine) InitOption(option *Option) {
 
 	// 初始化其他的
 	e.Init()
-	if e.DatabaseName == "wukongFull" {
-		time := utils.ExecTime(
-			func() {
-				e.InitWuKongFull()
-			})
-		log.Println("Init wukongFull", time/1e3, "s")
-	} else if e.DatabaseName == "default" {
-		e.InitWuKong()
-	}
+	//if e.DatabaseName == "wukongFull" {
+	//	time := utils.ExecTime(
+	//		func() {
+	//			e.InitWuKongFull()
+	//		})
+	//	log.Println("Init wukongFull", time/1e3, "s")
+	//} else if e.DatabaseName == "default" {
+	//	e.InitWuKong()
+	//}
 
 	log.Println("开始添加初始后继词数据集")
 	e.InitRelatedSearch()
@@ -383,8 +385,9 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 		Order:   request.Order,
 	}
 
-	_time1 := e.search(splitWords, sortResult)
-	_time2 := e.search(blockWords, blockSortResult)
+	maxWant := request.Page * request.Limit
+	_time1 := e.search(splitWords, sortResult, maxWant)
+	_time2 := e.search(blockWords, blockSortResult, maxWant)
 	if e.IsDebug {
 		log.Println("查询搜索时间：", _time1, "ms")
 		log.Println("过滤搜索时间:", _time2, "ms")
@@ -441,7 +444,7 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 			count := len(resultItems)
 
 			result.Documents = make([]model.ResponseDoc, count)
-			// 只读取前面100个
+			// 只读取对应位置的文件
 			wg := new(sync.WaitGroup)
 			wg.Add(count)
 			for index, item := range resultItems {
@@ -459,61 +462,70 @@ func (e *Engine) MultiSearch(request *model.SearchRequest) *model.SearchResult {
 	return result
 }
 
-func (e *Engine) search(words []string, sortResult *sorts.SortResult) (_time float64) {
+func (e *Engine) search(words []string, sortResult *sorts.SortResult, maxWant int) (_time float64) {
 	_time = utils.ExecTime(func() {
 		base := len(words)
 		wg := &sync.WaitGroup{}
 		wg.Add(base)
 		for _, word := range words {
-			go e.processKeySearch(word, sortResult, wg)
+			go e.processKeySearch(word, sortResult, wg, maxWant)
 		}
 		wg.Wait()
 	})
 	return
 }
 
-func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg *sync.WaitGroup) {
+func (e *Engine) processKeySearch(word string, sortResult *sorts.SortResult, wg *sync.WaitGroup, maxWant int) {
 	defer wg.Done()
+	scores := make(map[uint32]float64)
+	if maxWant <= e.topK {
+		//去缓存找！
+		if find, _ := cache.Get(word, &scores); !find {
+			//	缓存没有，再去数据库
+			e.getFromInvertedStorage(word, &scores)
+		} else if e.IsDebug {
+			log.Println("cache hit!")
+			log.Println("hit rate,", cache.GetRate())
+		}
+	} else {
+		e.getFromInvertedStorage(word, &scores)
+	}
+	sortResult.Add(&scores)
 
+}
+func (e *Engine) getFromInvertedStorage(word string, scores *map[uint32]float64) bool {
 	shard := e.getShardByWord(word)
 	// 读取id
 	invertedIndexStorage := e.invertedIndexStorages[shard]
-
-	scores := make(map[uint32]float64)
-	find, _ := cache.Get(word, &scores)
-
 	if e.IsDebug {
-		log.Println("hit rate,", float64(cache.Hit)/float64(cache.Total))
+		//log.Println("cache get err is ", err)
+		log.Println("cache miss!")
 	}
-	if !find {
-		//	缓存没有，再去数据库
-		if e.IsDebug {
-			//log.Println("cache get err is ", err)
-			log.Println("cache miss!")
+	key := []byte(word)
+	buf, find := invertedIndexStorage.Get(key)
+	if find {
+		idsToFreqs := make(map[uint32]int)
+		utils.Decoder(buf, &idsToFreqs)
+		docCount := float64(e.GetDocumentCount())
+		docFreq := float64(len(idsToFreqs))
+		idf := math.Log(docCount) - math.Log(docFreq+1) + 1
+		//log.Println(word, idf)
+		//if idf > 4 {
+		//过低无返回值
+		var scoreSlice sorts.ScoreSlice
+		for id, freq := range idsToFreqs {
+			tf := math.Sqrt(float64(freq))
+			(*scores)[id] = idf * tf
+			scoreSlice = append(scoreSlice, model.SliceItem{
+				Id:    id,
+				Score: (*scores)[id],
+			})
 		}
-		key := []byte(word)
-		buf, find := invertedIndexStorage.Get(key)
-		if find {
-			idsToFreqs := make(map[uint32]int)
-			utils.Decoder(buf, &idsToFreqs)
-			docCount := float64(e.GetDocumentCount())
-			docFreq := float64(len(idsToFreqs))
-			idf := math.Log(docCount) - math.Log(docFreq+1) + 1
-			//log.Println(word, idf)
-			//if idf > 4 {
-			//过低无返回值
-			for id, freq := range idsToFreqs {
-				tf := math.Sqrt(float64(freq))
-				scores[id] = idf * tf
-			}
-			cache.Set(word, scores)
-		}
-	} else if e.IsDebug {
-		log.Println("cache hit!")
+		sort.Sort(scoreSlice)
+		cache.Set(word, &scoreSlice, e.topK)
 	}
-	sortResult.Add(&scores)
+	return find
 }
-
 func (e *Engine) relatedSearch(words []string, Result *[]string) (_time float64) {
 	temp := make(map[string]bool)
 	newwords := make([]string, 0)
