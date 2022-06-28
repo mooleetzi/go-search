@@ -15,7 +15,7 @@ func (x ScoreSlice) Less(i, j int) bool {
 	if x[i].Score == x[j].Score {
 		return x[i].Id < x[j].Id
 	}
-	return x[i].Score < x[j].Score
+	return x[i].Score > x[j].Score
 }
 func (x ScoreSlice) Swap(i, j int) {
 	x[i], x[j] = x[j], x[i]
@@ -67,9 +67,7 @@ func (f *SortResult) Add(idsToFreqs *map[uint32]float64) {
 
 func (f *SortResult) Process(block []uint32) {
 	tmp := make(map[uint32]float64, len(f.Ids))
-// 	if len(f.Ids) != len(f.Scores) {
-// 		panic("!!!!!!!")
-// 	}
+
 	for pos, id := range f.Ids {
 		if _, err := tmp[id]; err {
 			tmp[id] = f.Scores[pos]
@@ -91,7 +89,7 @@ func (f *SortResult) Process(block []uint32) {
 		f.count++
 	}
 
-	sort.Sort(sort.Reverse(ScoreSlice(f.IdsAndScores)))
+	sort.Sort(ScoreSlice(f.IdsAndScores))
 }
 
 func (f *SortResult) Count() int {
